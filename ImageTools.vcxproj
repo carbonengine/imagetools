@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release_27|x64">
+      <Configuration>Release_27</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release_27|Win32">
+      <Configuration>Release_27</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals"/>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_27|x64'" Label="Configuration">
+    <PlatformToolset>v100</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_27|Win32'" Label="Configuration">
+    <PlatformToolset>v100</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)/Microsoft.Cpp.Default.props"/>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_27|x64'">
+    <OutDir>../../autobuild/ImageTools/python_27/$(Platform)/$(PlatformToolset)/</OutDir>
+    <UseOfMfc>False</UseOfMfc>
+    <IntDir>../temp/ImageTools/python_27/$(Platform)/$(Configuration)/$(PlatformToolset)/</IntDir>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_27|Win32'">
+    <OutDir>../../autobuild/ImageTools/python_27/$(Platform)/$(PlatformToolset)/</OutDir>
+    <UseOfMfc>False</UseOfMfc>
+    <IntDir>../temp/ImageTools/python_27/$(Platform)/$(Configuration)/$(PlatformToolset)/</IntDir>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)/Microsoft.Cpp.props"/>
+  <PropertyGroup Label="UserMacros">
+    <CcpSdkPath>../../../../../../sdk</CcpSdkPath>
+    <CcpSharedToolsPath>../../../../../../shared_tools</CcpSharedToolsPath>
+    <CcpBranchPath>../../..</CcpBranchPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <BuildMacro Include="CcpSdkPath">
+      <Value>$(CcpSdkPath)</Value>
+    </BuildMacro>
+    <BuildMacro Include="CcpSharedToolsPath">
+      <Value>$(CcpSharedToolsPath)</Value>
+    </BuildMacro>
+    <BuildMacro Include="CcpBranchPath">
+      <Value>$(CcpBranchPath)</Value>
+    </BuildMacro>
+  </ItemGroup>
+  <ImportGroup Label="ExtensionSettings"/>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_27|x64'" Label="PropertySheets"/>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_27|Win32'" Label="PropertySheets"/>
+  <PropertyGroup>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release_27|x64'">.pyd</TargetExt>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release_27|x64'">_imagetools</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release_27|Win32'">.pyd</TargetExt>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release_27|Win32'">_imagetools</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_27|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PreprocessorDefinitions>BLUEBUILD_STATIC;BLUE_WITH_PYTHON=1;BLUEBUILD_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(CcpSdkPath)\zlib\1.2.3\include;$(CcpSdkPath)\zlib\1.2.3\include;$(CcpSdkPath)\Python\27_64\include;.;$(CcpBranchPath)/carbon/src;$(CcpSdkPath)/nvidia/nvtt/r1380/include;$(CcpSdkPath)\telemetry\2.0j\include;.;$(CcpBranchPath)/carbon/src;$(CcpSdkPath)\telemetry\2.0j\include;$(CcpSdkPath)/libpng/1.4.0/include;$(CcpSdkPath)/libjpg/jpeg-8c;.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>True</MultiProcessorCompilation>
+      <TreatWarningAsError>True</TreatWarningAsError>
+      <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
+      <BufferSecurityCheck>False</BufferSecurityCheck>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeaderFile>StdAfx.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>True</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(CcpSdkPath)\zlib\1.2.3\lib\vc100.sp1\$(Platform);$(CcpSdkPath)\zlib\1.2.3\lib\vc100.sp1\$(Platform);$(CcpSdkPath)\Python\27_64\libs;../../../carbon/autobuild/BlueExposure/python_27/$(Platform)/$(PlatformToolset);$(CcpSdkPath)/libpng/1.4.0/lib/vc100.sp1/$(Platform);$(CcpSdkPath)/nvidia/nvtt/r1380/lib/$(Platform);$(CcpSdkPath)\telemetry\2.0j\lib;../../../carbon/autobuild/CcpCore/$(Platform)/$(PlatformToolset)/;$(CcpSdkPath)\telemetry\2.0j\lib;../../../carbon/autobuild/CcpCore/$(Platform)/$(PlatformToolset)/;$(CcpSdkPath)/libjpg/jpeg-8c/lib/$(Platform);../../autobuild/ImageIO/$(Platform)/$(PlatformToolset)/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ProgramDatabaseFile>$(TargetDir)$(TargetName).pdb</ProgramDatabaseFile>
+      <AdditionalDependencies>zlib.lib;zlib.lib;python27.lib;nvtt.lib;BlueExposureStatic.lib;CcpCoreStatic.lib;telemetry64.link.lib;ImageIO.lib;CcpCore.lib;telemetry64.link.lib;libpng.lib;jpeg.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <ResourceCompile/>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_27|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PreprocessorDefinitions>BLUEBUILD_STATIC;BLUE_WITH_PYTHON=1;BLUEBUILD_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(CcpSdkPath)\zlib\1.2.3\include;$(CcpSdkPath)\zlib\1.2.3\include;$(CcpSdkPath)\Python\27\include;.;$(CcpBranchPath)/carbon/src;$(CcpSdkPath)/nvidia/nvtt/r1380/include;$(CcpSdkPath)\telemetry\2.0j\include;.;$(CcpBranchPath)/carbon/src;$(CcpSdkPath)\telemetry\2.0j\include;$(CcpSdkPath)/libpng/1.4.0/include;$(CcpSdkPath)/libjpg/jpeg-8c;.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>True</MultiProcessorCompilation>
+      <TreatWarningAsError>True</TreatWarningAsError>
+      <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
+      <BufferSecurityCheck>False</BufferSecurityCheck>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeaderFile>StdAfx.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>True</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(CcpSdkPath)\zlib\1.2.3\lib\vc100.sp1\$(Platform);$(CcpSdkPath)\zlib\1.2.3\lib\vc100.sp1\$(Platform);$(CcpSdkPath)\Python\27\libs;../../../carbon/autobuild/BlueExposure/python_27/$(Platform)/$(PlatformToolset);$(CcpSdkPath)/libpng/1.4.0/lib/vc100.sp1/$(Platform);$(CcpSdkPath)/nvidia/nvtt/r1380/lib/$(Platform);$(CcpSdkPath)\telemetry\2.0j\lib;../../../carbon/autobuild/CcpCore/$(Platform)/$(PlatformToolset)/;$(CcpSdkPath)\telemetry\2.0j\lib;../../../carbon/autobuild/CcpCore/$(Platform)/$(PlatformToolset)/;$(CcpSdkPath)/libjpg/jpeg-8c/lib/$(Platform);../../autobuild/ImageIO/$(Platform)/$(PlatformToolset)/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ProgramDatabaseFile>$(TargetDir)$(TargetName).pdb</ProgramDatabaseFile>
+      <AdditionalDependencies>zlib.lib;zlib.lib;python27.lib;nvtt.lib;BlueExposureStatic.lib;CcpCoreStatic.lib;telemetry32.link.lib;ImageIO.lib;CcpCore.lib;telemetry32.link.lib;libpng.lib;jpeg.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <ResourceCompile/>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="AllowThreads.h"/>
+    <ClInclude Include="autoversion.h"/>
+    <ClInclude Include="CompressionOptions.h"/>
+    <ClInclude Include="FileStream.h"/>
+    <ClInclude Include="ImageToolsBitmap.h"/>
+    <ClInclude Include="MemoryOutputHandler.h"/>
+    <ClInclude Include="MemoryStream.h"/>
+    <ClInclude Include="StdAfx.h"/>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CompressionOptions.cpp"/>
+    <ClCompile Include="CompressionOptions_Blue.cpp"/>
+    <ClCompile Include="EnumRegistry_Blue.cpp"/>
+    <ClCompile Include="FileStream.cpp"/>
+    <ClCompile Include="ImageTools.cpp"/>
+    <ClCompile Include="ImageToolsBitmap.cpp"/>
+    <ClCompile Include="ImageToolsBitmap_Blue.cpp"/>
+    <ClCompile Include="MemoryOutputHandler.cpp"/>
+    <ClCompile Include="MemoryStream.cpp"/>
+    <ClCompile Include="StdAfx.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup/>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets"/>
+  <ImportGroup Label="ExtensionTargets"/>
+</Project>

@@ -1,0 +1,19 @@
+////////////////////////////////////////////////////////////
+//
+//    Creator:   Filipp Pavlov
+//    Created:   March 2014
+//    Copyright: CCP 2014
+//
+
+#define NOMINMAX
+
+#include "BlueExposure/include/BlueExposure.h"
+#include "nvtt/nvtt.h"
+
+#include "TrinityAL/include/Tr2PixelFormat.h"
+#include "TrinityAL/include/Tr2TextureType.h"
+#include "TrinityAL/include/Tr2BitmapDimensions.h"
+#include "TrinityAL/include/Tr2CubemapFace.h"
+
+#include "ImageIO/HostBitmap.h"
+#include "ImageIO/Tr2ImageHandler.h"

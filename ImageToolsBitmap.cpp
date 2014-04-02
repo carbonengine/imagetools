@@ -1,0 +1,351 @@
+////////////////////////////////////////////////////////////
+//
+//    Creator:   Filipp Pavlov
+//    Created:   March 2014
+//    Copyright: CCP 2014
+//
+
+#include "StdAfx.h"
+#include "ImageToolsBitmap.h"
+#include "FileStream.h"
+#include "CompressionOptions.h"
+#include "MemoryOutputHandler.h"
+#include "MemoryStream.h"
+#include "AllowThreads.h"
+
+using namespace Tr2RenderContextEnum;
+
+#define CBR_RETURN_BR( x ) { auto ret = x; if( !Be::IsSuccess( ret ) ) { return ret; } }
+
+ImageToolsBitmap::ImageToolsBitmap( IRoot* lockobj )
+{
+}
+
+Be::Result<std::string> ImageToolsBitmap::Load( const wchar_t* filename )
+{
+	AllowThreads allowThreads;
+
+	FileStream stream( filename, FileStream::READ );
+	if( !stream.IsValid() )
+	{
+		return "failed to open file";
+	}
+	auto imageHandler = CreateImageHandler( filename );
+	if( !imageHandler )
+	{
+		return "unsupported image format";
+	}
+	if( !imageHandler->ReadHeader( &stream ) )
+	{
+		return "could not parse image header";
+	}
+	if( !imageHandler->ReadImage( &stream ) )
+	{
+		return "error while loading the image";
+	}
+	return CreateFromImageHandler( imageHandler ) ? "" : "error creating bitmap";
+}
+
+Be::Result<std::string> ImageToolsBitmap::Save( const wchar_t* filename )
+{
+	AllowThreads allowThreads;
+
+	if( !IsValid() )
+	{
+		return "cannot save invalid bitmap";
+	}
+
+	std::unique_ptr<Tr2ImageHandler> imageHandler( CreateImageHandler( filename ) );
+
+	if( !imageHandler )
+	{
+		return "unsupported extension for saving";
+	}
+
+	FileStream stream( filename, FileStream::WRITE );
+	if( !stream.IsValid() )
+	{
+		return "could not open file for saving";
+	}
+
+	if( !imageHandler->Save( *this, &stream ) )
+	{
+		return "error saving bitmap";
+	}
+
+	return std::string();
+}
+
+Be::Result<std::string> ImageToolsBitmap::CheckedDownsample2x2()
+{
+	AllowThreads allowThreads;
+
+	if( !Downsample2x2() )
+	{
+		return "error while downsampling the bitmap";
+	}
+	return std::string();
+}
+
+Be::Result<std::string> ImageToolsBitmap::CheckedCrop( unsigned left, unsigned top, unsigned right, unsigned bottom )
+{
+	if( !Crop( left, top, right, bottom ) )
+	{
+		return "error while cropping the bitmap";
+	}
+	return std::string();
+}
+
+Be::Result<std::string> ImageToolsBitmap::CheckedGenerateMipMaps()
+{
+	AllowThreads allowThreads;
+
+	if( !GenerateMipMaps() )
+	{
+		return "error while generating mip levels";
+	}
+	return std::string();
+}
+
+Be::Result<std::string> ImageToolsBitmap::CheckedConvertFormat( Tr2RenderContextEnum::PixelFormat format )
+{
+	AllowThreads allowThreads;
+
+	if( IsCompressed() && ( format == PIXEL_FORMAT_B8G8R8A8_UNORM || format == PIXEL_FORMAT_B8G8R8X8_UNORM ) )
+	{
+		return Decompress( format );
+	}
+	if( !ConvertFormat( format ) )
+	{
+		return "error converting pixel format";
+	}
+	return std::string();
+}
+
+Be::Result<std::string> ImageToolsBitmap::Decompress( Tr2RenderContextEnum::PixelFormat format )
+{
+	if( !IsCompressed() || GetType() != TEX_TYPE_2D )
+	{
+		return "cannot decompress an uncompressed image";
+	}
+	nvtt::Surface surface;
+	nvtt::Format nvttFormat;
+	size_t channels = 4;
+	switch( m_format )
+	{
+	case PIXEL_FORMAT_BC1_TYPELESS:
+	case PIXEL_FORMAT_BC1_UNORM:
+	case PIXEL_FORMAT_BC1_UNORM_SRGB:
+		nvttFormat = nvtt::Format_BC1;
+		break;
+	case PIXEL_FORMAT_BC2_TYPELESS:
+	case PIXEL_FORMAT_BC2_UNORM:
+	case PIXEL_FORMAT_BC2_UNORM_SRGB:
+		nvttFormat = nvtt::Format_BC2;
+		break;
+	case PIXEL_FORMAT_BC3_TYPELESS:
+	case PIXEL_FORMAT_BC3_UNORM:
+	case PIXEL_FORMAT_BC3_UNORM_SRGB:
+		nvttFormat = nvtt::Format_BC3;
+		break;
+	case PIXEL_FORMAT_BC4_TYPELESS:
+	case PIXEL_FORMAT_BC4_UNORM:
+	case PIXEL_FORMAT_BC4_SNORM:
+		nvttFormat = nvtt::Format_BC4;
+		channels = 1;
+		break;
+	case PIXEL_FORMAT_BC5_TYPELESS:
+	case PIXEL_FORMAT_BC5_UNORM:
+	case PIXEL_FORMAT_BC5_SNORM:
+		nvttFormat = nvtt::Format_BC5;
+		channels = 2;
+		break;
+	case PIXEL_FORMAT_BC6H_TYPELESS:
+	case PIXEL_FORMAT_BC6H_UF16:
+	case PIXEL_FORMAT_BC6H_SF16:
+		nvttFormat = nvtt::Format_BC6;
+		break;
+	case PIXEL_FORMAT_BC7_TYPELESS:
+	case PIXEL_FORMAT_BC7_UNORM:
+	case PIXEL_FORMAT_BC7_UNORM_SRGB:
+		nvttFormat = nvtt::Format_BC7;
+		break;
+	}
+	const size_t bpp = 4;
+	const size_t pixelCount = GetRawDataSize() * 16 / GetBlockByteSize( m_format );
+	const size_t newSize = pixelCount * bpp;
+	CcpMallocBuffer data( "HostBitmap::m_data", newSize );
+	size_t mipStart = 0;
+
+	for( uint32_t mip = 0; mip < GetTrueMipCount(); ++mip )
+	{
+		if( !surface.setImage2D( nvttFormat, nvtt::Decoder_D3D10, GetMipWidth( mip ), GetMipHeight( mip ), GetMipRawData( mip ) ) )
+		{
+			Destroy();
+			return "could not decompress image";
+		}
+	
+		const size_t mipSize = GetMipWidth( mip ) * GetMipHeight( mip );
+		for( size_t channel = 0; channel < 4; ++channel )
+		{
+			const float* src = surface.channel( channel );
+			uint8_t* dest = reinterpret_cast<uint8_t*>( data.get() ) + mipStart + channel;
+			for( size_t i = 0; i < mipSize; ++i )
+			{
+				*dest = uint8_t( std::max( std::min( int( *src++ / 255.f + 0.5f ), 255 ), 0 ) );
+				dest += bpp;
+			}
+		}
+		mipStart += mipSize * bpp;
+	}
+	m_data.swap( data );
+	m_format = format;
+	return "";
+}
+
+Be::Result<std::string> ImageToolsBitmap::Copy( ImageToolsBitmapPtr& result ) const
+{
+	result.CreateInstance();
+	if( !result )
+	{
+		return "out of memory";
+	}
+	static_cast<Tr2BitmapDimensions&>( *result ) = *this;
+	result->m_name = m_name;
+	result->m_data.resize( "HostBitmap::m_data", m_data.size() );
+	if( !result->m_data.get() )
+	{
+		result = nullptr;
+		return "out of memory";
+	}
+	memcpy( result->m_data.get(), m_data.get(), m_data.size() );
+	return "";
+}
+
+Be::Result<std::string> ImageToolsBitmap::CreateNvttInputOptions( 
+	CompressionOptions* compressionOptions, 
+	nvtt::InputOptions& inputOptions )
+{
+	switch( GetType() )
+	{
+	case TEX_TYPE_1D:
+	case TEX_TYPE_2D:
+		inputOptions.setTextureLayout( nvtt::TextureType_2D, GetWidth(), GetHeight() );
+		break;
+	case TEX_TYPE_CUBE:
+		inputOptions.setTextureLayout( nvtt::TextureType_Cube, GetWidth(), GetHeight() );
+		break;
+	case TEX_TYPE_3D:
+		inputOptions.setTextureLayout( nvtt::TextureType_3D, GetWidth(), GetHeight(), GetDepth() );
+		break;
+	default:
+		return "unexpected bitmap type";
+	}
+	switch( GetFormat() )
+	{
+	case PIXEL_FORMAT_R32G32B32A32_FLOAT:
+		inputOptions.setFormat( nvtt::InputFormat_RGBA_32F );
+		break;
+	case PIXEL_FORMAT_R32G32B32_FLOAT:
+		inputOptions.setFormat( nvtt::InputFormat_RGBA_32F );
+		break;
+	case PIXEL_FORMAT_R16G16B16A16_FLOAT:
+		inputOptions.setFormat( nvtt::InputFormat_RGBA_16F );
+		break;
+	case PIXEL_FORMAT_B8G8R8A8_UNORM:
+		inputOptions.setFormat( nvtt::InputFormat_BGRA_8UB );
+		break;
+	case PIXEL_FORMAT_B8G8R8X8_UNORM:
+		inputOptions.setFormat( nvtt::InputFormat_BGRA_8UB );
+		break;
+	default:
+		return "unsupported input pixel format";
+	}
+	inputOptions.setAlphaMode( nvtt::AlphaMode_None );
+	if( compressionOptions && compressionOptions->GetGenerateMipsMaps() )
+	{
+		inputOptions.setMipmapGeneration( true );
+	}
+	else
+	{
+		if( GetMipCount() == 1 )
+		{
+			inputOptions.setMipmapGeneration( false );
+		}
+		else
+		{
+			inputOptions.setMipmapGeneration( true, GetTrueMipCount() );
+		}
+	}
+	int faceCount = GetType() == TEX_TYPE_CUBE ? 6 : 1;
+	uint32_t mipCount = compressionOptions && compressionOptions->GetGenerateMipsMaps() ? 1 : GetTrueMipCount();
+	for( int face = 0; face < faceCount; ++face )
+	{
+		for( uint32_t i = 0; i < mipCount; ++i )
+		{
+			inputOptions.setMipmapData( GetMipRawData( i, CubemapFace( face ) ), GetMipWidth( i ), GetMipHeight( i ), GetMipDepth( i ), face, i );
+		}
+	}
+	return std::string();
+}
+
+Be::Result<std::string> ImageToolsBitmap::CompressWithOptions( CompressionOptions* options, const nvtt::OutputOptions& output )
+{
+	if( !IsValid() )
+	{
+		return "cannot compress invalid bitmap";
+	}
+
+	nvtt::InputOptions input;
+	CBR_RETURN_BR( CreateNvttInputOptions( options, input ) );
+
+	nvtt::CompressionOptions compression;
+	if( options )
+	{
+		options->FillNvttOptions( compression );
+	}
+
+	nvtt::Compressor compressor;
+	if( !compressor.process( input, compression, output ) )
+	{
+		return "error during image compression";
+	}
+	return std::string();
+}
+
+Be::Result<std::string> ImageToolsBitmap::Compress( CompressionOptions* options, ImageToolsBitmapPtr& result )
+{
+	AllowThreads allowThreads;
+
+	MemoryOutputHandler outputHandler;
+
+	nvtt::OutputOptions output;
+	output.setOutputHandler( &outputHandler );
+
+	CBR_RETURN_BR( CompressWithOptions( options, output ) );
+
+	MemoryStream memStream( outputHandler.GetData(), outputHandler.GetSize() );
+	auto handler = CreateImageHandler( L"out.dds" );
+	if( !handler->ReadHeader( &memStream ) || !handler->ReadImage( &memStream ) )
+	{
+		return "could not read compressed image";
+	}
+
+	result.CreateInstance();
+	if( !result->CreateFromImageHandler( handler ) )
+	{
+		result = nullptr;
+		return "error creating result bitmap";
+	}
+	return "";
+}
+
+Be::Result<std::string> ImageToolsBitmap::CompressToFile( const wchar_t* filename, CompressionOptions* options )
+{
+	AllowThreads allowThreads;
+
+	nvtt::OutputOptions output;
+	output.setFileName( CW2A( filename ) );
+
+	return CompressWithOptions( options, output );
+}
