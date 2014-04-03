@@ -2,7 +2,7 @@ __author__ = 'filipp'
 
 import unittest
 import imageutils
-from imageutils.test import load_test_image, get_test_image_paths
+from imageutils.test import load_image, get_image_paths
 import itertools
 import os
 
@@ -22,8 +22,8 @@ class TestCompression(unittest.TestCase):
         return out
 
     def _check_compression_for_directory(self, compression_options):
-        for name in itertools.ifilterfalse(is_compressed_image, get_test_image_paths()):
-            bmp = load_test_image(name)
+        for name in itertools.ifilterfalse(is_compressed_image, get_image_paths()):
+            bmp = load_image(name)
             if bmp.format == imageutils.PIXEL_FORMAT.R8_UNORM:
                 bmp.convert_format(imageutils.PIXEL_FORMAT.B8G8R8A8_UNORM)
             self._check_compression(bmp, compression_options)

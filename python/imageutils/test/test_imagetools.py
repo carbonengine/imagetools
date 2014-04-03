@@ -2,7 +2,7 @@ __author__ = 'filipp'
 
 import unittest
 import imageutils
-from imageutils.test import load_test_image, get_test_image_paths
+from imageutils.test import load_image, get_image_paths, get_image_path
 
 
 class TestImageTools(unittest.TestCase):
@@ -43,11 +43,11 @@ class TestImageTools(unittest.TestCase):
             imageutils.load(__file__)
 
     def test_can_load_images(self):
-        for filename in get_test_image_paths():
-            load_test_image(filename)
+        for filename in get_image_paths():
+            load_image(filename)
 
     def test_can_get_image_data_as_string(self):
-        bmp = load_test_image('uncompressed/bgr8.png')
+        bmp = load_image('uncompressed/bgr8.png')
         self.assertEquals(len(bmp.get_pixel_data()), bmp.width * bmp.height * 4)
 
     def test_can_create_image_from_string(self):
@@ -61,3 +61,7 @@ class TestImageTools(unittest.TestCase):
         self.assertEquals(bmp.mip_count, 1)
         self.assertEquals(bmp.format, imageutils.PIXEL_FORMAT.B8G8R8A8_UNORM)
         self.assertEquals(bmp.get_pixel_data(), pixel_data)
+
+    def test_get_dds_size(self):
+        path = get_image_path('uncompressed/bgra8_npot.dds')
+        self.assertEquals(imageutils.get_dds_size(path), (24, 32))

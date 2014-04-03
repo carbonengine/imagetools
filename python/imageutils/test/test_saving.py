@@ -2,7 +2,7 @@ __author__ = 'filipp'
 
 import unittest
 import imageutils
-from imageutils.test import load_test_image, get_test_image_paths
+from imageutils.test import load_image, get_image_paths
 import tempfile
 import os
 import shutil
@@ -37,16 +37,16 @@ class TestSaving(unittest.TestCase):
         return out_name
 
     def test_can_save_image_to_dds(self):
-        for filename in get_test_image_paths():
-            bmp = load_test_image(filename)
+        for filename in get_image_paths():
+            bmp = load_image(filename)
             rel_name = _get_relative_path(filename)
             out_name = self._save_temp_image_with_extension(bmp, rel_name, '.dds')
             out = imageutils.load(out_name)
             self._check_same_images(bmp, out)
 
     def test_can_save_image_to_png(self):
-        for filename in get_test_image_paths('uncompressed'):
-            bmp = load_test_image(filename)
+        for filename in get_image_paths('uncompressed'):
+            bmp = load_image(filename)
             rel_name = _get_relative_path(filename)
             out_name = self._save_temp_image_with_extension(bmp, rel_name, '.png')
             out = imageutils.load(out_name)
