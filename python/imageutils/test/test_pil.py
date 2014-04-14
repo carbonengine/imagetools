@@ -55,8 +55,6 @@ class TestPilInterface(unittest.TestCase):
             bmp1 = load_image(filename)
             bmp2 = imageutils.from_pil(imageutils.to_pil(bmp1))
             self._decompress(bmp1)
-            bmp1.save(r'c:\temp\bmp1.dds')
-            bmp2.save(r'c:\temp\bmp2.dds')
             self.assertEquals(bmp1.format, bmp2.format)
             self.assertEquals(bmp1.width, bmp2.width)
             self.assertEquals(bmp1.height, bmp2.height)
