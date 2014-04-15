@@ -27,17 +27,20 @@ public:
 	Be::Result<std::string> SetFormat( Tr2RenderContextEnum::PixelFormat );
 
 	void FillNvttOptions( nvtt::CompressionOptions& options );
+	bool UseCuda() const;
 
 	bool GetGenerateMipsMaps() const;
 private:
 	Tr2RenderContextEnum::PixelFormat m_format;
-	bool m_alphaForBc1;
 	nvtt::Quality m_quality;
+	bool m_alphaForBc1;
 	bool m_generateMips;
+	bool m_useCuda;
 	float m_redWeight;
 	float m_greenWeight;
 	float m_blueWeight;
 	float m_alphaWeight;
+
 };
 
 TYPEDEF_BLUECLASS( CompressionOptions );

@@ -300,12 +300,13 @@ Be::Result<std::string> ImageToolsBitmap::CompressWithOptions( CompressionOption
 	CBR_RETURN_BR( CreateNvttInputOptions( options, input ) );
 
 	nvtt::CompressionOptions compression;
+	nvtt::Compressor compressor;
 	if( options )
 	{
 		options->FillNvttOptions( compression );
+		compressor.enableCudaAcceleration( options->UseCuda() );
 	}
 
-	nvtt::Compressor compressor;
 	if( !compressor.process( input, compression, output ) )
 	{
 		return "error during image compression";

@@ -24,6 +24,7 @@ const Be::ClassInfo* ::CompressionOptions::ExposeToBlue()
 		MAP_ATTRIBUTE( "green_channel_weight", m_greenWeight, "importance weight for green channel", Be::READWRITE );
 		MAP_ATTRIBUTE( "blue_channel_weight", m_blueWeight, "importance weight for blue channel", Be::READWRITE );
 		MAP_ATTRIBUTE( "alpha_channel_weight", m_alphaWeight, "importance weight for alpha channel", Be::READWRITE );
+		MAP_ATTRIBUTE( "use_cuda", m_useCuda, "usage CUDA compression on GPU if available", Be::READWRITE );
 
 		MAP_METHOD_AND_WRAP_OPTIONAL_ARGS( 
 			"__init__", 

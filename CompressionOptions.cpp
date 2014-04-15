@@ -12,9 +12,10 @@ using namespace Tr2RenderContextEnum;
 
 CompressionOptions::CompressionOptions( IRoot* lockobj )
 	:m_format( PIXEL_FORMAT_BC1_UNORM ),
-	m_alphaForBc1( false ),
 	m_quality( nvtt::Quality_Production ),
+	m_alphaForBc1( false ),
 	m_generateMips( false ),
+	m_useCuda( true ),
 	m_redWeight( 1.0f ),
 	m_greenWeight( 1.0f ),
 	m_blueWeight( 1.0f ),
@@ -96,6 +97,11 @@ void CompressionOptions::FillNvttOptions( nvtt::CompressionOptions& options )
 	}
 	options.setQuality( m_quality );
 	options.setColorWeights( m_redWeight, m_greenWeight, m_blueWeight, m_alphaWeight );
+}
+
+bool CompressionOptions::UseCuda() const
+{
+	return m_useCuda;
 }
 
 bool CompressionOptions::GetGenerateMipsMaps() const
