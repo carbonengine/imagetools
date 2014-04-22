@@ -77,7 +77,7 @@ ptrdiff_t FileStream::Seek( ptrdiff_t distance, SeekOrigin method )
 		default:
 			return -1;
 		}
-		if( fseek( m_file, distance, origin ) )
+		if( fseek( m_file, long( distance ), origin ) )
 		{
 			return -1;
 		}

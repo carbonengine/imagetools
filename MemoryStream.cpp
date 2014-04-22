@@ -37,13 +37,13 @@ ptrdiff_t MemoryStream::Seek( ptrdiff_t distance, SeekOrigin method )
 	switch( method )
 	{
 	case SO_BEGIN:
-		m_position = size_t( std::min( ptrdiff_t( m_size ), std::max( distance, 0 ) ) );
+		m_position = size_t( std::min( ptrdiff_t( m_size ), std::max( distance, ptrdiff_t( 0 ) ) ) );
 		break;
 	case SO_CURRENT:
-		m_position = std::min( size_t( std::max( ptrdiff_t( m_position ) + distance, 0 ) ), m_size );
+		m_position = std::min( size_t( std::max( ptrdiff_t( m_position ) + distance, ptrdiff_t( 0 ) ) ), m_size );
 		break;
 	case SO_END:
-		m_position = m_size - std::min( size_t( std::max( distance, 0 ) ), m_size );
+		m_position = m_size - std::min( size_t( std::max( distance, ptrdiff_t( 0 ) ) ), m_size );
 		break;
 	default:
 		return -1;

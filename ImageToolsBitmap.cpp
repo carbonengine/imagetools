@@ -188,7 +188,7 @@ Be::Result<std::string> ImageToolsBitmap::Decompress( Tr2RenderContextEnum::Pixe
 		const size_t mipSize = GetMipWidth( mip ) * GetMipHeight( mip );
 		for( size_t channel = 0; channel < 4; ++channel )
 		{
-			const float* src = surface.channel( channel );
+			const float* src = surface.channel( int( channel ) );
 			uint8_t* dest = reinterpret_cast<uint8_t*>( data.get() ) + mipStart + channel;
 			for( size_t i = 0; i < mipSize; ++i )
 			{
