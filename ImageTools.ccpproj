@@ -1,7 +1,6 @@
 # These are the SDKs that are used by all configurations
 Imports:
 - ../core_project.yaml
-- ../../../../../../sdk/python/Python_2.7.yaml
 - ../../../../../../sdk/nvidia/nvtt/r1380/nvtt_r1380.yaml
 - ../BlueExposure/uses_BlueExposureStatic.yaml
 - ../ImageIO/uses_ImageIO.yaml
@@ -10,8 +9,6 @@ Imports:
 General:
   ConfigurationType: DynamicLibrary
   UseOfMfc: false
-  IntDir: ../temp/ImageTools/python_27/$(Platform)/$(Configuration)/$(PlatformToolset)/
-  OutDir: ../../autobuild/ImageTools/python_27/$(Platform)/$(PlatformToolset)/
 
 ClCompile:
   WarningLevel: Level3
@@ -39,9 +36,32 @@ BaseConfigurations:
       TargetExt: .pyd
     ClCompile:
       Optimization: MaxSpeed
+  
+  ExeFile:
+    Imports:
+    - ../stackless/stackless.yaml
+    General: 
+      OutDir: ../../autobuild/ImageTools/exefile/$(Platform)/$(PlatformToolset)/
+      IntDir: ../temp/ImageTools/exefile/$(Platform)/$(Configuration)/$(PlatformToolset)/
+      TargetExt: .dll
+  
+  Python27:
+    Imports:
+    - ../../../../../../sdk/python/Python_2.7.yaml
+    General:
+      OutDir: ../../autobuild/ImageTools/python_27/$(Platform)/$(PlatformToolset)/
+      IntDir: ../temp/ImageTools/python_27/$(Platform)/$(Configuration)/$(PlatformToolset)/
+      TargetExt: .pyd
 
 Configurations:
+  Release|Win32,x64:
+    BaseConfigurations:
+    - Release
+    - ExeFile
+    - Windows
+    
   Release_27|Win32,x64:
     BaseConfigurations:
     - Release
+    - Python27
     - Windows
