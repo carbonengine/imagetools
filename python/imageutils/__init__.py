@@ -126,6 +126,8 @@ def convert_image_to_temp_file(path_or_pil, extension):
     """
     img = load_image_from_path_or_pil(path_or_pil)
     tmp_path = osutils.MkTemp(suffix=extension)
+    if extension.lower() != '.dds' and img.is_compressed():
+        img.convert_format(PIXEL_FORMAT.B8G8R8A8_UNORM)
     img.save(tmp_path)
     return tmp_path
 
