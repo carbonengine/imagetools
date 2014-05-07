@@ -191,6 +191,7 @@
     <ClCompile Include="CompressionOptions_Blue.cpp"/>
     <ClCompile Include="EnumRegistry_Blue.cpp"/>
     <ClCompile Include="FileStream.cpp"/>
+    <ClCompile Include="GenerateRoughness_Blue.cpp"/>
     <ClCompile Include="ImageTools.cpp"/>
     <ClCompile Include="ImageToolsBitmap.cpp"/>
     <ClCompile Include="ImageToolsBitmap_Blue.cpp"/>

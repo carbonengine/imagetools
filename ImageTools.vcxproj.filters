@@ -40,6 +40,9 @@
     <ClCompile Include="FileStream.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GenerateRoughness_Blue.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="ImageTools.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

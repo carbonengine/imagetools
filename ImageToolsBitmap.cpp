@@ -30,20 +30,13 @@ Be::Result<std::string> ImageToolsBitmap::Load( const wchar_t* filename )
 	{
 		return "failed to open file";
 	}
-	auto imageHandler = CreateImageHandler( filename );
-	if( !imageHandler )
+
+	auto result = ImageIO::ReadImage( stream, ImageIO::LoadParameters( filename ), *this );
+	if( !result )
 	{
-		return "unsupported image format";
+		return "error while loading the image: " + result.GetErrorMessage();
 	}
-	if( !imageHandler->ReadHeader( &stream ) )
-	{
-		return "could not parse image header";
-	}
-	if( !imageHandler->ReadImage( &stream ) )
-	{
-		return "error while loading the image";
-	}
-	return CreateFromImageHandler( imageHandler ) ? "" : "error creating bitmap";
+	return "";
 }
 
 Be::Result<std::string> ImageToolsBitmap::Save( const wchar_t* filename )
@@ -55,22 +48,16 @@ Be::Result<std::string> ImageToolsBitmap::Save( const wchar_t* filename )
 		return "cannot save invalid bitmap";
 	}
 
-	std::unique_ptr<Tr2ImageHandler> imageHandler( CreateImageHandler( filename ) );
-
-	if( !imageHandler )
-	{
-		return "unsupported extension for saving";
-	}
-
 	FileStream stream( filename, FileStream::WRITE );
 	if( !stream.IsValid() )
 	{
 		return "could not open file for saving";
 	}
 
-	if( !imageHandler->Save( *this, &stream ) )
+	auto result = ImageIO::SaveImage( filename, *this, stream );
+	if( !result )
 	{
-		return "error saving bitmap";
+		return "error saving bitmap: " + result.GetErrorMessage();
 	}
 
 	return std::string();
@@ -326,17 +313,12 @@ Be::Result<std::string> ImageToolsBitmap::Compress( CompressionOptions* options,
 	CBR_RETURN_BR( CompressWithOptions( options, output ) );
 
 	MemoryStream memStream( outputHandler.GetData(), outputHandler.GetSize() );
-	auto handler = CreateImageHandler( L"out.dds" );
-	if( !handler->ReadHeader( &memStream ) || !handler->ReadImage( &memStream ) )
-	{
-		return "could not read compressed image";
-	}
 
 	result.CreateInstance();
-	if( !result->CreateFromImageHandler( handler ) )
+	auto res = ImageIO::ReadImage( memStream, ImageIO::LoadParameters( L"out.dds" ), *result );
+	if( !res )
 	{
-		result = nullptr;
-		return "error creating result bitmap";
+		return "could not read compressed image: " + res.GetErrorMessage();
 	}
 	return "";
 }
