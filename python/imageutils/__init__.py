@@ -1,10 +1,16 @@
-from PIL import Image as PILImage
-import struct
+__author__ = 'filipp'
 
-import osutils
+import binbootstrapper
+app_root = binbootstrapper.get_approot()
+if app_root is None:
+    app_root = __file__
+binbootstrapper.update_binaries(app_root, binbootstrapper.DLL_IMAGETOOLS)
+del app_root
 
-# noinspection PyUnresolvedReferences
 from _imagetools import *
+from PIL import Image as PILImage
+import osutils
+import struct
 
 
 def from_pil(pil_image):
