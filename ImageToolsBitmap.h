@@ -32,6 +32,8 @@ private:
 
 	Be::Result<std::string> Decompress( Tr2RenderContextEnum::PixelFormat format );
 	Be::Result<std::string> Copy( ImageToolsBitmapPtr& result ) const;
+	Be::Result<std::string> ExtractMipLevel( uint32_t mipLevel, ImageToolsBitmapPtr& result ) const;
+	Be::Result<std::string> SetMipData( uint32_t mipLevel, ImageToolsBitmap* result, uint32_t sourceMip );
 };
 
 TYPEDEF_BLUECLASS( ImageToolsBitmap );

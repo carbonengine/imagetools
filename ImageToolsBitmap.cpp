@@ -209,6 +209,86 @@ Be::Result<std::string> ImageToolsBitmap::Copy( ImageToolsBitmapPtr& result ) co
 	return "";
 }
 
+Be::Result<std::string> ImageToolsBitmap::ExtractMipLevel( uint32_t mipLevel, ImageToolsBitmapPtr& result ) const
+{
+	if( !IsValid() )
+	{
+		return "source bitmap is invalid";
+	}
+	if( mipLevel >= GetTrueMipCount() )
+	{
+		return "invalid mip level";
+	}
+	result.CreateInstance();
+	if( !result )
+	{
+		return "out of memory";
+	}
+	bool createResult = false;
+	uint32_t faceCount = 1;
+	switch( GetType() )
+	{
+	case TEX_TYPE_CUBE:
+		createResult = result->CreateCube( GetMipWidth( mipLevel ), 1, GetFormat() );
+		faceCount = 6;
+		break;
+	case TEX_TYPE_3D:
+		createResult = result->CreateVolume( GetMipWidth( mipLevel ), GetMipHeight( mipLevel ), GetMipDepth( mipLevel ), 1, GetFormat() );
+		break;
+	default:
+		createResult = result->Create( GetMipWidth( mipLevel ), GetMipHeight( mipLevel ), 1, GetFormat() );
+	}
+	if( !createResult )
+	{
+		return "failed to create result bitmap";
+	}
+	for( uint32_t face = 0; face < faceCount; ++face )
+	{
+		memcpy( result->GetMipRawData( 0, CubemapFace( face ) ), GetMipRawData( mipLevel, CubemapFace( face ) ), result->GetMipSize( 0 ) );
+	}
+	return "";
+}
+
+Be::Result<std::string> ImageToolsBitmap::SetMipData( uint32_t mipLevel, ImageToolsBitmap* result, uint32_t sourceMip )
+{
+	if( !IsValid() )
+	{
+		return "invalid bitmap";
+	}
+	if( !result || !result->IsValid() )
+	{
+		return "invalid source bitmap";
+	}
+	if( mipLevel >= GetTrueMipCount() )
+	{
+		return "invalid mip level";
+	}
+	if( sourceMip >= result->GetTrueMipCount() )
+	{
+		return "invalid source mip level";
+	}
+	if( GetType() != result->GetType() || GetFormat() != result->GetFormat() )
+	{
+		return "incompatible bitmaps";
+	}
+	if( GetMipWidth( mipLevel ) != result->GetMipWidth( sourceMip ) ||
+		GetMipHeight( mipLevel ) != result->GetMipHeight( sourceMip ) ||
+		GetMipDepth( mipLevel ) != result->GetMipDepth( sourceMip ) )
+	{
+		return "mip sizes do not match";
+	}
+	uint32_t faces = 1;
+	if( GetType() == TEX_TYPE_CUBE )
+	{
+		faces = 6;
+	}
+	for( uint32_t face = 0; face < faces; ++face )
+	{
+		memcpy( GetMipRawData( mipLevel, CubemapFace( face ) ), result->GetMipRawData( sourceMip, CubemapFace( face ) ), GetMipSize( mipLevel ) );
+	}
+	return "";
+}
+
 Be::Result<std::string> ImageToolsBitmap::CreateNvttInputOptions( 
 	CompressionOptions* compressionOptions, 
 	nvtt::InputOptions& inputOptions )

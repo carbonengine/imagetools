@@ -34,6 +34,24 @@ const Be::ClassInfo* ImageToolsBitmap::ExposeToBlue()
 		MAP_PROPERTY_READONLY( "format", GetFormat, "bitmap pixel format (member of imagetools.PIXEL_FORMAT)" );
 
 		MAP_METHOD_AND_WRAP( 
+			"get_mip_width", 
+			GetMipWidth,
+			"Returns mip level width\n"
+			"Arguments:\n"
+			"mip_index - mip level index" );
+		MAP_METHOD_AND_WRAP( 
+			"get_mip_height", 
+			GetMipHeight,
+			"Returns mip level height\n"
+			"Arguments:\n"
+			"mip_index - mip level index" );
+		MAP_METHOD_AND_WRAP( 
+			"get_mip_depth", 
+			GetMipDepth,
+			"Returns mip level depth for volume bitmaps\n"
+			"Arguments:\n"
+			"mip_index - mip level index" );
+		MAP_METHOD_AND_WRAP( 
 			"save", 
 			Save, 
 			"Saves bitmap into a file\n"
@@ -77,6 +95,21 @@ const Be::ClassInfo* ImageToolsBitmap::ExposeToBlue()
 			"copy", 
 			Copy, 
 			"Returns a copy if this image." );
+		MAP_METHOD_AND_WRAP( 
+			"extract_mip_level", 
+			ExtractMipLevel, 
+			"Returns a copy if this image mip level as a separate image.\n"
+			"Arguments:\n"
+			"mip_level - mip level index" );
+		MAP_METHOD_AND_WRAP_OPTIONAL_ARGS( 
+			"set_mip_level_data", 
+			SetMipData, 
+			1,
+			"Copies mip pixels from source image to this image.\n"
+			"Arguments:\n"
+			"mip_level - destination mip level index\n"
+			"source - source image\n"
+			"source_mip - (optional) source image mip level, defaults to 0" );
 		MAP_METHOD_AND_WRAP_OPTIONAL_ARGS( 
 			"compress_to_file", 
 			CompressToFile, 
