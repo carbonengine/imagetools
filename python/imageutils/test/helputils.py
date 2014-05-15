@@ -1,6 +1,7 @@
-__author__ = 'filipp'
 import os
+
 import imageutils
+
 
 RESOURCE_DIR = os.path.join(os.path.dirname(__file__), 'res')
 

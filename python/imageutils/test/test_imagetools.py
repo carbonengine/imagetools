@@ -1,8 +1,15 @@
-__author__ = 'filipp'
-
+import os
 import unittest
+
+import binbootstrapper
+binbootstrapper.update_binaries(__file__, binbootstrapper.DLL_IMAGETOOLS)
+
 import imageutils
-from imageutils.test import load_image, get_image_paths, get_image_path
+
+import helputils
+
+
+RESOURCE_DIR = os.path.join(os.path.dirname(__file__), 'res')
 
 
 class TestImageTools(unittest.TestCase):
@@ -43,18 +50,17 @@ class TestImageTools(unittest.TestCase):
             imageutils.load(__file__)
 
     def test_can_load_images(self):
-        for filename in get_image_paths():
-            load_image(filename)
+        for filename in helputils.get_image_paths():
+            helputils.load_image(filename)
 
     def test_can_get_image_data_as_string(self):
-        bmp = load_image('uncompressed/bgr8.png')
+        bmp = helputils.load_image('uncompressed/bgr8.png')
         self.assertEquals(len(bmp.get_pixel_data()), bmp.width * bmp.height * 4)
 
     def test_can_create_image_from_string(self):
         pixel_data = '\xab\x12\x13\x15\xcd\x22\x23\x25'
-        bmp = imageutils.create_2d_from_string(1, 2, 1,
-                                               imageutils.PIXEL_FORMAT.B8G8R8A8_UNORM,
-                                               pixel_data)
+        bmp = imageutils.create_2d_from_string(
+            1, 2, 1, imageutils.PIXEL_FORMAT.B8G8R8A8_UNORM, pixel_data)
         self.assertEquals(bmp.type, imageutils.BITMAP_TYPE.BITMAP_2D)
         self.assertEquals(bmp.width, 1)
         self.assertEquals(bmp.height, 2)
@@ -63,5 +69,5 @@ class TestImageTools(unittest.TestCase):
         self.assertEquals(bmp.get_pixel_data(), pixel_data)
 
     def test_get_dds_size(self):
-        path = get_image_path('uncompressed/bgra8_npot.dds')
+        path = helputils.get_image_path('uncompressed/bgra8_npot.dds')
         self.assertEquals(imageutils.get_dds_size(path), (24, 32))

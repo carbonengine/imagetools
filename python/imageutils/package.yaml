@@ -1,2 +1,5 @@
 ownermails:
   - filipp@ccpgames.com
+testing:
+  binaries:
+    - DLL_IMAGETOOLS
