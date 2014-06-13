@@ -1,4 +1,5 @@
 import os
+from PIL import Image
 import unittest
 
 import binbootstrapper
@@ -71,3 +72,16 @@ class TestImageTools(unittest.TestCase):
     def test_get_dds_size(self):
         path = helputils.get_image_path('uncompressed/bgra8_npot.dds')
         self.assertEquals(imageutils.get_dds_size(path), (24, 32))
+
+
+class TestConvertImageToTempFile(unittest.TestCase):
+    def testImageConvertsToKnownValues(self):
+        fp = imageutils.convert_image_to_temp_file(
+            helputils.get_image_path('compressed/bc1.dds'), '.tga')
+        img = Image.open(fp)
+        result = img.convert('L').getextrema()
+        ideal = 123, 125
+        self.assertEqual(
+            result, ideal,
+            "Converted image does not match known good pixel extremes. "
+            "Got %s, expected %s" % (result, ideal))
