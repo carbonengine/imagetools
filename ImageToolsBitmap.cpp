@@ -179,7 +179,7 @@ Be::Result<std::string> ImageToolsBitmap::Decompress( Tr2RenderContextEnum::Pixe
 			uint8_t* dest = reinterpret_cast<uint8_t*>( data.get() ) + mipStart + channel;
 			for( size_t i = 0; i < mipSize; ++i )
 			{
-				*dest = uint8_t( std::max( std::min( int( *src++ / 255.f + 0.5f ), 255 ), 0 ) );
+				*dest = uint8_t( std::max( std::min( int( *src++ * 255.f + 0.5f ), 255 ), 0 ) );
 				dest += bpp;
 			}
 		}
