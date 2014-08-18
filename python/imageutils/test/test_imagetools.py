@@ -43,11 +43,11 @@ class TestImageTools(unittest.TestCase):
         self.assertEquals(bmp.format, imageutils.PIXEL_FORMAT.A8_UNORM)
 
     def test_loading_nonexistent_file_raises(self):
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(IOError):
             imageutils.load('iDontExist.png')
 
     def test_loading_unsupported_image_type_raises(self):
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(imageutils.UnrecognizedImageTypeError):
             imageutils.load(__file__)
 
     def test_can_load_images(self):

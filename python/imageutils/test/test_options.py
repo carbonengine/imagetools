@@ -41,9 +41,9 @@ class TestCompressionOptions(unittest.TestCase):
 
     def test_assigning_uncompressed_format_to_compression_format_raises(self):
         opt = imageutils.CompressionOptions()
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(ValueError):
             opt.format = imageutils.PIXEL_FORMAT.A8_UNORM
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(ValueError):
             opt.format = imageutils.PIXEL_FORMAT.B8G8R8A8_UNORM
 
     def test_can_assign_compressed_format_to_compression_format(self):
