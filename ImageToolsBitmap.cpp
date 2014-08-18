@@ -21,46 +21,35 @@ ImageToolsBitmap::ImageToolsBitmap( IRoot* lockobj )
 {
 }
 
-Be::Result<std::string> ImageToolsBitmap::Load( const wchar_t* filename )
+StdOrImageIOResult ImageToolsBitmap::Load( const wchar_t* filename )
 {
 	AllowThreads allowThreads;
 
 	FileStream stream( filename, FileStream::READ );
 	if( !stream.IsValid() )
 	{
-		return "failed to open file";
+		return Be::BlueStdResult( Be::BLUE_STD_RESULT_IO_ERROR, "failed to open file" );
 	}
 
-	auto result = ImageIO::ReadImage( stream, ImageIO::LoadParameters( filename ), *this );
-	if( !result )
-	{
-		return "error while loading the image: " + result.GetErrorMessage();
-	}
-	return "";
+	return ImageIOResult( ImageIO::ReadImage( stream, ImageIO::LoadParameters( filename ), *this ) );
 }
 
-Be::Result<std::string> ImageToolsBitmap::Save( const wchar_t* filename )
+StdOrImageIOResult ImageToolsBitmap::Save( const wchar_t* filename )
 {
 	AllowThreads allowThreads;
 
 	if( !IsValid() )
 	{
-		return "cannot save invalid bitmap";
+		return ImageIO::Result( ImageIO::Result::INVALID_BITMAP, "cannot save invalid bitmap" );
 	}
 
 	FileStream stream( filename, FileStream::WRITE );
 	if( !stream.IsValid() )
 	{
-		return "could not open file for saving";
+		return Be::BlueStdResult( Be::BLUE_STD_RESULT_IO_ERROR, "could not open file for saving" );
 	}
 
-	auto result = ImageIO::SaveImage( filename, *this, stream );
-	if( !result )
-	{
-		return "error saving bitmap: " + result.GetErrorMessage();
-	}
-
-	return std::string();
+	return ImageIO::SaveImage( filename, *this, stream );
 }
 
 Be::Result<std::string> ImageToolsBitmap::CheckedDownsample2x2()
@@ -94,7 +83,7 @@ Be::Result<std::string> ImageToolsBitmap::CheckedGenerateMipMaps()
 	return std::string();
 }
 
-Be::Result<std::string> ImageToolsBitmap::CheckedConvertFormat( Tr2RenderContextEnum::PixelFormat format )
+Be::BlueStdResult ImageToolsBitmap::CheckedConvertFormat( Tr2RenderContextEnum::PixelFormat format )
 {
 	AllowThreads allowThreads;
 
@@ -104,16 +93,16 @@ Be::Result<std::string> ImageToolsBitmap::CheckedConvertFormat( Tr2RenderContext
 	}
 	if( !ConvertFormat( format ) )
 	{
-		return "error converting pixel format";
+		return Be::BlueStdResult( Be::BLUE_STD_RESULT_RUNTIME_ERROR, "error converting pixel format" );
 	}
-	return std::string();
+	return Be::BLUE_STD_RESULT_OK;
 }
 
-Be::Result<std::string> ImageToolsBitmap::Decompress( Tr2RenderContextEnum::PixelFormat format )
+Be::BlueStdResult ImageToolsBitmap::Decompress( Tr2RenderContextEnum::PixelFormat format )
 {
 	if( !IsCompressed() || GetType() != TEX_TYPE_2D )
 	{
-		return "cannot decompress an uncompressed image";
+		return Be::BlueStdResult( Be::BLUE_STD_RESULT_VALUE_ERROR, "cannot decompress an uncompressed image" );
 	}
 	nvtt::Surface surface;
 	nvtt::Format nvttFormat;
@@ -169,7 +158,7 @@ Be::Result<std::string> ImageToolsBitmap::Decompress( Tr2RenderContextEnum::Pixe
 		if( !surface.setImage2D( nvttFormat, nvtt::Decoder_D3D10, GetMipWidth( mip ), GetMipHeight( mip ), GetMipRawData( mip ) ) )
 		{
 			Destroy();
-			return "could not decompress image";
+			return Be::BlueStdResult( Be::BLUE_STD_RESULT_RUNTIME_ERROR, "could not decompress image" );
 		}
 	
 		const size_t mipSize = GetMipWidth( mip ) * GetMipHeight( mip );
@@ -188,15 +177,15 @@ Be::Result<std::string> ImageToolsBitmap::Decompress( Tr2RenderContextEnum::Pixe
 	}
 	m_data.swap( data );
 	m_format = format;
-	return "";
+	return Be::BLUE_STD_RESULT_OK;
 }
 
-Be::Result<std::string> ImageToolsBitmap::Copy( ImageToolsBitmapPtr& result ) const
+Be::BlueStdResult ImageToolsBitmap::Copy( ImageToolsBitmapPtr& result ) const
 {
 	result.CreateInstance();
 	if( !result )
 	{
-		return "out of memory";
+		return Be::BLUE_STD_RESULT_MEMORY_ERROR;
 	}
 	static_cast<Tr2BitmapDimensions&>( *result ) = *this;
 	result->m_name = m_name;
@@ -204,26 +193,26 @@ Be::Result<std::string> ImageToolsBitmap::Copy( ImageToolsBitmapPtr& result ) co
 	if( !result->m_data.get() )
 	{
 		result = nullptr;
-		return "out of memory";
+		return Be::BLUE_STD_RESULT_MEMORY_ERROR;
 	}
 	memcpy( result->m_data.get(), m_data.get(), m_data.size() );
-	return "";
+	return Be::BLUE_STD_RESULT_OK;
 }
 
-Be::Result<std::string> ImageToolsBitmap::ExtractMipLevel( uint32_t mipLevel, ImageToolsBitmapPtr& result ) const
+Be::BlueStdResult ImageToolsBitmap::ExtractMipLevel( uint32_t mipLevel, ImageToolsBitmapPtr& result ) const
 {
 	if( !IsValid() )
 	{
-		return "source bitmap is invalid";
+		return Be::BlueStdResult( Be::BLUE_STD_RESULT_VALUE_ERROR, "source bitmap is invalid" );
 	}
 	if( mipLevel >= GetTrueMipCount() )
 	{
-		return "invalid mip level";
+		return Be::BlueStdResult( Be::BLUE_STD_RESULT_VALUE_ERROR, "invalid mip level" );
 	}
 	result.CreateInstance();
 	if( !result )
 	{
-		return "out of memory";
+		return Be::BLUE_STD_RESULT_MEMORY_ERROR;
 	}
 	bool createResult = false;
 	uint32_t faceCount = 1;
@@ -241,42 +230,42 @@ Be::Result<std::string> ImageToolsBitmap::ExtractMipLevel( uint32_t mipLevel, Im
 	}
 	if( !createResult )
 	{
-		return "failed to create result bitmap";
+		return Be::BLUE_STD_RESULT_MEMORY_ERROR;
 	}
 	for( uint32_t face = 0; face < faceCount; ++face )
 	{
 		memcpy( result->GetMipRawData( 0, CubemapFace( face ) ), GetMipRawData( mipLevel, CubemapFace( face ) ), result->GetMipSize( 0 ) );
 	}
-	return "";
+	return Be::BLUE_STD_RESULT_OK;
 }
 
-Be::Result<std::string> ImageToolsBitmap::SetMipData( uint32_t mipLevel, ImageToolsBitmap* result, uint32_t sourceMip )
+Be::BlueStdResult ImageToolsBitmap::SetMipData( uint32_t mipLevel, ImageToolsBitmap* result, uint32_t sourceMip )
 {
 	if( !IsValid() )
 	{
-		return "invalid bitmap";
+		return Be::BlueStdResult( Be::BLUE_STD_RESULT_VALUE_ERROR, "invalid bitmap" );
 	}
 	if( !result || !result->IsValid() )
 	{
-		return "invalid source bitmap";
+		return Be::BlueStdResult( Be::BLUE_STD_RESULT_VALUE_ERROR, "invalid source bitmap" );
 	}
 	if( mipLevel >= GetTrueMipCount() )
 	{
-		return "invalid mip level";
+		return Be::BlueStdResult( Be::BLUE_STD_RESULT_VALUE_ERROR, "invalid mip level" );
 	}
 	if( sourceMip >= result->GetTrueMipCount() )
 	{
-		return "invalid source mip level";
+		return Be::BlueStdResult( Be::BLUE_STD_RESULT_VALUE_ERROR, "invalid source mip level" );
 	}
 	if( GetType() != result->GetType() || GetFormat() != result->GetFormat() )
 	{
-		return "incompatible bitmaps";
+		return Be::BlueStdResult( Be::BLUE_STD_RESULT_VALUE_ERROR, "incompatible bitmaps" );
 	}
 	if( GetMipWidth( mipLevel ) != result->GetMipWidth( sourceMip ) ||
 		GetMipHeight( mipLevel ) != result->GetMipHeight( sourceMip ) ||
 		GetMipDepth( mipLevel ) != result->GetMipDepth( sourceMip ) )
 	{
-		return "mip sizes do not match";
+		return Be::BlueStdResult( Be::BLUE_STD_RESULT_VALUE_ERROR, "mip sizes do not match" );
 	}
 	uint32_t faces = 1;
 	if( GetType() == TEX_TYPE_CUBE )
@@ -287,10 +276,10 @@ Be::Result<std::string> ImageToolsBitmap::SetMipData( uint32_t mipLevel, ImageTo
 	{
 		memcpy( GetMipRawData( mipLevel, CubemapFace( face ) ), result->GetMipRawData( sourceMip, CubemapFace( face ) ), GetMipSize( mipLevel ) );
 	}
-	return "";
+	return Be::BLUE_STD_RESULT_OK;
 }
 
-Be::Result<std::string> ImageToolsBitmap::CreateNvttInputOptions( 
+Be::BlueStdResult ImageToolsBitmap::CreateNvttInputOptions( 
 	CompressionOptions* compressionOptions, 
 	nvtt::InputOptions& inputOptions )
 {
@@ -307,7 +296,7 @@ Be::Result<std::string> ImageToolsBitmap::CreateNvttInputOptions(
 		inputOptions.setTextureLayout( nvtt::TextureType_3D, GetWidth(), GetHeight(), GetDepth() );
 		break;
 	default:
-		return "unexpected bitmap type";
+		return Be::BlueStdResult( Be::BLUE_STD_RESULT_VALUE_ERROR, "unexpected bitmap type" );
 	}
 	switch( GetFormat() )
 	{
@@ -327,7 +316,7 @@ Be::Result<std::string> ImageToolsBitmap::CreateNvttInputOptions(
 		inputOptions.setFormat( nvtt::InputFormat_BGRA_8UB );
 		break;
 	default:
-		return "unsupported input pixel format";
+		return Be::BlueStdResult( Be::BLUE_STD_RESULT_VALUE_ERROR, "unsupported input pixel format" );
 	}
 	inputOptions.setAlphaMode( nvtt::AlphaMode_None );
 	if( compressionOptions && compressionOptions->GetGenerateMipsMaps() )
@@ -354,14 +343,14 @@ Be::Result<std::string> ImageToolsBitmap::CreateNvttInputOptions(
 			inputOptions.setMipmapData( GetMipRawData( i, CubemapFace( face ) ), GetMipWidth( i ), GetMipHeight( i ), GetMipDepth( i ), face, i );
 		}
 	}
-	return std::string();
+	return Be::BLUE_STD_RESULT_OK;
 }
 
-Be::Result<std::string> ImageToolsBitmap::CompressWithOptions( CompressionOptions* options, const nvtt::OutputOptions& output )
+Be::BlueStdResult ImageToolsBitmap::CompressWithOptions( CompressionOptions* options, const nvtt::OutputOptions& output )
 {
 	if( !IsValid() )
 	{
-		return "cannot compress invalid bitmap";
+		return Be::BlueStdResult( Be::BLUE_STD_RESULT_VALUE_ERROR, "cannot compress invalid bitmap" );
 	}
 
 	nvtt::InputOptions input;
@@ -377,12 +366,12 @@ Be::Result<std::string> ImageToolsBitmap::CompressWithOptions( CompressionOption
 
 	if( !compressor.process( input, compression, output ) )
 	{
-		return "error during image compression";
+		return Be::BlueStdResult( Be::BLUE_STD_RESULT_RUNTIME_ERROR, "error during image compression" );
 	}
-	return std::string();
+	return Be::BLUE_STD_RESULT_OK;
 }
 
-Be::Result<std::string> ImageToolsBitmap::Compress( CompressionOptions* options, ImageToolsBitmapPtr& result )
+StdOrImageIOResult ImageToolsBitmap::Compress( CompressionOptions* options, ImageToolsBitmapPtr& result )
 {
 	AllowThreads allowThreads;
 
@@ -396,15 +385,10 @@ Be::Result<std::string> ImageToolsBitmap::Compress( CompressionOptions* options,
 	MemoryStream memStream( outputHandler.GetData(), outputHandler.GetSize() );
 
 	result.CreateInstance();
-	auto res = ImageIO::ReadImage( memStream, ImageIO::LoadParameters( L"out.dds" ), *result );
-	if( !res )
-	{
-		return "could not read compressed image: " + res.GetErrorMessage();
-	}
-	return "";
+	return ImageIO::ReadImage( memStream, ImageIO::LoadParameters( L"out.dds" ), *result );
 }
 
-Be::Result<std::string> ImageToolsBitmap::CompressToFile( const wchar_t* filename, CompressionOptions* options )
+Be::BlueStdResult ImageToolsBitmap::CompressToFile( const wchar_t* filename, CompressionOptions* options )
 {
 	AllowThreads allowThreads;
 

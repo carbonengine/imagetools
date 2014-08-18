@@ -16,7 +16,7 @@ public:
 
 	CompressionOptions( IRoot* lockobj = 0 );
 
-	Be::Result<std::string> Create( 
+	Be::BlueStdResult Create( 
 		Be::OptionalWithDefaultValue<Tr2RenderContextEnum::PixelFormat, Tr2RenderContextEnum::PIXEL_FORMAT_BC1_UNORM> format,
 		Be::OptionalWithDefaultValue<nvtt::Quality, nvtt::Quality_Production> quality,
 		Be::OptionalWithDefaultValue<bool, false> generateMips,
@@ -24,7 +24,7 @@ public:
 
 
 	Tr2RenderContextEnum::PixelFormat GetFormat() const;
-	Be::Result<std::string> SetFormat( Tr2RenderContextEnum::PixelFormat );
+	Be::BlueStdResult SetFormat( Tr2RenderContextEnum::PixelFormat );
 
 	void FillNvttOptions( nvtt::CompressionOptions& options );
 	bool UseCuda() const;

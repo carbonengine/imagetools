@@ -23,7 +23,7 @@ CompressionOptions::CompressionOptions( IRoot* lockobj )
 {
 }
 
-Be::Result<std::string> CompressionOptions::Create( 
+Be::BlueStdResult CompressionOptions::Create( 
 	Be::OptionalWithDefaultValue<Tr2RenderContextEnum::PixelFormat, Tr2RenderContextEnum::PIXEL_FORMAT_BC1_UNORM> format,
 	Be::OptionalWithDefaultValue<nvtt::Quality, nvtt::Quality_Production> quality,
 	Be::OptionalWithDefaultValue<bool, false> generateMips,
@@ -37,7 +37,7 @@ Be::Result<std::string> CompressionOptions::Create(
 	m_quality = quality;
 	m_alphaForBc1 = alphaForBc1;
 	m_generateMips = generateMips;
-	return std::string();
+	return Be::BLUE_STD_RESULT_OK;
 }
 
 Tr2RenderContextEnum::PixelFormat CompressionOptions::GetFormat() const
@@ -45,14 +45,14 @@ Tr2RenderContextEnum::PixelFormat CompressionOptions::GetFormat() const
 	return m_format;
 }
 
-Be::Result<std::string> CompressionOptions::SetFormat( Tr2RenderContextEnum::PixelFormat format )
+Be::BlueStdResult CompressionOptions::SetFormat( Tr2RenderContextEnum::PixelFormat format )
 {
 	if( !IsCompressedFormat( format ) )
 	{
-		return "format needs to be a compressed format (imagetools.PIXEL_FORMAT.BC#_...)";
+		return Be::BlueStdResult( Be::BLUE_STD_RESULT_VALUE_ERROR, "format needs to be a compressed format (imagetools.PIXEL_FORMAT.BC#_...)" );
 	}
 	m_format = format;
-	return std::string();
+	return Be::BLUE_STD_RESULT_OK;
 }
 
 void CompressionOptions::FillNvttOptions( nvtt::CompressionOptions& options )

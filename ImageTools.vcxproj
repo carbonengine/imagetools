@@ -107,6 +107,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>True</GenerateDebugInformation>
+      <AdditionalAppleFrameworks>CoreFoundation;CoreFoundation;%(AdditionalAppleFrameworks)</AdditionalAppleFrameworks>
       <AdditionalLibraryDirectories>..\..\..\carbon\autobuild\stackless\$(Platform);$(CcpSdkPath)\zlib\1.2.3\lib\vc100.sp1\$(Platform);..\..\..\carbon\autobuild\stackless\$(Platform);$(CcpSdkPath)\zlib\1.2.3\lib\vc100.sp1\$(Platform);../../../carbon/autobuild/BlueExposure/exefile/$(Platform)/$(PlatformToolset);$(CcpSdkPath)/libpng/1.4.0/lib/vc100.sp1/$(Platform);$(CcpSdkPath)/nvidia/nvtt/r1380/lib/$(Platform);$(CcpSdkPath)\telemetry\2.0n\lib;../../../carbon/autobuild/CcpCore/$(Platform)/$(PlatformToolset)/;$(CcpSdkPath)\telemetry\2.0n\lib;../../../carbon/autobuild/CcpCore/$(Platform)/$(PlatformToolset)/;$(CcpSdkPath)/libjpg/jpeg-8c/lib/$(Platform);../../autobuild/ImageIO/$(Platform)/$(PlatformToolset)/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ProgramDatabaseFile>$(TargetDir)$(TargetName).pdb</ProgramDatabaseFile>
       <AdditionalDependencies>python27.lib;zlib.lib;python27.lib;zlib.lib;nvtt.lib;BlueExposureStatic.lib;CcpCoreStatic.lib;telemetry64.link.lib;ImageIO.lib;CcpCore.lib;telemetry64.link.lib;libpng.lib;jpeg.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -128,6 +129,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>True</GenerateDebugInformation>
+      <AdditionalAppleFrameworks>CoreFoundation;CoreFoundation;%(AdditionalAppleFrameworks)</AdditionalAppleFrameworks>
       <AdditionalLibraryDirectories>$(CcpSdkPath)\Python\27_64\libs;$(CcpSdkPath)\zlib\1.2.3\lib\vc100.sp1\$(Platform);$(CcpSdkPath)\Python\27_64\libs;$(CcpSdkPath)\zlib\1.2.3\lib\vc100.sp1\$(Platform);../../../carbon/autobuild/BlueExposure/python_27/$(Platform)/$(PlatformToolset);$(CcpSdkPath)/libpng/1.4.0/lib/vc100.sp1/$(Platform);$(CcpSdkPath)/nvidia/nvtt/r1380/lib/$(Platform);$(CcpSdkPath)\telemetry\2.0n\lib;../../../carbon/autobuild/CcpCore/$(Platform)/$(PlatformToolset)/;$(CcpSdkPath)\telemetry\2.0n\lib;../../../carbon/autobuild/CcpCore/$(Platform)/$(PlatformToolset)/;$(CcpSdkPath)/libjpg/jpeg-8c/lib/$(Platform);../../autobuild/ImageIO/$(Platform)/$(PlatformToolset)/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ProgramDatabaseFile>$(TargetDir)$(TargetName).pdb</ProgramDatabaseFile>
       <AdditionalDependencies>python27.lib;zlib.lib;python27.lib;zlib.lib;nvtt.lib;BlueExposureStatic.lib;CcpCoreStatic.lib;telemetry64.link.lib;ImageIO.lib;CcpCore.lib;telemetry64.link.lib;libpng.lib;jpeg.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -149,6 +151,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>True</GenerateDebugInformation>
+      <AdditionalAppleFrameworks>CoreFoundation;CoreFoundation;%(AdditionalAppleFrameworks)</AdditionalAppleFrameworks>
       <AdditionalLibraryDirectories>$(CcpSdkPath)\Python\27\libs;$(CcpSdkPath)\zlib\1.2.3\lib\vc100.sp1\$(Platform);$(CcpSdkPath)\Python\27\libs;$(CcpSdkPath)\zlib\1.2.3\lib\vc100.sp1\$(Platform);../../../carbon/autobuild/BlueExposure/python_27/$(Platform)/$(PlatformToolset);$(CcpSdkPath)/libpng/1.4.0/lib/vc100.sp1/$(Platform);$(CcpSdkPath)/nvidia/nvtt/r1380/lib/$(Platform);$(CcpSdkPath)\telemetry\2.0n\lib;../../../carbon/autobuild/CcpCore/$(Platform)/$(PlatformToolset)/;$(CcpSdkPath)\telemetry\2.0n\lib;../../../carbon/autobuild/CcpCore/$(Platform)/$(PlatformToolset)/;$(CcpSdkPath)/libjpg/jpeg-8c/lib/$(Platform);../../autobuild/ImageIO/$(Platform)/$(PlatformToolset)/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ProgramDatabaseFile>$(TargetDir)$(TargetName).pdb</ProgramDatabaseFile>
       <AdditionalDependencies>python27.lib;zlib.lib;python27.lib;zlib.lib;nvtt.lib;BlueExposureStatic.lib;CcpCoreStatic.lib;telemetry32.link.lib;ImageIO.lib;CcpCore.lib;telemetry32.link.lib;libpng.lib;jpeg.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -170,6 +173,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>True</GenerateDebugInformation>
+      <AdditionalAppleFrameworks>CoreFoundation;CoreFoundation;%(AdditionalAppleFrameworks)</AdditionalAppleFrameworks>
       <AdditionalLibraryDirectories>..\..\..\carbon\autobuild\stackless\$(Platform);$(CcpSdkPath)\zlib\1.2.3\lib\vc100.sp1\$(Platform);..\..\..\carbon\autobuild\stackless\$(Platform);$(CcpSdkPath)\zlib\1.2.3\lib\vc100.sp1\$(Platform);../../../carbon/autobuild/BlueExposure/exefile/$(Platform)/$(PlatformToolset);$(CcpSdkPath)/libpng/1.4.0/lib/vc100.sp1/$(Platform);$(CcpSdkPath)/nvidia/nvtt/r1380/lib/$(Platform);$(CcpSdkPath)\telemetry\2.0n\lib;../../../carbon/autobuild/CcpCore/$(Platform)/$(PlatformToolset)/;$(CcpSdkPath)\telemetry\2.0n\lib;../../../carbon/autobuild/CcpCore/$(Platform)/$(PlatformToolset)/;$(CcpSdkPath)/libjpg/jpeg-8c/lib/$(Platform);../../autobuild/ImageIO/$(Platform)/$(PlatformToolset)/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ProgramDatabaseFile>$(TargetDir)$(TargetName).pdb</ProgramDatabaseFile>
       <AdditionalDependencies>python27.lib;zlib.lib;python27.lib;zlib.lib;nvtt.lib;BlueExposureStatic.lib;CcpCoreStatic.lib;telemetry32.link.lib;ImageIO.lib;CcpCore.lib;telemetry32.link.lib;libpng.lib;jpeg.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -181,6 +185,7 @@
     <ClInclude Include="autoversion.h"/>
     <ClInclude Include="CompressionOptions.h"/>
     <ClInclude Include="FileStream.h"/>
+    <ClInclude Include="ImageIOResultBlue.h"/>
     <ClInclude Include="ImageToolsBitmap.h"/>
     <ClInclude Include="MemoryOutputHandler.h"/>
     <ClInclude Include="MemoryStream.h"/>
@@ -192,6 +197,7 @@
     <ClCompile Include="EnumRegistry_Blue.cpp"/>
     <ClCompile Include="FileStream.cpp"/>
     <ClCompile Include="GenerateRoughness_Blue.cpp"/>
+    <ClCompile Include="ImageIOResultBlue.cpp"/>
     <ClCompile Include="ImageTools.cpp"/>
     <ClCompile Include="ImageToolsBitmap.cpp"/>
     <ClCompile Include="ImageToolsBitmap_Blue.cpp"/>

@@ -130,7 +130,7 @@ const Be::ClassInfo* ImageToolsBitmap::ExposeToBlue()
 namespace
 {
 
-Be::Result<std::string> LoadHostBitmap( const wchar_t* filename, ImageToolsBitmapPtr& result )
+StdOrImageIOResult LoadHostBitmap( const wchar_t* filename, ImageToolsBitmapPtr& result )
 {
 	result.CreateInstance();
 	auto ret = result->Load( filename );
