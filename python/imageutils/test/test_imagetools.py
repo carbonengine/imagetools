@@ -1,4 +1,5 @@
 import os
+from PIL import Image
 import unittest
 
 import binbootstrapper
@@ -80,3 +81,11 @@ class TestConvertImageToTempFile(unittest.TestCase):
             helputils.get_image_path('compressed/bc1.dds'), '.tga')
         idealpath = helputils.get_image_path('uncompressed/bc1.tga')
         testhelpers.assertImagesEqual(self, fp, idealpath)
+
+
+class TestPilresize(unittest.TestCase):
+    def testResizeWorks(self):
+        img = Image.new('RGB', (20, 20))
+        result = imageutils.pilresize(img, (10, 10))
+        self.assertEqual(result.size, (10, 10),
+                         "Image %s did not resize" % img)

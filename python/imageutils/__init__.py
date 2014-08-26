@@ -133,3 +133,12 @@ def get_dds_size(ddspath):
         height = h[3]
         width = h[4]
     return width, height
+
+
+def pilresize(pil, size):
+    """Resize ``im`` with good quality,
+    so you don't have to remember to use resizing filters.
+
+    http://effbot.org/imagingbook/image.htm#tag-Image.Image.resize
+    """
+    return pil.resize(size, PILImage.ANTIALIAS)
