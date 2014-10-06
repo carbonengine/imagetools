@@ -182,7 +182,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AllowThreads.h"/>
-    <ClInclude Include="autoversion.h"/>
     <ClInclude Include="CompressionOptions.h"/>
     <ClInclude Include="FileStream.h"/>
     <ClInclude Include="ImageIOResultBlue.h"/>
