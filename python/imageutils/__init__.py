@@ -135,10 +135,19 @@ def get_dds_size(ddspath):
     return width, height
 
 
-def pilresize(pil, size):
+def pilresize(pil, size, filterdict=None):
     """Resize ``im`` with good quality,
     so you don't have to remember to use resizing filters.
 
     http://effbot.org/imagingbook/image.htm#tag-Image.Image.resize
     """
-    return pil.resize(size, PILImage.ANTIALIAS)
+    if not filterdict:
+        return pil.resize(size, PILImage.ANTIALIAS)
+    else:
+        bands = pil.split()
+        band_names = pil.getbands()
+        new_bands = []
+        for index, band in enumerate(band_names):
+            band_filter = filterdict.get(band.lower(), PILImage.ANTIALIAS)
+            new_bands.append(bands[index].resize(size, band_filter))
+        return PILImage.merge(pil.mode, new_bands)
