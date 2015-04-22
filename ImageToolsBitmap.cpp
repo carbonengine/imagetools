@@ -298,7 +298,8 @@ Be::BlueStdResult ImageToolsBitmap::CreateNvttInputOptions(
 	default:
 		return Be::BlueStdResult( Be::BLUE_STD_RESULT_VALUE_ERROR, "unexpected bitmap type" );
 	}
-	switch( GetFormat() )
+	PixelFormat inputFormat = GetFormat();
+	switch( inputFormat )
 	{
 	case PIXEL_FORMAT_R32G32B32A32_FLOAT:
 		inputOptions.setFormat( nvtt::InputFormat_RGBA_32F );
@@ -318,6 +319,15 @@ Be::BlueStdResult ImageToolsBitmap::CreateNvttInputOptions(
 	default:
 		return Be::BlueStdResult( Be::BLUE_STD_RESULT_VALUE_ERROR, "unsupported input pixel format" );
 	}
+	
+	PixelFormat compressionFormat = compressionOptions->GetFormat();
+	if( (compressionFormat == PIXEL_FORMAT_BC7_UNORM || compressionFormat == PIXEL_FORMAT_BC7_UNORM_SRGB) &&
+	    ( inputFormat != PIXEL_FORMAT_B8G8R8A8_UNORM && inputFormat != PIXEL_FORMAT_B8G8R8X8_UNORM ))
+	{
+		// NVTT compression on BC7 floating point formatted textures seems to result in assertion errors.
+		return Be::BlueStdResult( Be::BLUE_STD_RESULT_VALUE_ERROR, "Unsupported input pixel format for BC7" );
+	}
+
 	inputOptions.setAlphaMode( nvtt::AlphaMode_None );
 	if( compressionOptions && compressionOptions->GetGenerateMipsMaps() )
 	{
@@ -379,6 +389,12 @@ StdOrImageIOResult ImageToolsBitmap::Compress( CompressionOptions* options, Imag
 
 	nvtt::OutputOptions output;
 	output.setOutputHandler( &outputHandler );
+	
+	if( IsDds10Format( options->GetFormat() ) )
+	{
+		output.setContainer(nvtt::Container_DDS10);
+	}
+	
 
 	CBR_RETURN_BR( CompressWithOptions( options, output ) );
 
