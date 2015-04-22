@@ -43,3 +43,19 @@ class TestCompression(unittest.TestCase):
     def test_compress_bc3(self):
         opt = imageutils.CompressionOptions(imageutils.PIXEL_FORMAT.BC3_UNORM)
         self._check_compression_for_directory(opt)
+
+    def test_compress_bc6(self):
+        opt = imageutils.CompressionOptions(imageutils.PIXEL_FORMAT.BC6H_UF16)
+        tex = helputils.load_image("uncompressed/bgra8.png")
+        self._check_compression(tex, opt)
+
+    def test_compress_bc7(self):
+        opt = imageutils.CompressionOptions(imageutils.PIXEL_FORMAT.BC7_UNORM)
+        tex = helputils.load_image("uncompressed/bgra8.png")
+        self._check_compression(tex, opt)
+
+    def test_compress_floating_point_format_with_bc7_returns_raises_value_error(self):
+        bmp = helputils.load_image("cubemaps/rgba32f.dds")
+        opt = imageutils.CompressionOptions(imageutils.PIXEL_FORMAT.BC7_UNORM)
+        with self.assertRaises(ValueError):
+            self._check_compression(bmp, opt)
