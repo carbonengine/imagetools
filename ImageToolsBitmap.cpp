@@ -126,7 +126,7 @@ Be::BlueStdResult ImageToolsBitmap::CreateFromArray( const std::vector<ImageTool
 	}
 	Destroy();
 	*static_cast<Tr2BitmapDimensions*>( this ) = *elements[0];
-	m_arraySize = elements.size();
+	m_arraySize = uint32_t( elements.size() );
 	auto elementSize = elements[0]->m_data.size();
 	m_data.resize( "HostBitmap::m_data", elementSize * elements.size() );
 	for( size_t i = 0; i < elements.size(); ++i )
