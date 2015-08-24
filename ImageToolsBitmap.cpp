@@ -98,6 +98,44 @@ Be::BlueStdResult ImageToolsBitmap::CheckedConvertFormat( Tr2RenderContextEnum::
 	return Be::BLUE_STD_RESULT_OK;
 }
 
+Be::BlueStdResult ImageToolsBitmap::CreateFromArray( const std::vector<ImageToolsBitmap*>& elements )
+{
+	if( elements.empty() )
+	{
+		Destroy();
+		return Be::BLUE_STD_RESULT_OK;
+	}
+	if( !elements[0] || elements[0]->GetType() != TEX_TYPE_2D || elements[0]->GetArraySize() != 1 || elements[0] == this )
+	{
+		return Be::BlueStdResult( Be::BLUE_STD_RESULT_VALUE_ERROR, "invalid first bitmap in the list" );
+	}
+	for( size_t i = 1; i < elements.size(); ++i )
+	{
+		if( !elements[i] || elements[i]->GetArraySize() != 1 || elements[i] == this )
+		{
+			return Be::BlueStdResult( Be::BLUE_STD_RESULT_VALUE_ERROR, "invalid bitmap in the list" );
+		}
+		if( elements[0]->GetType() != elements[i]->GetType() || 
+			elements[0]->GetFormat() != elements[i]->GetFormat() || 
+			elements[0]->GetWidth() != elements[i]->GetWidth() || 
+			elements[0]->GetHeight() != elements[i]->GetHeight() || 
+			elements[0]->GetTrueMipCount() != elements[i]->GetTrueMipCount() )
+		{
+			return Be::BlueStdResult( Be::BLUE_STD_RESULT_VALUE_ERROR, "bitmap formats/sizes do not match" );
+		}
+	}
+	Destroy();
+	*static_cast<Tr2BitmapDimensions*>( this ) = *elements[0];
+	m_arraySize = elements.size();
+	auto elementSize = elements[0]->m_data.size();
+	m_data.resize( "HostBitmap::m_data", elementSize * elements.size() );
+	for( size_t i = 0; i < elements.size(); ++i )
+	{
+		memcpy( m_data.get() + elementSize * i, elements[i]->m_data.get(), elementSize );
+	}
+	return Be::BLUE_STD_RESULT_OK;
+}
+
 Be::BlueStdResult ImageToolsBitmap::Decompress( Tr2RenderContextEnum::PixelFormat format )
 {
 	if( !IsCompressed() || GetType() != TEX_TYPE_2D )

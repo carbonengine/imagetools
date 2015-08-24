@@ -23,6 +23,7 @@ public:
 	StdOrImageIOResult Save( const wchar_t* filename );
 	StdOrImageIOResult Compress( CompressionOptions* options, ImageToolsBitmapPtr& result );
 	Be::BlueStdResult CompressToFile( const wchar_t* filename, CompressionOptions* options );
+	Be::BlueStdResult CreateFromArray( const std::vector<ImageToolsBitmap*>& elements );
 private:
 	Be::Result<std::string> CheckedDownsample2x2();
 	Be::Result<std::string> CheckedCrop( unsigned left, unsigned top, unsigned right, unsigned bottom );

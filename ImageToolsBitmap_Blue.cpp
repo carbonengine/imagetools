@@ -32,6 +32,7 @@ const Be::ClassInfo* ImageToolsBitmap::ExposeToBlue()
 		MAP_PROPERTY_READONLY( "depth", GetDepth, "bitmap height in pixels (for volume bitmaps)" );
 		MAP_PROPERTY_READONLY( "mip_count", GetTrueMipCount, "number of mip levels" );
 		MAP_PROPERTY_READONLY( "format", GetFormat, "bitmap pixel format (member of imagetools.PIXEL_FORMAT)" );
+		MAP_PROPERTY_READONLY( "array_size", GetArraySize, "texture array size" );
 
 		MAP_METHOD_AND_WRAP( 
 			"get_mip_width", 
@@ -141,6 +142,17 @@ StdOrImageIOResult LoadHostBitmap( const wchar_t* filename, ImageToolsBitmapPtr&
 	return ret;
 }
 
+StdOrImageIOResult CreateFromArray( const std::vector<ImageToolsBitmap*>& elements, ImageToolsBitmapPtr& result )
+{
+	result.CreateInstance();
+	auto ret = result->CreateFromArray( elements );
+	if( !Be::IsSuccess( ret ) )
+	{
+		result = nullptr;
+	}
+	return ret;
+}
+
 Be::Result<std::string> CreateBitmap2D( 
 	uint32_t width, 
 	uint32_t height, 
@@ -221,6 +233,14 @@ MAP_FUNCTION_AND_WRAP(
 	"Loads bitmap from file.\n"
 	"Arguments:\n"
 	"filename - path to image file" );
+
+MAP_FUNCTION_AND_WRAP( 
+	"create_from_array", 
+	CreateFromArray, 
+	"Creates an array bitmap from the given list of individual bitmaps. All bitmaps\n"
+	"in the list must be valid 2D bitmaps with the same sizes and formats.\n"
+	"Arguments:\n"
+	"elements - list of array element bitmaps" );
 
 MAP_FUNCTION_AND_WRAP( 
 	"create_2d", 
