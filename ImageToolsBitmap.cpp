@@ -331,7 +331,15 @@ Be::BlueStdResult ImageToolsBitmap::CreateNvttInputOptions(
 		inputOptions.setTextureLayout( nvtt::TextureType_Cube, GetWidth(), GetHeight() );
 		break;
 	case TEX_TYPE_3D:
-		inputOptions.setTextureLayout( nvtt::TextureType_3D, GetWidth(), GetHeight(), GetDepth() );
+		if( GetMipCount() != 1 || ( compressionOptions && compressionOptions->GetGenerateMipsMaps() ) )
+		{
+			return Be::BlueStdResult( Be::BLUE_STD_RESULT_VALUE_ERROR, "compressing volume textures with mip maps is not supported" );
+		}
+		if( GetWidth() % 4 || GetHeight() % 4 || GetDepth() % 4 )
+		{
+			return Be::BlueStdResult( Be::BLUE_STD_RESULT_VALUE_ERROR, "compressing volume textures with sizes not divisible by 4 is not supported" );
+		}
+		inputOptions.setTextureLayout( nvtt::TextureType_2D, GetWidth(), GetHeight() * GetDepth() );
 		break;
 	default:
 		return Be::BlueStdResult( Be::BLUE_STD_RESULT_VALUE_ERROR, "unexpected bitmap type" );
@@ -358,12 +366,15 @@ Be::BlueStdResult ImageToolsBitmap::CreateNvttInputOptions(
 		return Be::BlueStdResult( Be::BLUE_STD_RESULT_VALUE_ERROR, "unsupported input pixel format" );
 	}
 	
-	PixelFormat compressionFormat = compressionOptions->GetFormat();
-	if( (compressionFormat == PIXEL_FORMAT_BC7_UNORM || compressionFormat == PIXEL_FORMAT_BC7_UNORM_SRGB) &&
-	    ( inputFormat != PIXEL_FORMAT_B8G8R8A8_UNORM && inputFormat != PIXEL_FORMAT_B8G8R8X8_UNORM ))
+	if( compressionOptions )
 	{
-		// NVTT compression on BC7 floating point formatted textures seems to result in assertion errors.
-		return Be::BlueStdResult( Be::BLUE_STD_RESULT_VALUE_ERROR, "Unsupported input pixel format for BC7" );
+		PixelFormat compressionFormat = compressionOptions->GetFormat();
+		if( (compressionFormat == PIXEL_FORMAT_BC7_UNORM || compressionFormat == PIXEL_FORMAT_BC7_UNORM_SRGB) &&
+			( inputFormat != PIXEL_FORMAT_B8G8R8A8_UNORM && inputFormat != PIXEL_FORMAT_B8G8R8X8_UNORM ))
+		{
+			// NVTT compression on BC7 floating point formatted textures seems to result in assertion errors.
+			return Be::BlueStdResult( Be::BLUE_STD_RESULT_VALUE_ERROR, "Unsupported input pixel format for BC7" );
+		}
 	}
 
 	inputOptions.setAlphaMode( nvtt::AlphaMode_None );
@@ -388,7 +399,14 @@ Be::BlueStdResult ImageToolsBitmap::CreateNvttInputOptions(
 	{
 		for( uint32_t i = 0; i < mipCount; ++i )
 		{
-			inputOptions.setMipmapData( GetMipRawData( i, CubemapFace( face ) ), GetMipWidth( i ), GetMipHeight( i ), GetMipDepth( i ), face, i );
+			if( GetType() == TEX_TYPE_3D )
+			{
+				inputOptions.setMipmapData( GetMipRawData( i, CubemapFace( face ) ), GetMipWidth( i ), GetMipHeight( i ) * GetMipDepth( i ), 1, face, i );
+			}
+			else
+			{
+				inputOptions.setMipmapData( GetMipRawData( i, CubemapFace( face ) ), GetMipWidth( i ), GetMipHeight( i ), GetMipDepth( i ), face, i );
+			}
 		}
 	}
 	return Be::BLUE_STD_RESULT_OK;
@@ -439,7 +457,14 @@ StdOrImageIOResult ImageToolsBitmap::Compress( CompressionOptions* options, Imag
 	MemoryStream memStream( outputHandler.GetData(), outputHandler.GetSize() );
 
 	result.CreateInstance();
-	return ImageIO::ReadImage( memStream, ImageIO::LoadParameters( L"out.dds" ), *result );
+	CBR_RETURN_BR( ImageIOResult( ImageIO::ReadImage( memStream, ImageIO::LoadParameters( L"out.dds" ), *result ) ) );
+	if( result && GetType() == TEX_TYPE_3D )
+	{
+		result->m_type = GetType();
+		result->m_height /= GetDepth();
+		result->m_volumeDepth = GetDepth();
+	}
+	return Be::BLUE_STD_RESULT_OK;
 }
 
 Be::BlueStdResult ImageToolsBitmap::CompressToFile( const wchar_t* filename, CompressionOptions* options )
