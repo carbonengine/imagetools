@@ -1,5 +1,6 @@
 import os
 from PIL import Image
+import sys
 import unittest
 
 import binbootstrapper
@@ -75,6 +76,7 @@ class TestImageTools(unittest.TestCase):
         self.assertEquals(imageutils.get_dds_size(path), (24, 32))
 
 
+@unittest.skipIf(sys.platform != 'win32', "imgdiff does not work on non-windows platforms yet")
 class TestConvertImageToTempFile(unittest.TestCase):
     def testImageConvertsToKnownValues(self):
         fp = imageutils.convert_image_to_temp_file(
