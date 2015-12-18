@@ -9,11 +9,8 @@
 #ifndef ImageIOResultBlue_H
 #define ImageIOResultBlue_H
 
-namespace Be
-{
-
 template <>
-struct Result<ImageIO::Result>
+struct Be::Result<ImageIO::Result>
 {
 	Result()
 		:m_result( ImageIO::Result::OK )
@@ -45,19 +42,17 @@ struct Result<ImageIO::Result>
 	ImageIO::Result m_result;
 };
 
-template<> inline bool IsSuccess( const Result<ImageIO::Result>& result )
+template<> inline bool BeIsSuccess( const Be::Result<ImageIO::Result>& result )
 {
 	return result;
 }
 
-inline const char* GetErrorMessage( const Result<ImageIO::Result>& result )
+template<> inline const char* BeGetErrorMessage( const Be::Result<ImageIO::Result>& result )
 {
 	return result.m_result.GetErrorMessage().c_str();
 }
 
-BLUE_DECLARE_GET_EXCEPTION( Result<ImageIO::Result> );
-
-}
+BLUE_DECLARE_GET_EXCEPTION( Be::Result<ImageIO::Result> );
 
 typedef Be::Result<ImageIO::Result> ImageIOResult;
 typedef Be::BlueWithStdResult<ImageIOResult>::type StdOrImageIOResult;

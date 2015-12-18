@@ -77,21 +77,21 @@ bool Is8BitFormat( Tr2RenderContextEnum::PixelFormat format )
 	}
 }
 
-Be::BlueStdResult CheckInputBitmap( const ImageToolsBitmap* bitmap, const char* mapName )
+BlueStdResult CheckInputBitmap( const ImageToolsBitmap* bitmap, const char* mapName )
 {
 	if( !bitmap || !bitmap->IsValid() )
 	{
-		return Be::BlueStdResult( Be::BLUE_STD_RESULT_VALUE_ERROR, ( std::string( "invalid " ) + mapName ).c_str() );
+		return BlueStdResult( BLUE_STD_RESULT_VALUE_ERROR, ( std::string( "invalid " ) + mapName ).c_str() );
 	}
 	if( bitmap->GetType() != TEX_TYPE_2D )
 	{
-		return Be::BlueStdResult( Be::BLUE_STD_RESULT_VALUE_ERROR, ( mapName + std::string( " needs to be a 2D image" ) ).c_str() );
+		return BlueStdResult( BLUE_STD_RESULT_VALUE_ERROR, ( mapName + std::string( " needs to be a 2D image" ) ).c_str() );
 	}
 	if( !Is8BitFormat( bitmap->GetFormat() ) )
 	{
-		return Be::BlueStdResult( Be::BLUE_STD_RESULT_VALUE_ERROR, ( mapName + std::string( " image must be 8 bit per channel image" ) ).c_str() );
+		return BlueStdResult( BLUE_STD_RESULT_VALUE_ERROR, ( mapName + std::string( " image must be 8 bit per channel image" ) ).c_str() );
 	}
-	return Be::BlueStdResult( Be::BLUE_STD_RESULT_OK );
+	return BlueStdResult( BLUE_STD_RESULT_OK );
 }
 
 void ExtractNormals( 
@@ -173,18 +173,18 @@ StdOrStringResult FilterRoughnessChannel(
 	AllowThreads allowThreads;
 
 	auto result = CheckInputBitmap( normalMap, "normal map" );
-	if( !Be::IsSuccess( result ) )
+	if( !BeIsSuccess( result ) )
 	{
 		return result;
 	}
 	result = CheckInputBitmap( destination, "destination map" );
-	if( !Be::IsSuccess( result ) )
+	if( !BeIsSuccess( result ) )
 	{
 		return result;
 	}
 	if( destination->GetWidth() > normalMap->GetWidth() || destination->GetHeight() > normalMap->GetHeight() )
 	{
-		return Be::BlueStdResult( Be::BLUE_STD_RESULT_VALUE_ERROR, "destination map size should not be larger than normal map" );
+		return BlueStdResult( BLUE_STD_RESULT_VALUE_ERROR, "destination map size should not be larger than normal map" );
 	}
 
 	std::vector<Vector3> normals;
@@ -236,7 +236,7 @@ StdOrStringResult FilterRoughnessChannel(
 			}
 		}
 	}
-	return Be::BlueStdResult( Be::BLUE_STD_RESULT_OK );
+	return BlueStdResult( BLUE_STD_RESULT_OK );
 }
 
 MAP_FUNCTION_AND_WRAP( 

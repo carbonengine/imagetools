@@ -135,7 +135,7 @@ StdOrImageIOResult LoadHostBitmap( const wchar_t* filename, ImageToolsBitmapPtr&
 {
 	result.CreateInstance();
 	auto ret = result->Load( filename );
-	if( !Be::IsSuccess( ret ) )
+	if( !BeIsSuccess( ret ) )
 	{
 		result = nullptr;
 	}
@@ -146,7 +146,7 @@ StdOrImageIOResult CreateFromArray( const std::vector<ImageToolsBitmap*>& elemen
 {
 	result.CreateInstance();
 	auto ret = result->CreateFromArray( elements );
-	if( !Be::IsSuccess( ret ) )
+	if( !BeIsSuccess( ret ) )
 	{
 		result = nullptr;
 	}
@@ -164,7 +164,7 @@ Be::Result<std::string> CreateBitmap2D(
 	if( !result->Create( width, height, mipCount, format ) )
 	{
 		result = nullptr;
-		return "error creating 2D bitmap";
+		return Be::Result<std::string>( "error creating 2D bitmap" );
 	}
 	return std::string();
 }
@@ -181,7 +181,7 @@ Be::Result<std::string> CreateBitmap2DFromString(
 	if( !result->Create( width, height, mipCount, format ) )
 	{
 		result = nullptr;
-		return "error creating 2D bitmap";
+		return Be::Result<std::string>( "error creating 2D bitmap" );
 	}
 	memcpy( result->GetRawData(), pixelData, result->GetRawDataSize() );
 	return std::string();
@@ -197,7 +197,7 @@ Be::Result<std::string> CreateBitmapCube(
 	if( !result->CreateCube( width, mipCount, format ) )
 	{
 		result = nullptr;
-		return "error creating cube bitmap";
+		return Be::Result<std::string>( "error creating cube bitmap" );
 	}
 	return std::string();
 }
@@ -214,7 +214,7 @@ Be::Result<std::string> CreateBitmapVolume(
 	if( !result->CreateVolume( width, height, depth, mipCount, format ) )
 	{
 		result = nullptr;
-		return "error creating volume bitmap";
+		return Be::Result<std::string>( "error creating volume bitmap" );
 	}
 	return std::string();
 }

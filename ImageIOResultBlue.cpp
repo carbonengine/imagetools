@@ -12,10 +12,7 @@ BLUE_DEFINE_EXCEPTION( ImageIOError, BlueStdRuntimeError );
 BLUE_DEFINE_EXCEPTION( UnrecognizedImageTypeError, ImageIOError );
 BLUE_DEFINE_EXCEPTION( UnsupportedOperationError, ImageIOError );
 
-namespace Be
-{
-
-BLUE_BEGIN_GET_EXCEPTION( Result<ImageIO::Result> )
+BLUE_BEGIN_GET_EXCEPTION( Be::Result<ImageIO::Result> )
 	switch( result.m_result.code )
 	{
 	case ImageIO::Result::UNRECOGNIZED_IMAGE_TYPE:
@@ -45,5 +42,3 @@ BLUE_BEGIN_GET_EXCEPTION( Result<ImageIO::Result> )
 		return BLUE_GET_EXCEPTION( ImageIOError );
 	}
 BLUE_END_GET_EXCEPTION()
-
-}

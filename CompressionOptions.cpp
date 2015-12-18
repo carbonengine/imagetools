@@ -23,21 +23,21 @@ CompressionOptions::CompressionOptions( IRoot* lockobj )
 {
 }
 
-Be::BlueStdResult CompressionOptions::Create( 
+BlueStdResult CompressionOptions::Create( 
 	Be::OptionalWithDefaultValue<Tr2RenderContextEnum::PixelFormat, Tr2RenderContextEnum::PIXEL_FORMAT_BC1_UNORM> format,
 	Be::OptionalWithDefaultValue<nvtt::Quality, nvtt::Quality_Production> quality,
 	Be::OptionalWithDefaultValue<bool, false> generateMips,
 	Be::OptionalWithDefaultValue<bool, false> alphaForBc1 )
 {
 	auto result = SetFormat( format );
-	if( !Be::IsSuccess( result ) )
+	if( !BeIsSuccess( result ) )
 	{
 		return result;
 	}
 	m_quality = quality;
 	m_alphaForBc1 = alphaForBc1;
 	m_generateMips = generateMips;
-	return Be::BLUE_STD_RESULT_OK;
+	return BLUE_STD_RESULT_OK;
 }
 
 Tr2RenderContextEnum::PixelFormat CompressionOptions::GetFormat() const
@@ -45,14 +45,14 @@ Tr2RenderContextEnum::PixelFormat CompressionOptions::GetFormat() const
 	return m_format;
 }
 
-Be::BlueStdResult CompressionOptions::SetFormat( Tr2RenderContextEnum::PixelFormat format )
+BlueStdResult CompressionOptions::SetFormat( Tr2RenderContextEnum::PixelFormat format )
 {
 	if( !IsCompressedFormat( format ) )
 	{
-		return Be::BlueStdResult( Be::BLUE_STD_RESULT_VALUE_ERROR, "format needs to be a compressed format (imagetools.PIXEL_FORMAT.BC#_...)" );
+		return BlueStdResult( BLUE_STD_RESULT_VALUE_ERROR, "format needs to be a compressed format (imagetools.PIXEL_FORMAT.BC#_...)" );
 	}
 	m_format = format;
-	return Be::BLUE_STD_RESULT_OK;
+	return BLUE_STD_RESULT_OK;
 }
 
 void CompressionOptions::FillNvttOptions( nvtt::CompressionOptions& options )
@@ -94,6 +94,8 @@ void CompressionOptions::FillNvttOptions( nvtt::CompressionOptions& options )
 	case PIXEL_FORMAT_BC7_UNORM_SRGB:
 		options.setFormat( nvtt::Format_BC7 );
 		break;
+    default:
+        break;
 	}
 	options.setQuality( m_quality );
 	options.setColorWeights( m_redWeight, m_greenWeight, m_blueWeight, m_alphaWeight );

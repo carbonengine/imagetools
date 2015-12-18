@@ -2,7 +2,6 @@
 Imports:
 - ../core_project.yaml
 - ../../../../../../sdk/nvidia/nvtt/r1380/nvtt_r1380.yaml
-- ../BlueExposure/uses_BlueExposureStatic.yaml
 - ../ImageIO/uses_ImageIO.yaml
 
 # Settings from the General section, for all configurations
@@ -29,6 +28,12 @@ BaseConfigurations:
   Windows:
     Imports:
     - ../../../../../../sdk/zlib/1.2.3/zlib_1.2.3.yaml
+    - ../BlueExposure/uses_BlueExposureStatic.yaml
+
+  Mac:
+    Imports:
+    - ../../../../../../sdk/zlib/1.2.3/zlib_1.2.3.yaml
+    - ../BlueExposure/uses_BlueExposure.yaml
 
   Release:
     General:
@@ -65,3 +70,15 @@ Configurations:
     - Release
     - Python27
     - Windows
+  
+  Release|Mac64:
+    BaseConfigurations:
+    - Release
+    - ExeFile
+    - Mac
+    
+  Release_27|Mac64:
+    BaseConfigurations:
+    - Release
+    - Python27
+    - Mac
