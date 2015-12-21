@@ -359,9 +359,9 @@ BlueStdResult ImageToolsBitmap::CreateNvttInputOptions(
 		inputOptions.setFormat( nvtt::InputFormat_RGBA_16F );
 		break;
 	case PIXEL_FORMAT_B8G8R8A8_UNORM:
-		inputOptions.setFormat( nvtt::InputFormat_BGRA_8UB );
-		break;
 	case PIXEL_FORMAT_B8G8R8X8_UNORM:
+	case PIXEL_FORMAT_R8_UNORM:
+	case PIXEL_FORMAT_R8G8_UNORM:
 		inputOptions.setFormat( nvtt::InputFormat_BGRA_8UB );
 		break;
 	default:
@@ -370,13 +370,13 @@ BlueStdResult ImageToolsBitmap::CreateNvttInputOptions(
 	
 	if( compressionOptions )
 	{
-	PixelFormat compressionFormat = compressionOptions->GetFormat();
-	if( (compressionFormat == PIXEL_FORMAT_BC7_UNORM || compressionFormat == PIXEL_FORMAT_BC7_UNORM_SRGB) &&
-	    ( inputFormat != PIXEL_FORMAT_B8G8R8A8_UNORM && inputFormat != PIXEL_FORMAT_B8G8R8X8_UNORM ))
-	{
-		// NVTT compression on BC7 floating point formatted textures seems to result in assertion errors.
-		return BlueStdResult( BLUE_STD_RESULT_VALUE_ERROR, "Unsupported input pixel format for BC7" );
-	}
+		PixelFormat compressionFormat = compressionOptions->GetFormat();
+		if( (compressionFormat == PIXEL_FORMAT_BC7_UNORM || compressionFormat == PIXEL_FORMAT_BC7_UNORM_SRGB) &&
+			( inputFormat != PIXEL_FORMAT_B8G8R8A8_UNORM && inputFormat != PIXEL_FORMAT_B8G8R8X8_UNORM ))
+		{
+			// NVTT compression on BC7 floating point formatted textures seems to result in assertion errors.
+			return BlueStdResult( BLUE_STD_RESULT_VALUE_ERROR, "Unsupported input pixel format for BC7" );
+		}
 	}
 
 	inputOptions.setAlphaMode( nvtt::AlphaMode_None );
@@ -401,13 +401,45 @@ BlueStdResult ImageToolsBitmap::CreateNvttInputOptions(
 	{
 		for( uint32_t i = 0; i < mipCount; ++i )
 		{
-			if( GetType() == TEX_TYPE_3D )
+			uint32_t width = GetMipWidth( i );
+			uint32_t height = GetType() == TEX_TYPE_3D ? GetMipHeight( i ) * GetMipDepth( i ) : GetMipHeight( i );
+			auto data = GetMipRawData( i, CubemapFace( face ) );
+			switch( inputFormat )
 			{
-				inputOptions.setMipmapData( GetMipRawData( i, CubemapFace( face ) ), GetMipWidth( i ), GetMipHeight( i ) * GetMipDepth( i ), 1, face, i );
-			}
-			else
-			{
-				inputOptions.setMipmapData( GetMipRawData( i, CubemapFace( face ) ), GetMipWidth( i ), GetMipHeight( i ), GetMipDepth( i ), face, i );
+			case PIXEL_FORMAT_R8_UNORM:
+				{
+					std::unique_ptr<uint8_t, TrackableDelete<uint8_t>> copy( CCP_NEW( "ImageToolsBitmap::CreateNvttInputOptions/copy" ) uint8_t[width * height * 4] );
+					auto src = reinterpret_cast<const uint8_t*>( data );
+					auto dst = copy.get();
+					for( uint32_t p = 0; p < width * height; ++p )
+					{
+						*dst++ = *src;
+						*dst++ = *src;
+						*dst++ = *src;
+						*dst++ = *src;
+						++src;
+					}
+					inputOptions.setMipmapData( copy.get(), width, height, 1, face, i );
+				}
+				break;
+			case PIXEL_FORMAT_R8G8_UNORM:
+				{
+					std::unique_ptr<uint8_t, TrackableDelete<uint8_t>> copy( CCP_NEW( "ImageToolsBitmap::CreateNvttInputOptions/copy" ) uint8_t[width * height * 4] );
+					auto src = reinterpret_cast<const uint8_t*>( data );
+					auto dst = copy.get();
+					for( uint32_t p = 0; p < width * height; ++p )
+					{
+						*dst++ = *src++;
+						*dst++ = *src;
+						*dst++ = *src;
+						*dst++ = *src;
+						++src;
+					}
+					inputOptions.setMipmapData( copy.get(), width, height, 1, face, i );
+				}
+				break;
+			default:
+				inputOptions.setMipmapData( data, width, height, 1, face, i );
 			}
 		}
 	}
