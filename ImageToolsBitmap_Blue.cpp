@@ -102,6 +102,10 @@ const Be::ClassInfo* ImageToolsBitmap::ExposeToBlue()
 			"Returns a copy if this image mip level as a separate image.\n"
 			"Arguments:\n"
 			"mip_level - mip level index" );
+		MAP_METHOD_AND_WRAP( 
+			"yuv", 
+			ToYuv, 
+			"Returns a [y, u, v] list of YUV422 channels of the bitmap." );
 		MAP_METHOD_AND_WRAP_OPTIONAL_ARGS( 
 			"set_mip_level_data", 
 			SetMipData, 

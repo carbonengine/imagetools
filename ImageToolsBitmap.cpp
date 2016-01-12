@@ -279,6 +279,81 @@ BlueStdResult ImageToolsBitmap::ExtractMipLevel( uint32_t mipLevel, ImageToolsBi
 	return BLUE_STD_RESULT_OK;
 }
 
+BlueStdResult ImageToolsBitmap::ToYuv( std::vector<ImageToolsBitmapPtr>& result ) const
+{
+	if( !IsValid() )
+	{
+		return BlueStdResult( BLUE_STD_RESULT_VALUE_ERROR, "source bitmap is invalid" );
+	}
+	if( GetFormat() != Tr2RenderContextEnum::PIXEL_FORMAT_B8G8R8A8_UNORM && GetFormat() != Tr2RenderContextEnum::PIXEL_FORMAT_B8G8R8X8_UNORM )
+	{
+		return BlueStdResult( BLUE_STD_RESULT_VALUE_ERROR, "invalid format" );
+	}
+	result.clear();
+	result.resize( 3 );
+	result[0].CreateInstance();
+	result[1].CreateInstance();
+	result[2].CreateInstance();
+	if( !result[0] || !result[1] || !result[2] )
+	{
+		return BLUE_STD_RESULT_MEMORY_ERROR;
+	}
+	bool createResult = false;
+	uint32_t faceCount = 1;
+	switch( GetType() )
+	{
+	case TEX_TYPE_CUBE:
+		createResult = result[0]->CreateCube( GetWidth(), GetMipCount(), Tr2RenderContextEnum::PIXEL_FORMAT_R8_UNORM );
+		createResult = result[1]->CreateCube( GetWidth() / 2, std::max( GetMipCount() - 1, 1u ), Tr2RenderContextEnum::PIXEL_FORMAT_R8_UNORM ) && createResult;
+		createResult = result[2]->CreateCube( GetWidth() / 2, std::max( GetMipCount() - 1, 1u ), Tr2RenderContextEnum::PIXEL_FORMAT_R8_UNORM ) && createResult;
+		faceCount = 6;
+		break;
+	}
+	if( !createResult )
+	{
+		return BLUE_STD_RESULT_MEMORY_ERROR;
+	}
+	for( uint32_t mip = 0; mip < GetMipCount(); ++mip )
+	{
+		for( uint32_t face = 0; face < faceCount; ++face )
+		{
+			const uint8_t* src = reinterpret_cast<const uint8_t*>( GetMipRawData( mip, CubemapFace( face ) ) );
+			uint8_t* y = reinterpret_cast<uint8_t*>( result[0]->GetMipRawData( mip, CubemapFace( face ) ) );
+			uint8_t* u = nullptr;
+			uint8_t* v = nullptr;
+			if( mip < result[1]->GetMipCount() )
+			{
+				u = reinterpret_cast<uint8_t*>( result[1]->GetMipRawData( mip, CubemapFace( face ) ) );
+				v = reinterpret_cast<uint8_t*>( result[2]->GetMipRawData( mip, CubemapFace( face ) ) );
+			}
+			for( uint32_t j = 0; j < GetMipHeight( mip ); ++j )
+			{
+				for( uint32_t i = 0; i < GetMipWidth( mip ); ++i )
+				{
+					float r = src[i * 4 + 2];
+					float g = src[i * 4 + 1];
+					float b = src[i * 4 + 0];
+					int yy = int( r * 0.299f + g * 0.587f + b * 0.114f );
+					y[i] = yy;
+					if( mip < result[1]->GetMipCount() && i % 2 == 0 && j % 2 == 0 )
+					{
+						u[i / 2] = int( r * -0.168736f + g * -0.331264f + b * 0.500000f + 128 );
+						v[i / 2] = int( r *  0.500000f + g * -0.418688f + b * -0.081312f + 128 );
+					}
+				}
+				src += GetMipPitch( mip );
+				y += result[0]->GetMipPitch( mip );
+				if( mip < result[1]->GetMipCount() && j % 2 == 0 )
+				{
+					u += result[1]->GetMipPitch( mip );
+					v += result[1]->GetMipPitch( mip );
+				}
+			}
+		}
+	}
+	return BLUE_STD_RESULT_OK;
+}
+
 BlueStdResult ImageToolsBitmap::SetMipData( uint32_t mipLevel, ImageToolsBitmap* result, uint32_t sourceMip )
 {
 	if( !IsValid() )
@@ -420,7 +495,7 @@ BlueStdResult ImageToolsBitmap::CreateNvttInputOptions(
 						++src;
 					}
 					inputOptions.setMipmapData( copy.get(), width, height, 1, face, i );
-				}
+			}
 				break;
 			case PIXEL_FORMAT_R8G8_UNORM:
 				{
@@ -428,7 +503,7 @@ BlueStdResult ImageToolsBitmap::CreateNvttInputOptions(
 					auto src = reinterpret_cast<const uint8_t*>( data );
 					auto dst = copy.get();
 					for( uint32_t p = 0; p < width * height; ++p )
-					{
+			{
 						*dst++ = *src++;
 						*dst++ = *src;
 						*dst++ = *src;
