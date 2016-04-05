@@ -37,7 +37,7 @@ private:
 	BlueStdResult Copy( ImageToolsBitmapPtr& result ) const;
 	BlueStdResult ExtractMipLevel( uint32_t mipLevel, ImageToolsBitmapPtr& result ) const;
 	BlueStdResult SetMipData( uint32_t mipLevel, ImageToolsBitmap* result, uint32_t sourceMip );
-	BlueStdResult ToYuv( std::vector<ImageToolsBitmapPtr>& result ) const;
+	BlueStdResult ToYuv( std::pair<ImageToolsBitmapPtr, ImageToolsBitmapPtr>& result ) const;
 };
 
 TYPEDEF_BLUECLASS( ImageToolsBitmap );

@@ -105,7 +105,7 @@ const Be::ClassInfo* ImageToolsBitmap::ExposeToBlue()
 		MAP_METHOD_AND_WRAP( 
 			"yuv", 
 			ToYuv, 
-			"Returns a [y, u, v] list of YUV422 channels of the bitmap." );
+			"Returns a (y, uv) tuple of YUV422 channels of the bitmap." );
 		MAP_METHOD_AND_WRAP_OPTIONAL_ARGS( 
 			"set_mip_level_data", 
 			SetMipData, 
