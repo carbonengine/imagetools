@@ -301,7 +301,7 @@ BlueStdResult ImageToolsBitmap::ToYuv( std::pair<ImageToolsBitmapPtr, ImageTools
 	{
 	case TEX_TYPE_CUBE:
 		createResult = result.first->CreateCube( GetWidth(), GetMipCount(), Tr2RenderContextEnum::PIXEL_FORMAT_R8_UNORM );
-		createResult = result.second->CreateCube( GetWidth() / 2, GetMipCount() ? std::max( GetMipCount() - 1, 1u ) : 0, Tr2RenderContextEnum::PIXEL_FORMAT_R8G8_UNORM ) && createResult;
+		createResult = result.second->CreateCube( GetWidth() / 2, GetMipCount() ? std::max( GetMipCount() - 1, 1u ) : 0, Tr2RenderContextEnum::PIXEL_FORMAT_B8G8R8A8_UNORM ) && createResult;
 		faceCount = 6;
 		break;
 	}
@@ -309,6 +309,7 @@ BlueStdResult ImageToolsBitmap::ToYuv( std::pair<ImageToolsBitmapPtr, ImageTools
 	{
 		return BLUE_STD_RESULT_MEMORY_ERROR;
 	}
+	memset( result.second->GetRawData(), 0, result.second->GetRawDataSize() );
 	for( uint32_t mip = 0; mip < GetMipCount(); ++mip )
 	{
 		for( uint32_t face = 0; face < faceCount; ++face )
@@ -319,8 +320,8 @@ BlueStdResult ImageToolsBitmap::ToYuv( std::pair<ImageToolsBitmapPtr, ImageTools
 			uint8_t* v = nullptr;
 			if( mip < result.second->GetMipCount() )
 			{
-				u = reinterpret_cast<uint8_t*>( result.second->GetMipRawData( mip, CubemapFace( face ) ) );
-				v = reinterpret_cast<uint8_t*>( result.second->GetMipRawData( mip, CubemapFace( face ) ) ) + 1;
+				u = reinterpret_cast<uint8_t*>( result.second->GetMipRawData( mip, CubemapFace( face ) ) ) + 1;
+				v = reinterpret_cast<uint8_t*>( result.second->GetMipRawData( mip, CubemapFace( face ) ) ) + 2;
 			}
 			for( uint32_t j = 0; j < GetMipHeight( mip ); ++j )
 			{
@@ -333,8 +334,8 @@ BlueStdResult ImageToolsBitmap::ToYuv( std::pair<ImageToolsBitmapPtr, ImageTools
 					y[i] = yy;
 					if( mip < result.second->GetMipCount() && i % 2 == 0 && j % 2 == 0 )
 					{
-						u[i] = int( r * -0.168736f + g * -0.331264f + b * 0.500000f + 128 );
-						v[i] = int( r *  0.500000f + g * -0.418688f + b * -0.081312f + 128 );
+						u[i * 2] = int( r * -0.168736f + g * -0.331264f + b * 0.500000f + 128 );
+						v[i * 2] = int( r *  0.500000f + g * -0.418688f + b * -0.081312f + 128 );
 					}
 				}
 				src += GetMipPitch( mip );
