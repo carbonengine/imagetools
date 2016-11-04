@@ -138,7 +138,7 @@ BlueStdResult ImageToolsBitmap::CreateFromArray( const std::vector<ImageToolsBit
 
 BlueStdResult ImageToolsBitmap::Decompress( Tr2RenderContextEnum::PixelFormat format )
 {
-	if( !IsCompressed() || GetType() != TEX_TYPE_2D )
+	if( !IsCompressed() )//|| GetType() != TEX_TYPE_2D )
 	{
 		return BlueStdResult( BLUE_STD_RESULT_VALUE_ERROR, "cannot decompress an uncompressed image" );
 	}
@@ -195,25 +195,28 @@ BlueStdResult ImageToolsBitmap::Decompress( Tr2RenderContextEnum::PixelFormat fo
 
 	for( uint32_t mip = 0; mip < GetTrueMipCount(); ++mip )
 	{
-		if( !surface.setImage2D( nvttFormat, nvtt::Decoder_D3D10, GetMipWidth( mip ), GetMipHeight( mip ), GetMipRawData( mip ) ) )
-		{
-			Destroy();
-			return BlueStdResult( BLUE_STD_RESULT_RUNTIME_ERROR, "could not decompress image" );
-		}
-	
 		const size_t mipSize = GetMipWidth( mip ) * GetMipHeight( mip );
-		for( size_t channel = 0; channel < 4; ++channel )
+		for( uint32_t face = 0; face < GetArraySize(); ++face )
 		{
-			static const int channelMap[] = { 2, 1, 0, 3 };
-			const float* src = surface.channel( channelMap[channel] );
-			uint8_t* dest = reinterpret_cast<uint8_t*>( data.get() ) + mipStart + channel;
-			for( size_t i = 0; i < mipSize; ++i )
+			if( !surface.setImage2D( nvttFormat, nvtt::Decoder_D3D10, GetMipWidth( mip ), GetMipHeight( mip ), GetMipRawData( mip, face ) ) )
 			{
-				*dest = uint8_t( std::max( std::min( int( *src++ * 255.f + 0.5f ), 255 ), 0 ) );
-				dest += bpp;
+				Destroy();
+				return BlueStdResult( BLUE_STD_RESULT_RUNTIME_ERROR, "could not decompress image" );
 			}
+	
+			for( size_t channel = 0; channel < 4; ++channel )
+			{
+				static const int channelMap[] = { 2, 1, 0, 3 };
+				const float* src = surface.channel( channelMap[channel] );
+				uint8_t* dest = reinterpret_cast<uint8_t*>( data.get() ) + mipStart + channel;
+				for( size_t i = 0; i < mipSize; ++i )
+				{
+					*dest = uint8_t( std::max( std::min( int( *src++ * 255.f + 0.5f ), 255 ), 0 ) );
+					dest += bpp;
+				}
+			}
+			mipStart += mipSize * bpp;
 		}
-		mipStart += mipSize * bpp;
 	}
 	m_data.swap( data );
 	m_format = format;
@@ -236,6 +239,60 @@ BlueStdResult ImageToolsBitmap::Copy( ImageToolsBitmapPtr& result ) const
 		return BLUE_STD_RESULT_MEMORY_ERROR;
 	}
 	memcpy( result->m_data.get(), m_data.get(), m_data.size() );
+	return BLUE_STD_RESULT_OK;
+}
+
+BlueStdResult ImageToolsBitmap::FlattenSlices( bool horizontally, ImageToolsBitmapPtr& result ) const
+{
+	if( !IsValid() || IsCompressed() )
+	{
+		return BlueStdResult( BLUE_STD_RESULT_VALUE_ERROR, "source bitmap is invalid" );
+	}
+	result.CreateInstance();
+	uint32_t sliceCount = 1;
+	switch( GetType() )
+	{
+	case TEX_TYPE_2D:
+		sliceCount = GetArraySize();
+		break;
+	case TEX_TYPE_CUBE:
+		sliceCount = 6;
+		break;
+	case TEX_TYPE_3D:
+		sliceCount = GetDepth();
+		break;
+	default:
+		return BlueStdResult( BLUE_STD_RESULT_VALUE_ERROR, "unsupported bitmap" );
+	}
+	if( !result->Create( horizontally ? GetWidth() * sliceCount : GetWidth(), !horizontally ? GetHeight() * sliceCount : GetHeight(), 0, GetFormat() ) )
+	{
+		return BLUE_STD_RESULT_MEMORY_ERROR;
+	}
+	auto dst = result->GetRawData();
+	for( uint32_t i = 0; i < sliceCount; ++i )
+	{
+		auto src = GetMipRawData( 0, i );
+		auto size = GetMipSize( 0 ) / sliceCount;
+		auto pitch = GetMipPitch( 0 );
+
+		if( horizontally )
+		{
+			auto row = GetMipWidth( 0 ) * Tr2RenderContextEnum::GetBytesPerPixel( GetFormat() );
+			auto d = dst + row * i;
+			for( uint32_t y = 0; y < GetMipHeight( 0 ); ++y )
+			{
+				memcpy( d, src, row );
+				d += result->GetMipPitch( 0 );
+				src += GetMipPitch( 0 );
+			}
+		}
+		else
+		{
+			auto row = GetMipWidth( 0 ) * Tr2RenderContextEnum::GetBytesPerPixel( GetFormat() );
+			auto d = dst + result->GetMipPitch( 0 ) * i;
+			memcpy( d, src, size );
+		}
+	}
 	return BLUE_STD_RESULT_OK;
 }
 

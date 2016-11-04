@@ -103,6 +103,12 @@ const Be::ClassInfo* ImageToolsBitmap::ExposeToBlue()
 			"Arguments:\n"
 			"mip_level - mip level index" );
 		MAP_METHOD_AND_WRAP( 
+			"flatten", 
+			FlattenSlices, 
+			"Returns a 2D image with all slices (cube faces) copied to it in a horizontal or vertical strip.\n"
+			"Arguments:\n"
+			"horizontally - copy slices in horizontal or vertical strip" );
+		MAP_METHOD_AND_WRAP( 
 			"yuv", 
 			ToYuv, 
 			"Returns a (y, uv) tuple of YUV422 channels of the bitmap." );
