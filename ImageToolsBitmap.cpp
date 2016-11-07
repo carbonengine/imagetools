@@ -271,7 +271,7 @@ BlueStdResult ImageToolsBitmap::FlattenSlices( bool horizontally, ImageToolsBitm
 	auto dst = result->GetRawData();
 	for( uint32_t i = 0; i < sliceCount; ++i )
 	{
-		auto src = GetMipRawData( 0, i );
+		auto src = GetType() == TEX_TYPE_3D ? GetMipRawData( 0 ) + GetMipPitch( 0 ) * GetMipHeight( 0 ) : GetMipRawData( 0, i );
 		auto size = GetMipSize( 0 ) / sliceCount;
 		auto pitch = GetMipPitch( 0 );
 
@@ -289,7 +289,7 @@ BlueStdResult ImageToolsBitmap::FlattenSlices( bool horizontally, ImageToolsBitm
 		else
 		{
 			auto row = GetMipWidth( 0 ) * Tr2RenderContextEnum::GetBytesPerPixel( GetFormat() );
-			auto d = dst + result->GetMipPitch( 0 ) * i;
+			auto d = dst + result->GetMipPitch( 0 ) * GetMipHeight( 0 ) * i;
 			memcpy( d, src, size );
 		}
 	}
