@@ -271,7 +271,7 @@ BlueStdResult ImageToolsBitmap::FlattenSlices( bool horizontally, ImageToolsBitm
 	auto dst = result->GetRawData();
 	for( uint32_t i = 0; i < sliceCount; ++i )
 	{
-		auto src = GetType() == TEX_TYPE_3D ? GetMipRawData( 0 ) + GetMipPitch( 0 ) * GetMipHeight( 0 ) : GetMipRawData( 0, i );
+		auto src = GetType() == TEX_TYPE_3D ? GetMipRawData( 0 ) + GetMipPitch( 0 ) * GetMipHeight( 0 ) * i : GetMipRawData( 0, i );
 		auto size = GetMipSize( 0 ) / sliceCount;
 		auto pitch = GetMipPitch( 0 );
 
