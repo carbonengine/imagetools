@@ -47,7 +47,7 @@ def to_pil(image):
 
     :param image: imageutils.ImageToolsBitmap image
     :return: PIL image converted from imageutils image
-    :rtype : PIL.Image
+    :rtype : PIL.Image.Image
     :raise RuntimeError: if the input image cannot be converted to PIL
     """
     if image.is_compressed():
