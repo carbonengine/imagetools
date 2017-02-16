@@ -361,6 +361,8 @@ BlueStdResult ImageToolsBitmap::ToYuv( std::pair<ImageToolsBitmapPtr, ImageTools
 		createResult = result.second->CreateCube( GetWidth() / 2, GetMipCount() ? std::max( GetMipCount() - 1, 1u ) : 0, Tr2RenderContextEnum::PIXEL_FORMAT_B8G8R8A8_UNORM ) && createResult;
 		faceCount = 6;
 		break;
+    default:
+        break;
 	}
 	if( !createResult )
 	{
