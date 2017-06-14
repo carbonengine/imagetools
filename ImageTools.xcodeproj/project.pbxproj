@@ -45,7 +45,7 @@
 					"../../../../../../sdk/telemetry/3.0.1.1008/include",
 					.,
 					"../../../carbon/src",
-					"../../../../../../sdk/nvidia/nvtt/r1380/include",
+					"../../../../../../sdk/nvidia/nvtt/923b57d/include",
 					.,
 					"../../../carbon/src",
 					"../../../../../../sdk/telemetry/3.0.1.1008/include",
@@ -88,7 +88,7 @@
 					"../../../carbon/autobuild/CcpCore/MacOsX$(ARCHS)/clang4.2/",
 					"../../../carbon/autobuild/BlueExposure/python_27/MacOsX$(ARCHS)/clang4.2",
 					"../../../../../../sdk/libpng/1.4.0/lib/MacOsX$(ARCHS)",
-					"../../../../../../sdk/nvidia/nvtt/r1380/lib/MacOsX$(ARCHS)",
+					"../../../../../../sdk/nvidia/nvtt/923b57d/lib/MacOsX$(ARCHS)/clang4.2",
 					"../../../../../../sdk/telemetry/3.0.1.1008/lib",
 					"../../../carbon/autobuild/CcpCore/MacOsX$(ARCHS)/clang4.2/",
 					"../../../../../../sdk/libjpg/jpeg-8c/lib/MacOsX$(ARCHS)",
@@ -170,26 +170,26 @@
 				);
 			};
 		000000300000554da3c78efc = {
-			name = libpython2.7.dylib;
+			name = libnvcore.a;
 			fileEncoding = 4;
-			lastKnownFileType = "compiled.mach-o.dylib";
-			path = "../../../../../../shared_tools/python/27_mac/lib/libpython2.7.dylib";
+			lastKnownFileType = archive.ar;
+			path = "../../../../../../sdk/nvidia/nvtt/923b57d/lib/MacOsXx86_64/clang4.2/libnvcore.a";
 			isa = PBXFileReference;
 			sourceTree = "<group>";
 			};
 		000000460000554da3c78efc = {
-			name = libBlueExposure.a;
+			name = libnvmath.a;
 			fileEncoding = 4;
 			lastKnownFileType = archive.ar;
-			path = "../../autobuild/BlueExposure/python_27/MacOsXx86_64/clang4.2/libBlueExposure.a";
+			path = "../../../../../../sdk/nvidia/nvtt/923b57d/lib/MacOsXx86_64/clang4.2/libnvmath.a";
 			isa = PBXFileReference;
 			sourceTree = "<group>";
 			};
 		000000320000554da3c78efc = {
-			name = libnvtt.a;
+			name = libpython2.7.dylib;
 			fileEncoding = 4;
-			lastKnownFileType = archive.ar;
-			path = "../../../../../../sdk/nvidia/nvtt/r1380/lib/MacOsXx86_64/libnvtt.a";
+			lastKnownFileType = "compiled.mach-o.dylib";
+			path = "../../../../../../shared_tools/python/27_mac/lib/libpython2.7.dylib";
 			isa = PBXFileReference;
 			sourceTree = "<group>";
 			};
@@ -218,10 +218,10 @@
 			sourceTree = "<group>";
 			};
 		0000004A0000554da3c78efc = {
-			name = libImageIO.a;
+			name = libbc6h.a;
 			fileEncoding = 4;
 			lastKnownFileType = archive.ar;
-			path = "../../autobuild/ImageIO/MacOsXx86_64/clang4.2/libImageIO.a";
+			path = "../../../../../../sdk/nvidia/nvtt/923b57d/lib/MacOsXx86_64/clang4.2/libbc6h.a";
 			isa = PBXFileReference;
 			sourceTree = "<group>";
 			};
@@ -259,22 +259,22 @@
 			};
 		000000550000554da3c78efc = {
 			files = (
-				000000370000554da3c78efc,
 				000000390000554da3c78efc,
-				0000003B0000554da3c78efc,
 				000000290000554da3c78efc,
 				0000002B0000554da3c78efc,
 				0000003F0000554da3c78efc,
-				000000410000554da3c78efc,
-				0000002D0000554da3c78efc,
 				0000002F0000554da3c78efc,
+				0000002D0000554da3c78efc,
+				000000410000554da3c78efc,
+				0000003B0000554da3c78efc,
 				000000310000554da3c78efc,
 				000000450000554da3c78efc,
 				000000330000554da3c78efc,
 				000000470000554da3c78efc,
 				000000490000554da3c78efc,
-				000000350000554da3c78efc,
 				0000004B0000554da3c78efc,
+				000000350000554da3c78efc,
+				000000370000554da3c78efc,
 				);
 			buildActionMask = 2147483647;
 			isa = PBXFrameworksBuildPhase;
@@ -324,46 +324,46 @@
 			isa = PBXGroup;
 			sourceTree = "<group>";
 			children = (
-				000000380000554da3c78efc,
 				0000003A0000554da3c78efc,
-				0000003C0000554da3c78efc,
 				0000002A0000554da3c78efc,
 				0000002C0000554da3c78efc,
 				000000400000554da3c78efc,
-				000000420000554da3c78efc,
-				0000002E0000554da3c78efc,
 				000000300000554da3c78efc,
+				0000002E0000554da3c78efc,
+				000000420000554da3c78efc,
+				0000003C0000554da3c78efc,
 				000000320000554da3c78efc,
 				000000460000554da3c78efc,
 				000000340000554da3c78efc,
 				000000480000554da3c78efc,
 				0000004A0000554da3c78efc,
-				000000360000554da3c78efc,
 				0000004C0000554da3c78efc,
-				000000440000554da3c78efc,
-				0000003A0000554da3c78efc,
-				0000003C0000554da3c78efc,
-				0000002A0000554da3c78efc,
-				0000003E0000554da3c78efc,
-				000000400000554da3c78efc,
+				000000360000554da3c78efc,
 				000000380000554da3c78efc,
+				000000440000554da3c78efc,
+				0000002A0000554da3c78efc,
+				0000003A0000554da3c78efc,
+				000000400000554da3c78efc,
 				0000002C0000554da3c78efc,
+				000000300000554da3c78efc,
 				0000002E0000554da3c78efc,
-				000000320000554da3c78efc,
 				000000420000554da3c78efc,
+				0000003C0000554da3c78efc,
+				0000003E0000554da3c78efc,
+				000000460000554da3c78efc,
 				000000340000554da3c78efc,
-				000000480000554da3c78efc,
+				0000004C0000554da3c78efc,
 				0000004A0000554da3c78efc,
 				000000360000554da3c78efc,
-				0000004C0000554da3c78efc,
+				000000380000554da3c78efc,
 				);
 			name = Dependencies;
 			};
 		0000003C0000554da3c78efc = {
-			name = libnvmath.a;
+			name = libbc7.a;
 			fileEncoding = 4;
 			lastKnownFileType = archive.ar;
-			path = "../../../../../../sdk/nvidia/nvtt/r1380/lib/MacOsXx86_64/libnvmath.a";
+			path = "../../../../../../sdk/nvidia/nvtt/923b57d/lib/MacOsXx86_64/clang4.2/libbc7.a";
 			isa = PBXFileReference;
 			sourceTree = "<group>";
 			};
@@ -425,10 +425,10 @@
 			sourceTree = "<group>";
 			};
 		000000380000554da3c78efc = {
-			name = libz.a;
+			name = libnvtt.a;
 			fileEncoding = 4;
 			lastKnownFileType = archive.ar;
-			path = "../../../../../../sdk/zlib/1.2.3/lib/MacOsXx86_64/libz.a";
+			path = "../../../../../../sdk/nvidia/nvtt/923b57d/lib/MacOsXx86_64/clang4.2/libnvtt.a";
 			isa = PBXFileReference;
 			sourceTree = "<group>";
 			};
@@ -477,18 +477,18 @@
 			sourceTree = "<group>";
 			};
 		0000002A0000554da3c78efc = {
-			name = libnvimage.a;
+			name = libnvthread.a;
 			fileEncoding = 4;
 			lastKnownFileType = archive.ar;
-			path = "../../../../../../sdk/nvidia/nvtt/r1380/lib/MacOsXx86_64/libnvimage.a";
+			path = "../../../../../../sdk/nvidia/nvtt/923b57d/lib/MacOsXx86_64/clang4.2/libnvthread.a";
 			isa = PBXFileReference;
 			sourceTree = "<group>";
 			};
 		000000420000554da3c78efc = {
-			name = libsquish.a;
+			name = libnvimage.a;
 			fileEncoding = 4;
 			lastKnownFileType = archive.ar;
-			path = "../../../../../../sdk/nvidia/nvtt/r1380/lib/MacOsXx86_64/libsquish.a";
+			path = "../../../../../../sdk/nvidia/nvtt/923b57d/lib/MacOsXx86_64/clang4.2/libnvimage.a";
 			isa = PBXFileReference;
 			sourceTree = "<group>";
 			};
@@ -538,21 +538,21 @@
 		000000580000554da3c78efc = {
 			files = (
 				000000430000554da3c78efc,
-				000000390000554da3c78efc,
-				0000003B0000554da3c78efc,
 				000000290000554da3c78efc,
-				0000003D0000554da3c78efc,
+				000000390000554da3c78efc,
 				0000003F0000554da3c78efc,
-				000000370000554da3c78efc,
 				0000002B0000554da3c78efc,
+				0000002F0000554da3c78efc,
 				0000002D0000554da3c78efc,
-				000000310000554da3c78efc,
 				000000410000554da3c78efc,
+				0000003B0000554da3c78efc,
+				0000003D0000554da3c78efc,
+				000000450000554da3c78efc,
 				000000330000554da3c78efc,
-				000000470000554da3c78efc,
+				0000004B0000554da3c78efc,
 				000000490000554da3c78efc,
 				000000350000554da3c78efc,
-				0000004B0000554da3c78efc,
+				000000370000554da3c78efc,
 				);
 			buildActionMask = 2147483647;
 			isa = PBXFrameworksBuildPhase;
@@ -573,10 +573,10 @@
 			fileRef = 0000001E0000554da3c78efc;
 			};
 		000000340000554da3c78efc = {
-			name = libnvcore.a;
+			name = libImageIO.a;
 			fileEncoding = 4;
 			lastKnownFileType = archive.ar;
-			path = "../../../../../../sdk/nvidia/nvtt/r1380/lib/MacOsXx86_64/libnvcore.a";
+			path = "../../autobuild/ImageIO/MacOsXx86_64/clang4.2/libImageIO.a";
 			isa = PBXFileReference;
 			sourceTree = "<group>";
 			};
@@ -597,10 +597,10 @@
 			sourceTree = "<group>";
 			};
 		000000480000554da3c78efc = {
-			name = libnvthread.a;
+			name = libBlueExposure.a;
 			fileEncoding = 4;
 			lastKnownFileType = archive.ar;
-			path = "../../../../../../sdk/nvidia/nvtt/r1380/lib/MacOsXx86_64/libnvthread.a";
+			path = "../../autobuild/BlueExposure/python_27/MacOsXx86_64/clang4.2/libBlueExposure.a";
 			isa = PBXFileReference;
 			sourceTree = "<group>";
 			};
@@ -632,10 +632,10 @@
 			fileRef = 000000040000554da3c78efc;
 			};
 		0000003A0000554da3c78efc = {
-			name = libbc6h.a;
+			name = libz.a;
 			fileEncoding = 4;
 			lastKnownFileType = archive.ar;
-			path = "../../../../../../sdk/nvidia/nvtt/r1380/lib/MacOsXx86_64/libbc6h.a";
+			path = "../../../../../../sdk/zlib/1.2.3/lib/MacOsXx86_64/libz.a";
 			isa = PBXFileReference;
 			sourceTree = "<group>";
 			};
@@ -703,10 +703,10 @@
 			fileRef = 0000003E0000554da3c78efc;
 			};
 		0000002E0000554da3c78efc = {
-			name = libbc7.a;
+			name = libsquish.a;
 			fileEncoding = 4;
 			lastKnownFileType = archive.ar;
-			path = "../../../../../../sdk/nvidia/nvtt/r1380/lib/MacOsXx86_64/libbc7.a";
+			path = "../../../../../../sdk/nvidia/nvtt/923b57d/lib/MacOsXx86_64/clang4.2/libsquish.a";
 			isa = PBXFileReference;
 			sourceTree = "<group>";
 			};
@@ -800,7 +800,7 @@
 					"../../../../../../sdk/telemetry/3.0.1.1008/include",
 					.,
 					"../../../carbon/src",
-					"../../../../../../sdk/nvidia/nvtt/r1380/include",
+					"../../../../../../sdk/nvidia/nvtt/923b57d/include",
 					.,
 					"../../../carbon/src",
 					"../../../../../../sdk/telemetry/3.0.1.1008/include",
@@ -845,7 +845,7 @@
 					"../../../carbon/autobuild/CcpCore/MacOsX$(ARCHS)/clang4.2/",
 					"../../autobuild/BlueExposure/exefile/MacOsX$(ARCHS)/clang4.2",
 					"../../../../../../sdk/libpng/1.4.0/lib/MacOsX$(ARCHS)",
-					"../../../../../../sdk/nvidia/nvtt/r1380/lib/MacOsX$(ARCHS)",
+					"../../../../../../sdk/nvidia/nvtt/923b57d/lib/MacOsX$(ARCHS)/clang4.2",
 					"../../../../../../sdk/telemetry/3.0.1.1008/lib",
 					"../../../carbon/autobuild/CcpCore/MacOsX$(ARCHS)/clang4.2/",
 					"../../../../../../sdk/libjpg/jpeg-8c/lib/MacOsX$(ARCHS)",
