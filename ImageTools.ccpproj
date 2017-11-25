@@ -1,6 +1,6 @@
 # These are the SDKs that are used by all configurations
 Imports:
-- ../core_project.yaml
+- ../core_project/core_project.yaml
 - ../../../../../../sdk/nvidia/nvtt/923b57d/nvtt.yaml
 - ../ImageIO/uses_ImageIO.yaml
 
