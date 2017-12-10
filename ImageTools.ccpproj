@@ -52,7 +52,7 @@ BaseConfigurations:
   
   Python27:
     Imports:
-    - ../../../../../../sdk/python/Python_2.7.yaml
+    - ../../../../../../sdk/python/ccpproj/Python_2.7.yaml
     General:
       OutDir: ../../autobuild/ImageTools/python_27/$(Platform)/$(PlatformToolset)/
       IntDir: ../temp/ImageTools/python_27/$(Platform)/$(Configuration)/$(PlatformToolset)/
