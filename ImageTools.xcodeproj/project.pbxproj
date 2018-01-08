@@ -35,25 +35,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
-					"../../../../../../shared_tools/python/27_mac/include/python2.7",
 					"../../../../../../sdk/zlib/1.2.11/include",
-					"../../../../../../sdk/telemetry/3.0.1.1008/include",
-					"../../../../../../shared_tools/python/27_mac/include/python2.7",
-					"../../../../../../sdk/telemetry/3.0.1.1008/include",
-					"../../../../../../sdk/telemetry/3.0.1.1008/include",
-					"../../../../../../sdk/zlib/1.2.11/include",
-					"../../../../../../sdk/telemetry/3.0.1.1008/include",
+					..,
+					"../../../../../../sdk/libjpg/jpeg-9b",
 					.,
 					"../../../carbon/src",
 					"../../../../../../sdk/nvidia/nvtt/923b57d/include",
-					.,
-					"../../../carbon/src",
-					"../../../../../../sdk/telemetry/3.0.1.1008/include",
 					"../../../../../../sdk/libpng/1.6.29/include",
-					"../../../../../../sdk/libjpg/jpeg-9b",
-					"../../../../../../sdk/zlib/1.2.11/include",
-					.,
-					..,
+					"../../../../../../sdk/telemetry/3.0.1.1008/include",
+					"../../../../../../shared_tools/python/27_mac/include/python2.7",
 					);
 				CLANG_WARN_INT_CONVERSION = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -66,7 +56,7 @@
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/";
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				GCC_OPTIMIZATION_LEVEL = s;
 				ONLY_ACTIVE_ARCH = YES;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
@@ -75,26 +65,15 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				LIBRARY_SEARCH_PATHS = (
-					"../../../../../../shared_tools/python/27_mac/lib",
-					"../../../../../../sdk/telemetry/3.0.1.1008/lib",
-					"../../../carbon/autobuild/CcpCore/MacOsX$(ARCHS)/clang4.2/",
-					"../../../../../../sdk/zlib/1.2.11/lib/MacOsX$(ARCHS)",
-					"../../../carbon/autobuild/BlueExposure/python_27/MacOsX$(ARCHS)/clang4.2",
-					"../../../../../../shared_tools/python/27_mac/lib",
-					"../../../../../../sdk/telemetry/3.0.1.1008/lib",
-					"../../../../../../sdk/telemetry/3.0.1.1008/lib",
-					"../../../carbon/autobuild/CcpCore/MacOsX$(ARCHS)/clang4.2/",
-					"../../../../../../sdk/zlib/1.2.11/lib/MacOsX$(ARCHS)",
-					"../../../../../../sdk/telemetry/3.0.1.1008/lib",
-					"../../../carbon/autobuild/CcpCore/MacOsX$(ARCHS)/clang4.2/",
-					"../../../carbon/autobuild/BlueExposure/python_27/MacOsX$(ARCHS)/clang4.2",
-					"../../../../../../sdk/zlib/1.2.11/lib/MacOsX$(ARCHS)",
-					"../../../../../../sdk/nvidia/nvtt/923b57d/lib/MacOsX$(ARCHS)/clang4.2",
-					"../../../../../../sdk/telemetry/3.0.1.1008/lib",
-					"../../../carbon/autobuild/CcpCore/MacOsX$(ARCHS)/clang4.2/",
-					"../../../../../../sdk/libpng/1.6.29/lib/MacOsX$(ARCHS)/clang4.2",
 					"../../../../../../sdk/libjpg/jpeg-9b/lib/MacOsX$(ARCHS)",
 					"../../autobuild/ImageIO/MacOsX$(ARCHS)/clang4.2/",
+					"../../../../../../sdk/zlib/1.2.11/lib/MacOsX$(ARCHS)",
+					"../../../../../../shared_tools/python/27_mac/lib",
+					"../../../../../../sdk/telemetry/3.0.1.1008/lib",
+					"../../../carbon/autobuild/BlueExposure/python_27/MacOsX$(ARCHS)/clang4.2",
+					"../../../../../../sdk/libpng/1.6.29/lib/MacOsX$(ARCHS)/clang4.2",
+					"../../../../../../sdk/nvidia/nvtt/923b57d/lib/MacOsX$(ARCHS)/clang4.2",
+					"../../../carbon/autobuild/CcpCore/MacOsX$(ARCHS)/clang4.2/",
 					);
 				SYMROOT = "../../autobuild/ImageTools/python_27/MacOsX$(ARCHS)/clang4.2";
 				OBJROOT = "../temp/ImageTools/python_27/MacOsX$(ARCHS)/$(CONFIGURATION)/clang4.2";
@@ -103,19 +82,18 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				CONFIGURATION_TEMP_DIR = "../temp/ImageTools/python_27/MacOsX$(ARCHS)/$(CONFIGURATION)/clang4.2";
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"BLUE_WITH_PYTHON=1",
 					"PyMODINIT_FUNC=\"__attribute((visibility(\\\"default\\\"))) extern \\\"C\\\" void\"",
 					"BLUE_WITH_PYTHON=1",
-					"PyMODINIT_FUNC=\"__attribute((visibility(\\\"default\\\"))) extern \\\"C\\\" void\"",
 					"$(inherited)",
 					);
 				COPY_PHASE_STRIP = NO;
 				CLANG_CXX_LIBRARY = "libc++";
 				GCC_PREFIX_HEADER = StdAfx.h;
 				EXECUTABLE_EXTENSION = so;
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				SDKROOT = macosx;
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				WARNING_CFLAGS = "-Wno-nonportable-include-path -Wno-inconsistent-missing-override";
 				};
 			name = Release;
 			};
@@ -188,10 +166,10 @@
 			sourceTree = "<group>";
 			};
 		000000320000554da3c78efc = {
-			name = libnvcore.a;
+			name = libbc7.a;
 			fileEncoding = 4;
 			lastKnownFileType = archive.ar;
-			path = "../../../../../../sdk/nvidia/nvtt/923b57d/lib/MacOsXx86_64/clang4.2/libnvcore.a";
+			path = "../../../../../../sdk/nvidia/nvtt/923b57d/lib/MacOsXx86_64/clang4.2/libbc7.a";
 			isa = PBXFileReference;
 			sourceTree = "<group>";
 			};
@@ -326,46 +304,32 @@
 			isa = PBXGroup;
 			sourceTree = "<group>";
 			children = (
-				000000320000554da3c78efc,
-				0000002A0000554da3c78efc,
-				0000003E0000554da3c78efc,
-				000000400000554da3c78efc,
-				000000420000554da3c78efc,
-				0000002E0000554da3c78efc,
-				000000300000554da3c78efc,
-				000000440000554da3c78efc,
-				0000003C0000554da3c78efc,
-				000000340000554da3c78efc,
 				000000480000554da3c78efc,
-				000000360000554da3c78efc,
-				0000004A0000554da3c78efc,
-				0000004C0000554da3c78efc,
 				000000380000554da3c78efc,
+				0000002A0000554da3c78efc,
+				000000340000554da3c78efc,
+				000000420000554da3c78efc,
+				000000400000554da3c78efc,
+				000000300000554da3c78efc,
+				000000460000554da3c78efc,
+				0000004C0000554da3c78efc,
 				0000003A0000554da3c78efc,
 				0000002C0000554da3c78efc,
-				0000002A0000554da3c78efc,
-				0000003E0000554da3c78efc,
-				000000400000554da3c78efc,
-				000000420000554da3c78efc,
-				0000002E0000554da3c78efc,
 				000000320000554da3c78efc,
-				000000300000554da3c78efc,
-				000000440000554da3c78efc,
+				0000004A0000554da3c78efc,
+				0000002E0000554da3c78efc,
+				0000003E0000554da3c78efc,
 				0000003C0000554da3c78efc,
-				000000460000554da3c78efc,
-				000000480000554da3c78efc,
 				000000360000554da3c78efc,
-				0000004C0000554da3c78efc,
-				000000380000554da3c78efc,
-				0000003A0000554da3c78efc,
+				000000440000554da3c78efc,
 				);
 			name = Dependencies;
 			};
 		0000003C0000554da3c78efc = {
-			name = libbc7.a;
+			name = libnvcore.a;
 			fileEncoding = 4;
 			lastKnownFileType = archive.ar;
-			path = "../../../../../../sdk/nvidia/nvtt/923b57d/lib/MacOsXx86_64/clang4.2/libbc7.a";
+			path = "../../../../../../sdk/nvidia/nvtt/923b57d/lib/MacOsXx86_64/clang4.2/libnvcore.a";
 			isa = PBXFileReference;
 			sourceTree = "<group>";
 			};
@@ -541,11 +505,11 @@
 			files = (
 				0000002B0000554da3c78efc,
 				000000290000554da3c78efc,
+				000000310000554da3c78efc,
 				0000003D0000554da3c78efc,
 				0000003F0000554da3c78efc,
 				000000410000554da3c78efc,
 				0000002D0000554da3c78efc,
-				000000310000554da3c78efc,
 				0000002F0000554da3c78efc,
 				000000430000554da3c78efc,
 				0000003B0000554da3c78efc,
@@ -788,29 +752,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
-					"../../../carbon/src/stackless/include",
-					"../../../carbon/src/stackless/stackless",
-					"../../../carbon/src/stackless/Mac",
 					"../../../../../../sdk/zlib/1.2.11/include",
-					"../../../../../../sdk/telemetry/3.0.1.1008/include",
-					"../../../carbon/src/stackless/include",
+					"../../../../../../sdk/libjpg/jpeg-9b",
+					..,
 					"../../../carbon/src/stackless/stackless",
-					"../../../carbon/src/stackless/Mac",
-					"../../../../../../sdk/telemetry/3.0.1.1008/include",
-					"../../../../../../sdk/telemetry/3.0.1.1008/include",
-					"../../../../../../sdk/zlib/1.2.11/include",
-					"../../../../../../sdk/telemetry/3.0.1.1008/include",
-					.,
+					"../../../carbon/src/stackless/include",
 					"../../../carbon/src",
 					"../../../../../../sdk/nvidia/nvtt/923b57d/include",
 					.,
-					"../../../carbon/src",
-					"../../../../../../sdk/telemetry/3.0.1.1008/include",
 					"../../../../../../sdk/libpng/1.6.29/include",
-					"../../../../../../sdk/libjpg/jpeg-9b",
-					"../../../../../../sdk/zlib/1.2.11/include",
-					.,
-					..,
+					"../../../carbon/src/stackless/Mac",
+					"../../../../../../sdk/telemetry/3.0.1.1008/include",
 					);
 				CLANG_WARN_INT_CONVERSION = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -823,7 +775,7 @@
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/";
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				GCC_OPTIMIZATION_LEVEL = s;
 				ONLY_ACTIVE_ARCH = YES;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
@@ -832,28 +784,16 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				LIBRARY_SEARCH_PATHS = (
-					"../../../carbon/autobuild/stackless/MacOsX$(ARCHS)",
 					"../../../carbon/bin/stackless/MacOsX$(ARCHS)",
-					"../../../../../../sdk/telemetry/3.0.1.1008/lib",
-					"../../../carbon/autobuild/CcpCore/MacOsX$(ARCHS)/clang4.2/",
-					"../../../../../../sdk/zlib/1.2.11/lib/MacOsX$(ARCHS)",
-					"../../autobuild/BlueExposure/exefile/MacOsX$(ARCHS)/clang4.2",
-					"../../../carbon/autobuild/stackless/MacOsX$(ARCHS)",
-					"../../../carbon/bin/stackless/MacOsX$(ARCHS)",
-					"../../../../../../sdk/telemetry/3.0.1.1008/lib",
-					"../../../../../../sdk/telemetry/3.0.1.1008/lib",
-					"../../../carbon/autobuild/CcpCore/MacOsX$(ARCHS)/clang4.2/",
-					"../../../../../../sdk/zlib/1.2.11/lib/MacOsX$(ARCHS)",
-					"../../../../../../sdk/telemetry/3.0.1.1008/lib",
-					"../../../carbon/autobuild/CcpCore/MacOsX$(ARCHS)/clang4.2/",
-					"../../autobuild/BlueExposure/exefile/MacOsX$(ARCHS)/clang4.2",
-					"../../../../../../sdk/zlib/1.2.11/lib/MacOsX$(ARCHS)",
-					"../../../../../../sdk/nvidia/nvtt/923b57d/lib/MacOsX$(ARCHS)/clang4.2",
-					"../../../../../../sdk/telemetry/3.0.1.1008/lib",
-					"../../../carbon/autobuild/CcpCore/MacOsX$(ARCHS)/clang4.2/",
-					"../../../../../../sdk/libpng/1.6.29/lib/MacOsX$(ARCHS)/clang4.2",
 					"../../../../../../sdk/libjpg/jpeg-9b/lib/MacOsX$(ARCHS)",
 					"../../autobuild/ImageIO/MacOsX$(ARCHS)/clang4.2/",
+					"../../../../../../sdk/zlib/1.2.11/lib/MacOsX$(ARCHS)",
+					"../../autobuild/BlueExposure/exefile/MacOsX$(ARCHS)/clang4.2",
+					"../../../../../../sdk/telemetry/3.0.1.1008/lib",
+					"../../../carbon/autobuild/CcpCore/MacOsX$(ARCHS)/clang4.2/",
+					"../../../../../../sdk/nvidia/nvtt/923b57d/lib/MacOsX$(ARCHS)/clang4.2",
+					"../../../../../../sdk/libpng/1.6.29/lib/MacOsX$(ARCHS)/clang4.2",
+					"../../../carbon/autobuild/stackless/MacOsX$(ARCHS)",
 					);
 				SYMROOT = "../../autobuild/ImageTools/exefile/MacOsX$(ARCHS)/clang4.2";
 				OBJROOT = "../temp/ImageTools/exefile/MacOsX$(ARCHS)/$(CONFIGURATION)/clang4.2";
@@ -862,21 +802,19 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				CONFIGURATION_TEMP_DIR = "../temp/ImageTools/exefile/MacOsX$(ARCHS)/$(CONFIGURATION)/clang4.2";
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"CCP_STACKLESS=1",
-					"BLUE_WITH_PYTHON=1",
 					"PyMODINIT_FUNC=\"__attribute((visibility(\\\"default\\\"))) extern \\\"C\\\" void\"",
-					"CCP_STACKLESS=1",
 					"BLUE_WITH_PYTHON=1",
-					"PyMODINIT_FUNC=\"__attribute((visibility(\\\"default\\\"))) extern \\\"C\\\" void\"",
+					"CCP_STACKLESS=1",
 					"$(inherited)",
 					);
 				COPY_PHASE_STRIP = NO;
 				CLANG_CXX_LIBRARY = "libc++";
 				GCC_PREFIX_HEADER = StdAfx.h;
 				EXECUTABLE_EXTENSION = so;
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				SDKROOT = macosx;
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				WARNING_CFLAGS = "-Wno-nonportable-include-path -Wno-inconsistent-missing-override";
 				};
 			name = Release;
 			};
