@@ -18,7 +18,9 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <PropertyGroup Label="Globals"/>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{a056f632-9573-584d-85ee-764283bb1db0}</ProjectGuid>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <PlatformToolset>v100</PlatformToolset>
   </PropertyGroup>
@@ -31,7 +33,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <PlatformToolset>v100</PlatformToolset>
   </PropertyGroup>
-  <Import Project="$(VCTargetsPath)/Microsoft.Cpp.Default.props"/>
+  <Import Project="$(VCTargetsPath)/Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <UseOfMfc>False</UseOfMfc>
     <IntDir>../../autobuild/temp/$(ProjectName)/$(Platform)/$(Configuration)/</IntDir>
@@ -52,7 +54,7 @@
     <IntDir>../../autobuild/temp/$(ProjectName)/$(Platform)/$(Configuration)/</IntDir>
     <ConfigurationType>DynamicLibrary</ConfigurationType>
   </PropertyGroup>
-  <Import Project="$(VCTargetsPath)/Microsoft.Cpp.props"/>
+  <Import Project="$(VCTargetsPath)/Microsoft.Cpp.props" />
   <PropertyGroup Label="UserMacros">
     <CcpSdkPath>../../../../../../sdk</CcpSdkPath>
     <CcpSharedToolsPath>../../../../../../shared_tools</CcpSharedToolsPath>
@@ -69,11 +71,11 @@
       <Value>$(CcpBranchPath)</Value>
     </BuildMacro>
   </ItemGroup>
-  <ImportGroup Label="ExtensionSettings"/>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets"/>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_27|x64'" Label="PropertySheets"/>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_27|Win32'" Label="PropertySheets"/>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets"/>
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets" />
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_27|x64'" Label="PropertySheets" />
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_27|Win32'" Label="PropertySheets" />
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets" />
   <PropertyGroup>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.dll</TargetExt>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">_imagetools</TargetName>
@@ -112,11 +114,11 @@
       <ProgramDatabaseFile>$(TargetDir)$(TargetName).pdb</ProgramDatabaseFile>
       <AdditionalDependencies>BlueExposureStatic.lib;CcpCore.lib;CcpCoreStatic.lib;ImageIO.lib;jpeg.lib;libpng.lib;nvtt.lib;psapi.lib;python27.lib;rad_tm_win64.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
-    <ResourceCompile/>
-    <Manifest/>
-    <PreBuildEvent/>
-    <PreLinkEvent/>
-    <PostBuildEvent/>
+    <ResourceCompile />
+    <Manifest />
+    <PreBuildEvent />
+    <PreLinkEvent />
+    <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_27|x64'">
     <ClCompile>
@@ -138,11 +140,11 @@
       <ProgramDatabaseFile>$(TargetDir)$(TargetName).pdb</ProgramDatabaseFile>
       <AdditionalDependencies>BlueExposureStatic.lib;CcpCore.lib;CcpCoreStatic.lib;ImageIO.lib;jpeg.lib;libpng.lib;nvtt.lib;psapi.lib;python27.lib;rad_tm_win64.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
-    <ResourceCompile/>
-    <Manifest/>
-    <PreBuildEvent/>
-    <PreLinkEvent/>
-    <PostBuildEvent/>
+    <ResourceCompile />
+    <Manifest />
+    <PreBuildEvent />
+    <PreLinkEvent />
+    <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_27|Win32'">
     <ClCompile>
@@ -164,11 +166,11 @@
       <ProgramDatabaseFile>$(TargetDir)$(TargetName).pdb</ProgramDatabaseFile>
       <AdditionalDependencies>BlueExposureStatic.lib;CcpCore.lib;CcpCoreStatic.lib;ImageIO.lib;jpeg.lib;libpng.lib;nvtt.lib;psapi.lib;python27.lib;rad_tm_win32.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
-    <ResourceCompile/>
-    <Manifest/>
-    <PreBuildEvent/>
-    <PreLinkEvent/>
-    <PostBuildEvent/>
+    <ResourceCompile />
+    <Manifest />
+    <PreBuildEvent />
+    <PreLinkEvent />
+    <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -190,39 +192,39 @@
       <ProgramDatabaseFile>$(TargetDir)$(TargetName).pdb</ProgramDatabaseFile>
       <AdditionalDependencies>BlueExposureStatic.lib;CcpCore.lib;CcpCoreStatic.lib;ImageIO.lib;jpeg.lib;libpng.lib;nvtt.lib;psapi.lib;python27.lib;rad_tm_win32.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
-    <ResourceCompile/>
-    <Manifest/>
-    <PreBuildEvent/>
-    <PreLinkEvent/>
-    <PostBuildEvent/>
+    <ResourceCompile />
+    <Manifest />
+    <PreBuildEvent />
+    <PreLinkEvent />
+    <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="AllowThreads.h"/>
-    <ClInclude Include="CompressionOptions.h"/>
-    <ClInclude Include="FileStream.h"/>
-    <ClInclude Include="ImageIOResultBlue.h"/>
-    <ClInclude Include="ImageToolsBitmap.h"/>
-    <ClInclude Include="MemoryOutputHandler.h"/>
-    <ClInclude Include="MemoryStream.h"/>
-    <ClInclude Include="StdAfx.h"/>
+    <ClInclude Include="AllowThreads.h" />
+    <ClInclude Include="CompressionOptions.h" />
+    <ClInclude Include="FileStream.h" />
+    <ClInclude Include="ImageIOResultBlue.h" />
+    <ClInclude Include="ImageToolsBitmap.h" />
+    <ClInclude Include="MemoryOutputHandler.h" />
+    <ClInclude Include="MemoryStream.h" />
+    <ClInclude Include="StdAfx.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CompressionOptions.cpp"/>
-    <ClCompile Include="CompressionOptions_Blue.cpp"/>
-    <ClCompile Include="EnumRegistry_Blue.cpp"/>
-    <ClCompile Include="FileStream.cpp"/>
-    <ClCompile Include="GenerateRoughness_Blue.cpp"/>
-    <ClCompile Include="ImageIOResultBlue.cpp"/>
-    <ClCompile Include="ImageTools.cpp"/>
-    <ClCompile Include="ImageToolsBitmap.cpp"/>
-    <ClCompile Include="ImageToolsBitmap_Blue.cpp"/>
-    <ClCompile Include="MemoryOutputHandler.cpp"/>
-    <ClCompile Include="MemoryStream.cpp"/>
+    <ClCompile Include="CompressionOptions.cpp" />
+    <ClCompile Include="CompressionOptions_Blue.cpp" />
+    <ClCompile Include="EnumRegistry_Blue.cpp" />
+    <ClCompile Include="FileStream.cpp" />
+    <ClCompile Include="GenerateRoughness_Blue.cpp" />
+    <ClCompile Include="ImageIOResultBlue.cpp" />
+    <ClCompile Include="ImageTools.cpp" />
+    <ClCompile Include="ImageToolsBitmap.cpp" />
+    <ClCompile Include="ImageToolsBitmap_Blue.cpp" />
+    <ClCompile Include="MemoryOutputHandler.cpp" />
+    <ClCompile Include="MemoryStream.cpp" />
     <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
-  <ItemGroup/>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets"/>
-  <ImportGroup Label="ExtensionTargets"/>
+  <ItemGroup />
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
 </Project>
