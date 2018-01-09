@@ -7,6 +7,9 @@
     <ClInclude Include="AllowThreads.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="autoversion.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
     <ClInclude Include="CompressionOptions.h">
       <Filter>Source Files</Filter>
     </ClInclude>
