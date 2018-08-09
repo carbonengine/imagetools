@@ -2,6 +2,7 @@
 Imports:
 - ../core_project/core_project.yaml
 - ../../../../../../sdk/nvidia/nvtt/923b57d/nvtt.yaml
+- ../../../../../../sdk/amd/compressonator/3.0.3707/compressonator.yaml
 - ../ImageIO/uses_ImageIO.yaml
 
 # Settings from the General section, for all configurations

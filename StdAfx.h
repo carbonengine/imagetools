@@ -7,8 +7,18 @@
 
 #define NOMINMAX
 
+#ifdef _WIN32
+#define WITH_COMPRESSONATOR 1
+#else
+#define WITH_COMPRESSONATOR 0
+#endif
+
 #include "BlueExposure/include/BlueExposure.h"
 #include "nvtt/nvtt.h"
+
+#if WITH_COMPRESSONATOR
+#include "Compressonator.h"
+#endif
 
 #include "TrinityAL/include/Tr2PixelFormat.h"
 #include "TrinityAL/include/Tr2TextureType.h"

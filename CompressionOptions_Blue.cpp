@@ -8,6 +8,21 @@
 #include "StdAfx.h"
 #include "CompressionOptions.h"
 
+
+const Be::VarChooser Compressor_Chooser[] =
+{
+	{ "NVTT", BeCast( CompressionOptions::NVTT), "nVidia texture tools" },
+	{ "COMPRESSONATOR", BeCast( CompressionOptions::COMPRESSONATOR ), "AMD Compressonator" },
+	{ 0 }
+};
+
+BLUE_REGISTER_ENUM_EX(
+	"COMPRESSOR",
+	CompressionOptions::Compressor,
+	Compressor_Chooser,
+	ENUM_REG_ENUM_OBJECT_ON_MODULE
+);
+
 BLUE_DEFINE( CompressionOptions );
 
 const Be::ClassInfo* ::CompressionOptions::ExposeToBlue()
@@ -25,6 +40,7 @@ const Be::ClassInfo* ::CompressionOptions::ExposeToBlue()
 		MAP_ATTRIBUTE( "blue_channel_weight", m_blueWeight, "importance weight for blue channel", Be::READWRITE );
 		MAP_ATTRIBUTE( "alpha_channel_weight", m_alphaWeight, "importance weight for alpha channel", Be::READWRITE );
 		MAP_ATTRIBUTE( "use_cuda", m_useCuda, "usage CUDA compression on GPU if available", Be::READWRITE );
+		MAP_ATTRIBUTE( "compressor", m_compressor, "which compressor to use (see COMPRESSOR enum)", Be::READWRITE );
 
 		MAP_METHOD_AND_WRAP_OPTIONAL_ARGS( 
 			"__init__", 

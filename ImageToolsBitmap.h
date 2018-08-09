@@ -35,7 +35,7 @@ private:
 
 	BlueStdResult Decompress( Tr2RenderContextEnum::PixelFormat format );
 	BlueStdResult Copy( ImageToolsBitmapPtr& result ) const;
-	BlueStdResult ExtractMipLevel( uint32_t mipLevel, ImageToolsBitmapPtr& result ) const;
+	BlueStdResult ExtractMipLevel( uint32_t mipLevel, Be::OptionalWithDefaultValue<uint32_t, 1> count, ImageToolsBitmapPtr& result ) const;
 	BlueStdResult SetMipData( uint32_t mipLevel, ImageToolsBitmap* result, uint32_t sourceMip );
 	BlueStdResult ToYuv( std::pair<ImageToolsBitmapPtr, ImageToolsBitmapPtr>& result ) const;
 	BlueStdResult FlattenSlices( bool horizontally, ImageToolsBitmapPtr& result ) const;

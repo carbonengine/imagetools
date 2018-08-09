@@ -17,6 +17,39 @@ using namespace Tr2RenderContextEnum;
 
 #define CBR_RETURN_BR( x ) { auto ret = x; if( !BeIsSuccess( ret ) ) { return ret; } }
 
+namespace
+{
+#if WITH_COMPRESSONATOR
+	CMP_FORMAT PixelFormatToCmpFormat( Tr2RenderContextEnum::PixelFormat format )
+	{
+		switch( format )
+		{
+		case Tr2RenderContextEnum::PIXEL_FORMAT_B8G8R8A8_UNORM:
+		case Tr2RenderContextEnum::PIXEL_FORMAT_B8G8R8X8_UNORM:
+			return CMP_FORMAT_BGRA_8888;
+		case Tr2RenderContextEnum::PIXEL_FORMAT_R8_UNORM:
+			return CMP_FORMAT_R_8;
+		case Tr2RenderContextEnum::PIXEL_FORMAT_BC1_UNORM:
+			return CMP_FORMAT_BC1;
+		case Tr2RenderContextEnum::PIXEL_FORMAT_BC2_UNORM:
+			return CMP_FORMAT_BC2;
+		case Tr2RenderContextEnum::PIXEL_FORMAT_BC3_UNORM:
+			return CMP_FORMAT_BC3;
+		case Tr2RenderContextEnum::PIXEL_FORMAT_BC4_UNORM:
+			return CMP_FORMAT_BC4;
+		case Tr2RenderContextEnum::PIXEL_FORMAT_BC5_UNORM:
+			return CMP_FORMAT_BC5;
+		case Tr2RenderContextEnum::PIXEL_FORMAT_BC6H_UF16:
+			return CMP_FORMAT_BC6H;
+		case Tr2RenderContextEnum::PIXEL_FORMAT_BC7_UNORM:
+			return CMP_FORMAT_BC7;
+		default:
+			return CMP_FORMAT_Unknown;
+		}
+	}
+#endif
+}
+
 ImageToolsBitmap::ImageToolsBitmap( IRoot* lockobj )
 {
 }
@@ -296,7 +329,7 @@ BlueStdResult ImageToolsBitmap::FlattenSlices( bool horizontally, ImageToolsBitm
 	return BLUE_STD_RESULT_OK;
 }
 
-BlueStdResult ImageToolsBitmap::ExtractMipLevel( uint32_t mipLevel, ImageToolsBitmapPtr& result ) const
+BlueStdResult ImageToolsBitmap::ExtractMipLevel( uint32_t mipLevel, Be::OptionalWithDefaultValue<uint32_t, 1> count, ImageToolsBitmapPtr& result ) const
 {
 	if( !IsValid() )
 	{
@@ -313,17 +346,18 @@ BlueStdResult ImageToolsBitmap::ExtractMipLevel( uint32_t mipLevel, ImageToolsBi
 	}
 	bool createResult = false;
 	uint32_t faceCount = 1;
+	uint32_t mipCount = std::min( uint32_t( count ), GetTrueMipCount() - mipLevel );
 	switch( GetType() )
 	{
 	case TEX_TYPE_CUBE:
-		createResult = result->CreateCube( GetMipWidth( mipLevel ), 1, GetFormat() );
+		createResult = result->CreateCube( GetMipWidth( mipLevel ), mipCount, GetFormat() );
 		faceCount = 6;
 		break;
 	case TEX_TYPE_3D:
-		createResult = result->CreateVolume( GetMipWidth( mipLevel ), GetMipHeight( mipLevel ), GetMipDepth( mipLevel ), 1, GetFormat() );
+		createResult = result->CreateVolume( GetMipWidth( mipLevel ), GetMipHeight( mipLevel ), GetMipDepth( mipLevel ), mipCount, GetFormat() );
 		break;
 	default:
-		createResult = result->Create( GetMipWidth( mipLevel ), GetMipHeight( mipLevel ), 1, GetFormat() );
+		createResult = result->Create( GetMipWidth( mipLevel ), GetMipHeight( mipLevel ), mipCount, GetFormat() );
 	}
 	if( !createResult )
 	{
@@ -331,7 +365,10 @@ BlueStdResult ImageToolsBitmap::ExtractMipLevel( uint32_t mipLevel, ImageToolsBi
 	}
 	for( uint32_t face = 0; face < faceCount; ++face )
 	{
-		memcpy( result->GetMipRawData( 0, CubemapFace( face ) ), GetMipRawData( mipLevel, CubemapFace( face ) ), result->GetMipSize( 0 ) );
+		for( uint32_t m = 0; m < mipCount; ++m )
+		{
+			memcpy( result->GetMipRawData( m, CubemapFace( face ) ), GetMipRawData( mipLevel + m, CubemapFace( face ) ), result->GetMipSize( m ) );
+		}
 	}
 	return BLUE_STD_RESULT_OK;
 }
@@ -606,29 +643,95 @@ StdOrImageIOResult ImageToolsBitmap::Compress( CompressionOptions* options, Imag
 {
 	AllowThreads allowThreads;
 
-	MemoryOutputHandler outputHandler;
-
-	nvtt::OutputOptions output;
-	output.setOutputHandler( &outputHandler );
-	
-	if( IsDds10Format( options->GetFormat() ) )
+	CompressionOptions::Compressor compressor = CompressionOptions::NVTT;
+	if( options )
 	{
-		output.setContainer(nvtt::Container_DDS10);
+		compressor = options->GetCompressor();
 	}
-	
 
-	CBR_RETURN_BR( CompressWithOptions( options, output ) );
-
-	MemoryStream memStream( outputHandler.GetData(), outputHandler.GetSize() );
-
-	result.CreateInstance();
-	CBR_RETURN_BR( ImageIOResult( ImageIO::ReadImage( memStream, ImageIO::LoadParameters( L"out.dds" ), *result ) ) );
-	if( result && GetType() == TEX_TYPE_3D )
+#if WITH_COMPRESSONATOR
+	if( compressor == CompressionOptions::COMPRESSONATOR )
 	{
-		result->m_type = GetType();
-		result->m_height /= GetDepth();
-		result->m_volumeDepth = GetDepth();
+		result.CreateInstance();
+
+		Tr2RenderContextEnum::PixelFormat destFormat;
+		CMP_CompressOptions cmpOptions = { 0 };
+		if( !options )
+		{
+			CompressionOptionsPtr defaultOptions;
+			defaultOptions.CreateInstance();
+			defaultOptions->FillCompressonatorOptions( cmpOptions );
+			destFormat = defaultOptions->GetFormat();
+		}
+		else
+		{
+			options->FillCompressonatorOptions( cmpOptions );
+			destFormat = options->GetFormat();
+		}
+
+		Tr2BitmapDimensions dim( GetType(), destFormat, GetWidth(), GetHeight(), GetDepth(), GetTrueMipCount(), GetArraySize() );
+		if( !result->CreateFromBitmapDimensions( dim ) )
+		{
+			return BlueStdResult( BLUE_STD_RESULT_MEMORY_ERROR );
+		}
+
+		for( uint32_t ai = 0; ai < GetArraySize(); ++ai )
+		{
+			for( uint32_t mi = 0; mi < GetTrueMipCount(); ++mi )
+			{
+				CMP_Texture srcTexture;
+				srcTexture.dwSize = sizeof( srcTexture );
+				srcTexture.dwWidth = GetMipWidth( mi );
+				srcTexture.dwHeight = GetMipHeight( mi );
+				srcTexture.dwPitch = 0;
+				srcTexture.format = PixelFormatToCmpFormat( GetFormat() );
+				srcTexture.dwDataSize = GetMipSize( mi );
+				srcTexture.pData = (CMP_BYTE*)GetMipRawData( mi, ai );
+
+				CMP_Texture destTexture;
+				destTexture.dwSize = sizeof( destTexture );
+				destTexture.dwWidth = GetMipWidth( mi ); result->GetMipWidth( mi );
+				destTexture.dwHeight = GetMipHeight( mi ); result->GetMipHeight( mi );
+				destTexture.dwPitch = 0;
+				destTexture.format = PixelFormatToCmpFormat( destFormat );
+				destTexture.dwDataSize = result->GetMipSize( mi );
+				destTexture.pData = (CMP_BYTE*)result->GetMipRawData( mi, ai );
+
+				auto cmpStatus = CMP_ConvertTexture( &srcTexture, &destTexture, &cmpOptions, nullptr, 0, 0 );
+				if( cmpStatus != CMP_OK )
+				{
+					return BlueStdResult( BLUE_STD_RESULT_RUNTIME_ERROR, "compressonator error" );
+				}
+			}
+		}
 	}
+	else
+#endif
+	{
+		MemoryOutputHandler outputHandler;
+
+		nvtt::OutputOptions output;
+		output.setOutputHandler( &outputHandler );
+
+		if( IsDds10Format( options->GetFormat() ) )
+		{
+			output.setContainer( nvtt::Container_DDS10 );
+		}
+
+		CBR_RETURN_BR( CompressWithOptions( options, output ) );
+
+		MemoryStream memStream( outputHandler.GetData(), outputHandler.GetSize() );
+
+		result.CreateInstance();
+		CBR_RETURN_BR( ImageIOResult( ImageIO::ReadImage( memStream, ImageIO::LoadParameters( L"out.dds" ), *result ) ) );
+		if( result && GetType() == TEX_TYPE_3D )
+		{
+			result->m_type = GetType();
+			result->m_height /= GetDepth();
+			result->m_volumeDepth = GetDepth();
+		}
+	}
+
 	return BlueStdResult( BLUE_STD_RESULT_OK );
 }
 

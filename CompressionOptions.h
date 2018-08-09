@@ -14,6 +14,12 @@ BLUE_CLASS( CompressionOptions ): public IRoot
 public:
 	EXPOSE_TO_BLUE();
 
+	enum Compressor
+	{
+		NVTT,
+		COMPRESSONATOR,
+	};
+
 	CompressionOptions( IRoot* lockobj = 0 );
 
 	BlueStdResult Create( 
@@ -26,11 +32,18 @@ public:
 	Tr2RenderContextEnum::PixelFormat GetFormat() const;
 	BlueStdResult SetFormat( Tr2RenderContextEnum::PixelFormat );
 
+	Compressor GetCompressor() const;
+
+
 	void FillNvttOptions( nvtt::CompressionOptions& options );
+#if WITH_COMPRESSONATOR
+	void FillCompressonatorOptions( CMP_CompressOptions& options );
+#endif
 	bool UseCuda() const;
 
 	bool GetGenerateMipsMaps() const;
 private:
+	Compressor m_compressor;
 	Tr2RenderContextEnum::PixelFormat m_format;
 	nvtt::Quality m_quality;
 	bool m_alphaForBc1;

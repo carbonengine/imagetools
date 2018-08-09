@@ -96,12 +96,15 @@ const Be::ClassInfo* ImageToolsBitmap::ExposeToBlue()
 			"copy", 
 			Copy, 
 			"Returns a copy if this image." );
-		MAP_METHOD_AND_WRAP( 
+		MAP_METHOD_AND_WRAP_OPTIONAL_ARGS( 
 			"extract_mip_level", 
 			ExtractMipLevel, 
+			1,
 			"Returns a copy if this image mip level as a separate image.\n"
 			"Arguments:\n"
-			"mip_level - mip level index" );
+			"mip_level - mip level index\n"
+			"count - optional number of mip levels to copy, defaults to one\n"
+		);
 		MAP_METHOD_AND_WRAP( 
 			"flatten", 
 			FlattenSlices, 
