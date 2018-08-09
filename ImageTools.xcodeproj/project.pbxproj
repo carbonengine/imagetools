@@ -36,6 +36,7 @@
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
 					"../../../../../../sdk/zlib/1.2.11/include",
+					"../../../../../../sdk/amd/compressonator/3.0.3707/include",
 					..,
 					"../../../../../../sdk/libjpg/jpeg-9b",
 					.,
@@ -753,6 +754,7 @@
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
 					"../../../../../../sdk/zlib/1.2.11/include",
+					"../../../../../../sdk/amd/compressonator/3.0.3707/include",
 					"../../../../../../sdk/libjpg/jpeg-9b",
 					..,
 					"../../../carbon/src/stackless/stackless",
