@@ -20,6 +20,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{a056f632-9573-584d-85ee-764283bb1db0}</ProjectGuid>
+    <ProjectName>ImageTools</ProjectName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <PlatformToolset>v100</PlatformToolset>
