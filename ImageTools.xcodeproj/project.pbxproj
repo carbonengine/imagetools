@@ -66,11 +66,11 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				LIBRARY_SEARCH_PATHS = (
-					"../../../../../../sdk/libjpg/jpeg-9b/lib/MacOsX$(ARCHS)",
 					"../../autobuild/ImageIO/MacOsX$(ARCHS)/clang4.2/",
 					"../../../../../../sdk/zlib/1.2.11/lib/MacOsX$(ARCHS)",
 					"../../../../../../shared_tools/python/27_mac/lib",
 					"../../../../../../sdk/telemetry/3.0.1.1008/lib",
+					"../../../../../../sdk/libjpg/jpeg-9b/lib/MacOsX$(ARCHS)/clang4.2",
 					"../../../carbon/autobuild/BlueExposure/python_27/MacOsX$(ARCHS)/clang4.2",
 					"../../../../../../sdk/libpng/1.6.29/lib/MacOsX$(ARCHS)/clang4.2",
 					"../../../../../../sdk/nvidia/nvtt/923b57d/lib/MacOsX$(ARCHS)/clang4.2",
@@ -94,7 +94,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				SDKROOT = macosx;
-				WARNING_CFLAGS = "-Wno-nonportable-include-path -Wno-inconsistent-missing-override";
+				WARNING_CFLAGS = "-Wno-nonportable-include-path -Wno-inconsistent-missing-override -Wno-deprecated-register -Wno-pragma-pack";
 				};
 			name = Release;
 			};
@@ -151,10 +151,10 @@
 				);
 			};
 		000000300000554da3c78efc = {
-			name = libsquish.a;
+			name = libpng.a;
 			fileEncoding = 4;
 			lastKnownFileType = archive.ar;
-			path = "../../../../../../sdk/nvidia/nvtt/923b57d/lib/MacOsXx86_64/clang4.2/libsquish.a";
+			path = "../../../../../../sdk/libpng/1.6.29/lib/MacOsXx86_64/clang4.2/libpng.a";
 			isa = PBXFileReference;
 			sourceTree = "<group>";
 			};
@@ -167,10 +167,10 @@
 			sourceTree = "<group>";
 			};
 		000000320000554da3c78efc = {
-			name = libbc7.a;
+			name = libsquish.a;
 			fileEncoding = 4;
 			lastKnownFileType = archive.ar;
-			path = "../../../../../../sdk/nvidia/nvtt/923b57d/lib/MacOsXx86_64/clang4.2/libbc7.a";
+			path = "../../../../../../sdk/nvidia/nvtt/923b57d/lib/MacOsXx86_64/clang4.2/libsquish.a";
 			isa = PBXFileReference;
 			sourceTree = "<group>";
 			};
@@ -207,10 +207,10 @@
 			sourceTree = "<group>";
 			};
 		000000360000554da3c78efc = {
-			name = libImageIO.a;
+			name = libpython2.7.dylib;
 			fileEncoding = 4;
-			lastKnownFileType = archive.ar;
-			path = "../../autobuild/ImageIO/MacOsXx86_64/clang4.2/libImageIO.a";
+			lastKnownFileType = "compiled.mach-o.dylib";
+			path = "../../../../../../shared_tools/python/27_mac/lib/libpython2.7.dylib";
 			isa = PBXFileReference;
 			sourceTree = "<group>";
 			};
@@ -240,22 +240,22 @@
 			};
 		000000550000554da3c78efc = {
 			files = (
-				000000310000554da3c78efc,
+				000000330000554da3c78efc,
 				000000290000554da3c78efc,
-				0000003D0000554da3c78efc,
+				0000002B0000554da3c78efc,
 				0000003F0000554da3c78efc,
 				000000410000554da3c78efc,
-				0000002D0000554da3c78efc,
 				0000002F0000554da3c78efc,
+				000000310000554da3c78efc,
 				000000430000554da3c78efc,
-				0000003B0000554da3c78efc,
-				000000330000554da3c78efc,
-				000000470000554da3c78efc,
+				0000003D0000554da3c78efc,
 				000000350000554da3c78efc,
+				000000470000554da3c78efc,
+				000000370000554da3c78efc,
 				000000490000554da3c78efc,
 				0000004B0000554da3c78efc,
-				000000370000554da3c78efc,
 				000000390000554da3c78efc,
+				0000003B0000554da3c78efc,
 				);
 			buildActionMask = 2147483647;
 			isa = PBXFrameworksBuildPhase;
@@ -270,10 +270,10 @@
 			sourceTree = "<group>";
 			};
 		0000002C0000554da3c78efc = {
-			name = libpython2.7.a;
+			name = libjpeg.a;
 			fileEncoding = 4;
 			lastKnownFileType = archive.ar;
-			path = "../../bin/stackless/MacOsXx86_64/libpython2.7.a";
+			path = "../../../../../../sdk/libjpg/jpeg-9b/lib/MacOsXx86_64/clang4.2/libjpeg.a";
 			isa = PBXFileReference;
 			sourceTree = "<group>";
 			};
@@ -327,10 +327,10 @@
 			name = Dependencies;
 			};
 		0000003C0000554da3c78efc = {
-			name = libnvcore.a;
+			name = libnvtt.a;
 			fileEncoding = 4;
 			lastKnownFileType = archive.ar;
-			path = "../../../../../../sdk/nvidia/nvtt/923b57d/lib/MacOsXx86_64/clang4.2/libnvcore.a";
+			path = "../../../../../../sdk/nvidia/nvtt/923b57d/lib/MacOsXx86_64/clang4.2/libnvtt.a";
 			isa = PBXFileReference;
 			sourceTree = "<group>";
 			};
@@ -392,10 +392,10 @@
 			sourceTree = "<group>";
 			};
 		000000380000554da3c78efc = {
-			name = CoreFoundation.framework;
+			name = libImageIO.a;
 			fileEncoding = 4;
-			lastKnownFileType = wrapper.framework;
-			path = "/System/Library/Frameworks/CoreFoundation.framework";
+			lastKnownFileType = archive.ar;
+			path = "../../autobuild/ImageIO/MacOsXx86_64/clang4.2/libImageIO.a";
 			isa = PBXFileReference;
 			sourceTree = "<group>";
 			};
@@ -504,22 +504,22 @@
 			};
 		000000580000554da3c78efc = {
 			files = (
-				0000002B0000554da3c78efc,
+				0000002D0000554da3c78efc,
 				000000290000554da3c78efc,
-				000000310000554da3c78efc,
-				0000003D0000554da3c78efc,
+				000000330000554da3c78efc,
 				0000003F0000554da3c78efc,
 				000000410000554da3c78efc,
-				0000002D0000554da3c78efc,
 				0000002F0000554da3c78efc,
+				000000310000554da3c78efc,
 				000000430000554da3c78efc,
-				0000003B0000554da3c78efc,
+				0000003D0000554da3c78efc,
 				000000450000554da3c78efc,
 				000000470000554da3c78efc,
-				000000350000554da3c78efc,
-				0000004B0000554da3c78efc,
 				000000370000554da3c78efc,
+				0000004B0000554da3c78efc,
+				0000002B0000554da3c78efc,
 				000000390000554da3c78efc,
+				0000003B0000554da3c78efc,
 				);
 			buildActionMask = 2147483647;
 			isa = PBXFrameworksBuildPhase;
@@ -540,10 +540,10 @@
 			fileRef = 0000001E0000554da3c78efc;
 			};
 		000000340000554da3c78efc = {
-			name = libpython2.7.dylib;
+			name = libbc7.a;
 			fileEncoding = 4;
-			lastKnownFileType = "compiled.mach-o.dylib";
-			path = "../../../../../../shared_tools/python/27_mac/lib/libpython2.7.dylib";
+			lastKnownFileType = archive.ar;
+			path = "../../../../../../sdk/nvidia/nvtt/923b57d/lib/MacOsXx86_64/clang4.2/libbc7.a";
 			isa = PBXFileReference;
 			sourceTree = "<group>";
 			};
@@ -599,10 +599,10 @@
 			fileRef = 000000040000554da3c78efc;
 			};
 		0000003A0000554da3c78efc = {
-			name = libnvtt.a;
+			name = CoreFoundation.framework;
 			fileEncoding = 4;
-			lastKnownFileType = archive.ar;
-			path = "../../../../../../sdk/nvidia/nvtt/923b57d/lib/MacOsXx86_64/clang4.2/libnvtt.a";
+			lastKnownFileType = wrapper.framework;
+			path = "/System/Library/Frameworks/CoreFoundation.framework";
 			isa = PBXFileReference;
 			sourceTree = "<group>";
 			};
@@ -623,10 +623,10 @@
 			fileRef = 0000001A0000554da3c78efc;
 			};
 		0000003E0000554da3c78efc = {
-			name = libjpeg.a;
+			name = libnvcore.a;
 			fileEncoding = 4;
 			lastKnownFileType = archive.ar;
-			path = "../../../../../../sdk/libjpg/jpeg-9b/lib/MacOsXx86_64/libjpeg.a";
+			path = "../../../../../../sdk/nvidia/nvtt/923b57d/lib/MacOsXx86_64/clang4.2/libnvcore.a";
 			isa = PBXFileReference;
 			sourceTree = "<group>";
 			};
@@ -670,10 +670,10 @@
 			fileRef = 0000003E0000554da3c78efc;
 			};
 		0000002E0000554da3c78efc = {
-			name = libpng.a;
+			name = libpython2.7.a;
 			fileEncoding = 4;
 			lastKnownFileType = archive.ar;
-			path = "../../../../../../sdk/libpng/1.6.29/lib/MacOsXx86_64/clang4.2/libpng.a";
+			path = "../../bin/stackless/MacOsXx86_64/libpython2.7.a";
 			isa = PBXFileReference;
 			sourceTree = "<group>";
 			};
@@ -787,11 +787,11 @@
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				LIBRARY_SEARCH_PATHS = (
 					"../../../carbon/bin/stackless/MacOsX$(ARCHS)",
-					"../../../../../../sdk/libjpg/jpeg-9b/lib/MacOsX$(ARCHS)",
 					"../../autobuild/ImageIO/MacOsX$(ARCHS)/clang4.2/",
 					"../../../../../../sdk/zlib/1.2.11/lib/MacOsX$(ARCHS)",
 					"../../autobuild/BlueExposure/exefile/MacOsX$(ARCHS)/clang4.2",
 					"../../../../../../sdk/telemetry/3.0.1.1008/lib",
+					"../../../../../../sdk/libjpg/jpeg-9b/lib/MacOsX$(ARCHS)/clang4.2",
 					"../../../carbon/autobuild/CcpCore/MacOsX$(ARCHS)/clang4.2/",
 					"../../../../../../sdk/nvidia/nvtt/923b57d/lib/MacOsX$(ARCHS)/clang4.2",
 					"../../../../../../sdk/libpng/1.6.29/lib/MacOsX$(ARCHS)/clang4.2",
@@ -816,7 +816,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				SDKROOT = macosx;
-				WARNING_CFLAGS = "-Wno-nonportable-include-path -Wno-inconsistent-missing-override";
+				WARNING_CFLAGS = "-Wno-nonportable-include-path -Wno-inconsistent-missing-override -Wno-deprecated-register -Wno-pragma-pack";
 				};
 			name = Release;
 			};
