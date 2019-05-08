@@ -787,15 +787,15 @@
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				LIBRARY_SEARCH_PATHS = (
 					"../../../carbon/bin/stackless/MacOsX$(ARCHS)",
-					"../../autobuild/ImageIO/MacOsX$(ARCHS)/clang4.2/",
+					"../../../carbon/autobuild/stackless/MacOsX$(ARCHS)/clang4.2",
 					"../../../../../../sdk/zlib/1.2.11/lib/MacOsX$(ARCHS)",
 					"../../autobuild/BlueExposure/exefile/MacOsX$(ARCHS)/clang4.2",
 					"../../../../../../sdk/telemetry/3.0.1.1008/lib",
 					"../../../../../../sdk/libjpg/jpeg-9b/lib/MacOsX$(ARCHS)/clang4.2",
+					"../../autobuild/ImageIO/MacOsX$(ARCHS)/clang4.2/",
 					"../../../carbon/autobuild/CcpCore/MacOsX$(ARCHS)/clang4.2/",
 					"../../../../../../sdk/nvidia/nvtt/923b57d/lib/MacOsX$(ARCHS)/clang4.2",
 					"../../../../../../sdk/libpng/1.6.29/lib/MacOsX$(ARCHS)/clang4.2",
-					"../../../carbon/autobuild/stackless/MacOsX$(ARCHS)",
 					);
 				SYMROOT = "../../autobuild/ImageTools/exefile/MacOsX$(ARCHS)/clang4.2";
 				OBJROOT = "../temp/ImageTools/exefile/MacOsX$(ARCHS)/$(CONFIGURATION)/clang4.2";
