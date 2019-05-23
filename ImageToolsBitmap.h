@@ -25,9 +25,10 @@ public:
 	BlueStdResult CompressToFile( const wchar_t* filename, CompressionOptions* options );
 	BlueStdResult CreateFromArray( const std::vector<ImageToolsBitmap*>& elements );
 private:
+	Be::Result<std::string> CheckedCopyChannel( ImageToolsBitmap* source, unsigned srcChannel, unsigned dstChannel );
 	Be::Result<std::string> CheckedDownsample2x2();
 	Be::Result<std::string> CheckedCrop( unsigned left, unsigned top, unsigned right, unsigned bottom );
-	Be::Result<std::string> CheckedGenerateMipMaps();
+	Be::Result<std::string> CheckedGenerateMipMaps( unsigned levels = 0 );
 	BlueStdResult CheckedConvertFormat( Tr2RenderContextEnum::PixelFormat format );
 
 	BlueStdResult CreateNvttInputOptions( CompressionOptions* compressionOptions, nvtt::InputOptions& inputOptions );

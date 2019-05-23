@@ -85,6 +85,15 @@ StdOrImageIOResult ImageToolsBitmap::Save( const wchar_t* filename )
 	return StdOrImageIOResult( ImageIO::SaveImage( filename, *this, stream ) );
 }
 
+Be::Result<std::string> ImageToolsBitmap::CheckedCopyChannel( ImageToolsBitmap* source, unsigned srcChannel, unsigned dstChannel )
+{
+	if( !CopyChannel( source, srcChannel, dstChannel ) )
+	{
+		return Be::Result<std::string>( "Copy channel failed" );
+	}
+	return std::string();
+}
+
 Be::Result<std::string> ImageToolsBitmap::CheckedDownsample2x2()
 {
 	AllowThreads allowThreads;
@@ -105,11 +114,11 @@ Be::Result<std::string> ImageToolsBitmap::CheckedCrop( unsigned left, unsigned t
 	return std::string();
 }
 
-Be::Result<std::string> ImageToolsBitmap::CheckedGenerateMipMaps()
+Be::Result<std::string> ImageToolsBitmap::CheckedGenerateMipMaps( unsigned levels )
 {
 	AllowThreads allowThreads;
 
-	if( !GenerateMipMaps() )
+	if( !GenerateMipMaps( levels ) )
 	{
 		return Be::Result<std::string>( "error while generating mip levels" );
 	}

@@ -68,10 +68,17 @@ const Be::ClassInfo* ImageToolsBitmap::ExposeToBlue()
 			"top - pixel offset to the top of the crop window\n"
 			"bottom - pixel offset to the bottom of the crop window\n"
 			"right - pixel offset to the right of the crop window" );
-		MAP_METHOD_AND_WRAP( 
+		MAP_METHOD_AND_WRAP_OPTIONAL_ARGS( 
 			"generate_mips", 
-			CheckedGenerateMipMaps, 
-			"Generates mip levels for 2D bitmap" );
+			CheckedGenerateMipMaps,
+			0,
+			"Generates mip levels for 2D bitmap\n"
+			"Arguments:\n"
+			"levels - optional amount of mip levels to generate" );
+		MAP_METHOD_AND_WRAP(
+			"drop_mips",
+			DropMipMaps,
+			"Removes all mips from the image" );
 		MAP_METHOD_AND_WRAP( 
 			"convert_format", 
 			CheckedConvertFormat, 
@@ -81,6 +88,16 @@ const Be::ClassInfo* ImageToolsBitmap::ExposeToBlue()
 			"R8G8_UNORM -> B8G8R8A8_UNORM\n"
 			"Arguments:\n"
 			"format - new format" );
+		MAP_METHOD_AND_WRAP
+		(
+			"copy_channel",
+			CheckedCopyChannel,
+			"Copies a selected color channel from another bitmap to a color channel of this bitmap"
+			"Arguments:\n"
+			"srcChannel - the index of the color channel to copy\n"
+			"dstChannel - the index of the destination color channel which should be overwritten\n"
+			"source - the source bitmap from which to copy the channel from"
+		);
 		MAP_METHOD_AND_WRAP_OPTIONAL_ARGS( 
 			"compress", 
 			Compress, 
@@ -105,6 +122,18 @@ const Be::ClassInfo* ImageToolsBitmap::ExposeToBlue()
 			"mip_level - mip level index\n"
 			"count - optional number of mip levels to copy, defaults to one\n"
 		);
+		MAP_METHOD_AND_WRAP
+		(
+			"rotate_face_clockwise",
+			RotateFaceClockwise,
+			"Rotates a face clockwise a multiple of 90 degrees"
+		)
+		MAP_METHOD_AND_WRAP
+		(
+			"convert_crossmap_to_cubemap",
+			ConvertCrossmapToCubemap,
+			"Converts a 3x4 2D crossmap into a cubemap"
+		)
 		MAP_METHOD_AND_WRAP( 
 			"flatten", 
 			FlattenSlices, 
