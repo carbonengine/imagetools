@@ -114,7 +114,7 @@
       <AdditionalAppleFrameworks>CoreFoundation;CoreFoundation;%(AdditionalAppleFrameworks)</AdditionalAppleFrameworks>
       <AdditionalLibraryDirectories>$(CcpSdkPath)/amd/compressonator/3.0.3707/lib/VS2015/x64;$(CcpSdkPath)/zlib/1.2.11/lib/$(Platform)/$(PlatformToolset);$(CcpSdkPath)\telemetry\3.0.1.1008\lib;../../../carbon/autobuild/BlueExposure/exefile/$(Platform)/$(PlatformToolset);../../../carbon/autobuild/CcpCore/$(Platform)/$(PlatformToolset)/;..\..\..\carbon\autobuild\stackless\$(Platform)\$(PlatformToolset);$(CcpSdkPath)/libjpg/jpeg-9b/lib/$(Platform)/$(PlatformToolset);$(CcpSdkPath)/libpng/1.6.29/lib/$(Platform)/$(PlatformToolset);$(CcpSdkPath)/nvidia/nvtt/923b57d/lib/$(Platform)/$(PlatformToolset);$(CcpSdkPath)\telemetry\3.0.1.1008\lib;../../../carbon/autobuild/CcpCore/$(Platform)/$(PlatformToolset)/;../../autobuild/ImageIO/$(Platform)/$(PlatformToolset)/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ProgramDatabaseFile>$(TargetDir)$(TargetName).pdb</ProgramDatabaseFile>
-      <AdditionalDependencies>BlueExposureStatic.lib;CcpCore.lib;CcpCoreStatic.lib;Compressonator_MT_DLL.lib;ImageIO_dev.lib;jpeg.lib;libpng.lib;nvtt.lib;psapi.lib;python27.lib;rad_tm_win64.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>BlueExposureStatic.lib;CcpCore.lib;CcpCoreStatic.lib;Compressonator_MT_DLL.lib;ImageIO.lib;jpeg.lib;libpng.lib;nvtt.lib;psapi.lib;python27.lib;rad_tm_win64.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ResourceCompile />
     <Manifest />
