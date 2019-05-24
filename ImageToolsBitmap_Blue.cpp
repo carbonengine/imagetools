@@ -71,7 +71,7 @@ const Be::ClassInfo* ImageToolsBitmap::ExposeToBlue()
 		MAP_METHOD_AND_WRAP_OPTIONAL_ARGS( 
 			"generate_mips", 
 			CheckedGenerateMipMaps,
-			0,
+			1,
 			"Generates mip levels for 2D bitmap\n"
 			"Arguments:\n"
 			"levels - optional amount of mip levels to generate" );
