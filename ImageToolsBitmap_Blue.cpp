@@ -78,7 +78,7 @@ const Be::ClassInfo* ImageToolsBitmap::ExposeToBlue()
 		MAP_METHOD_AND_WRAP(
 			"drop_mips",
 			DropMipMaps,
-			"Removes all mips from the image" );
+			"Removes all mips from the image. This function always returns true." );
 		MAP_METHOD_AND_WRAP( 
 			"convert_format", 
 			CheckedConvertFormat, 
