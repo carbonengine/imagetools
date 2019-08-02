@@ -126,7 +126,9 @@ const Be::ClassInfo* ImageToolsBitmap::ExposeToBlue()
 		(
 			"rotate_face_clockwise",
 			RotateFaceClockwise,
-			"Rotates a face clockwise a multiple of 90 degrees"
+			"Rotates a face clockwise a multiple of 90 degrees\n"
+			":param face: bitmap face (for cubemaps)\n"
+			":param times: number of times to rotate"
 		)
 		MAP_METHOD_AND_WRAP
 		(
