@@ -186,7 +186,6 @@ BlueStdResult ImageToolsBitmap::Decompress( Tr2RenderContextEnum::PixelFormat fo
 	}
 	nvtt::Surface surface;
 	nvtt::Format nvttFormat;
-	size_t channels = 4;
 	switch( m_format )
 	{
 	case PIXEL_FORMAT_BC1_TYPELESS:
@@ -208,13 +207,11 @@ BlueStdResult ImageToolsBitmap::Decompress( Tr2RenderContextEnum::PixelFormat fo
 	case PIXEL_FORMAT_BC4_UNORM:
 	case PIXEL_FORMAT_BC4_SNORM:
 		nvttFormat = nvtt::Format_BC4;
-		channels = 1;
 		break;
 	case PIXEL_FORMAT_BC5_TYPELESS:
 	case PIXEL_FORMAT_BC5_UNORM:
 	case PIXEL_FORMAT_BC5_SNORM:
 		nvttFormat = nvtt::Format_BC5;
-		channels = 2;
 		break;
 	case PIXEL_FORMAT_BC6H_TYPELESS:
 	case PIXEL_FORMAT_BC6H_UF16:
@@ -315,24 +312,25 @@ BlueStdResult ImageToolsBitmap::FlattenSlices( bool horizontally, ImageToolsBitm
 	{
 		auto src = GetType() == TEX_TYPE_3D ? GetMipRawData( 0 ) + GetMipPitch( 0 ) * GetMipHeight( 0 ) * i : GetMipRawData( 0, i );
 		auto size = GetMipSize( 0 ) / sliceCount;
-		auto pitch = GetMipPitch( 0 );
+		auto sourcePitch = GetMipPitch( 0 );
+		auto destPitch = result->GetMipPitch( 0 );
+		auto height = GetMipHeight( 0 );
 
+		auto row = GetMipWidth( 0 ) * Tr2RenderContextEnum::GetBytesPerPixel( GetFormat() );
+		char *d;
 		if( horizontally )
 		{
-			auto row = GetMipWidth( 0 ) * Tr2RenderContextEnum::GetBytesPerPixel( GetFormat() );
-			auto d = dst + row * i;
-			for( uint32_t y = 0; y < GetMipHeight( 0 ); ++y )
-			{
-				memcpy( d, src, row );
-				d += result->GetMipPitch( 0 );
-				src += GetMipPitch( 0 );
-			}
+			d = dst + row * i;
 		}
 		else
 		{
-			auto row = GetMipWidth( 0 ) * Tr2RenderContextEnum::GetBytesPerPixel( GetFormat() );
-			auto d = dst + result->GetMipPitch( 0 ) * GetMipHeight( 0 ) * i;
-			memcpy( d, src, size );
+			d = dst + destPitch * height * i;
+		}
+		for( uint32_t y = 0; y < height; ++y )
+		{
+			memcpy( d, src, row );
+			d += destPitch;
+			src += sourcePitch;
 		}
 	}
 	return BLUE_STD_RESULT_OK;
@@ -652,13 +650,13 @@ StdOrImageIOResult ImageToolsBitmap::Compress( CompressionOptions* options, Imag
 {
 	AllowThreads allowThreads;
 
+#if WITH_COMPRESSONATOR
 	CompressionOptions::Compressor compressor = CompressionOptions::NVTT;
 	if( options )
 	{
 		compressor = options->GetCompressor();
 	}
 
-#if WITH_COMPRESSONATOR
 	if( compressor == CompressionOptions::COMPRESSONATOR )
 	{
 		result.CreateInstance();
@@ -722,7 +720,7 @@ StdOrImageIOResult ImageToolsBitmap::Compress( CompressionOptions* options, Imag
 		nvtt::OutputOptions output;
 		output.setOutputHandler( &outputHandler );
 
-		if( IsDds10Format( options->GetFormat() ) )
+		if( options && IsDds10Format( options->GetFormat() ) )
 		{
 			output.setContainer( nvtt::Container_DDS10 );
 		}

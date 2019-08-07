@@ -199,6 +199,10 @@ StdOrStringResult FilterRoughnessChannel(
 		uint8_t* dest = reinterpret_cast<uint8_t*>( destination->GetMipRawData( mip ) );
 		const uint32_t width = normalMap->GetMipWidth( mip );
 		const uint32_t height = normalMap->GetMipHeight( mip );
+		if( !width || !height )
+		{
+			break;
+		}
 		uint32_t kernelRadius = std::max( originalWidth / width, originalHeight / height ) / 2;
 		for( uint32_t j = 0; j < height; ++j )
 		{
