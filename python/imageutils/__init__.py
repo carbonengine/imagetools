@@ -76,7 +76,12 @@ def to_pil(image):
         input_mode = 'F'
     else:
         raise RuntimeError('image format %s cannot be converted to PIL' % image.format)
-    pil_image = PILImage.fromstring(mode, (image.width, image.height), image.get_pixel_data(), 'raw', input_mode)
+    # fromstring has been replaced by frombytes at some point in PIL (shared_tools still uses the old version)
+    # we just need to check if frombytes exists or not here
+    if hasattr(PILImage, "frombytes"):
+        pil_image = PILImage.frombytes(mode, (image.width, image.height), image.get_pixel_data(), 'raw', input_mode)
+    else:
+        pil_image = PILImage.fromstring(mode, (image.width, image.height), image.get_pixel_data(), 'raw', input_mode)
     if switch_rb:
         channels = list(pil_image.split())
         tmp = channels[0]
