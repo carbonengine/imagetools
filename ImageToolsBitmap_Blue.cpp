@@ -163,6 +163,24 @@ const Be::ClassInfo* ImageToolsBitmap::ExposeToBlue()
 			"Arguments:\n"
 			"filename - path to output dds file\n"
 			"options - (optional) compression options (imagetools.CompressionOptions)" );
+		MAP_METHOD_AND_WRAP(
+			"get_metadata_strings",
+			GetMetadataStrings,
+			"Returns image metadata strings loaded from the file.\n"
+			"Result is a list of key value pairs of strings.\n"
+			":rtype: List[(str, str)]" )
+		MAP_METHOD_AND_WRAP(
+			"set_metadata_strings",
+			SetMetadataStrings,
+			"Assigns a new set of metadata text to the image.\n"
+			"Result is a list of key value pairs of strings.\n"
+			":param strings: list of key value pairs of strings. Keys do not have to be unique.\n"
+			":type strings: List[(str, str)]" )
+		MAP_METHOD_AND_WRAP(
+			"clear_metadata",
+			ClearMetadata,
+			"Clears all metadata from the image." )
+
 #if BLUE_WITH_PYTHON
 		MAP_METHOD(
 			"get_pixel_data",

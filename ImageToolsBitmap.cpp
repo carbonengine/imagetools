@@ -64,7 +64,7 @@ StdOrImageIOResult ImageToolsBitmap::Load( const wchar_t* filename )
 		return BlueStdResult( BLUE_STD_RESULT_IO_ERROR, "failed to open file" );
 	}
 
-	return ImageIOResult( ImageIO::ReadImage( stream, ImageIO::LoadParameters( filename ), *this ) );
+	return ImageIOResult( ImageIO::ReadImage( stream, ImageIO::LoadParameters( filename ), *this, &m_metadata ) );
 }
 
 StdOrImageIOResult ImageToolsBitmap::Save( const wchar_t* filename )
@@ -82,7 +82,7 @@ StdOrImageIOResult ImageToolsBitmap::Save( const wchar_t* filename )
 		return BlueStdResult( BLUE_STD_RESULT_IO_ERROR, "could not open file for saving" );
 	}
 
-	return StdOrImageIOResult( ImageIO::SaveImage( filename, *this, stream ) );
+	return StdOrImageIOResult( ImageIO::SaveImage( filename, *this, stream, &m_metadata ) );
 }
 
 Be::Result<std::string> ImageToolsBitmap::CheckedCopyChannel( ImageToolsBitmap* source, unsigned srcChannel, unsigned dstChannel )
@@ -750,4 +750,19 @@ BlueStdResult ImageToolsBitmap::CompressToFile( const wchar_t* filename, Compres
 	output.setFileName( CW2A( filename ) );
 
 	return CompressWithOptions( options, output );
+}
+
+ImageIO::MetadataStrings ImageToolsBitmap::GetMetadataStrings() const
+{
+	return m_metadata.metadata;
+}
+
+void ImageToolsBitmap::SetMetadataStrings( const ImageIO::MetadataStrings& strings )
+{
+	m_metadata.metadata = strings;
+}
+
+void ImageToolsBitmap::ClearMetadata()
+{
+	m_metadata = ImageIO::Metadata();
 }

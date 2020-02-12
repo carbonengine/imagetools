@@ -24,6 +24,9 @@ public:
 	StdOrImageIOResult Compress( CompressionOptions* options, ImageToolsBitmapPtr& result );
 	BlueStdResult CompressToFile( const wchar_t* filename, CompressionOptions* options );
 	BlueStdResult CreateFromArray( const std::vector<ImageToolsBitmap*>& elements );
+	ImageIO::MetadataStrings GetMetadataStrings() const;
+	void SetMetadataStrings( const ImageIO::MetadataStrings& strings );
+	void ClearMetadata();
 private:
 	Be::Result<std::string> CheckedCopyChannel( ImageToolsBitmap* source, unsigned srcChannel, unsigned dstChannel );
 	Be::Result<std::string> CheckedDownsample2x2();
@@ -40,6 +43,8 @@ private:
 	BlueStdResult SetMipData( uint32_t mipLevel, ImageToolsBitmap* result, uint32_t sourceMip );
 	BlueStdResult ToYuv( std::pair<ImageToolsBitmapPtr, ImageToolsBitmapPtr>& result ) const;
 	BlueStdResult FlattenSlices( bool horizontally, ImageToolsBitmapPtr& result ) const;
+
+	ImageIO::Metadata m_metadata;
 };
 
 TYPEDEF_BLUECLASS( ImageToolsBitmap );
