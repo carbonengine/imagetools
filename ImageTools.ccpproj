@@ -1,8 +1,8 @@
 # These are the SDKs that are used by all configurations
 Imports:
 - ../core_project/core_project.yaml
-- ../../../../../../sdk/nvidia/nvtt/923b57d/nvtt.yaml
-- ../../../../../../sdk/amd/compressonator/3.0.3707/compressonator.yaml
+- ../../../vendor/nvidia/nvtt/923b57d/nvtt.yaml
+- ../../../vendor/amd/compressonator/3.0.3707/compressonator.yaml
 - ../ImageIO/uses_ImageIO.yaml
 
 # Settings from the General section, for all configurations
@@ -28,12 +28,10 @@ Link:
 BaseConfigurations:
   Windows:
     Imports:
-    - ../../../../../../sdk/zlib/1.2.11/zlib_1.2.11.yaml
     - ../BlueExposure/uses_BlueExposureStatic.yaml
 
   Mac:
     Imports:
-    - ../../../../../../sdk/zlib/1.2.11/zlib_1.2.11.yaml
     - ../BlueExposure/uses_BlueExposure.yaml
 
   Release:
@@ -53,7 +51,7 @@ BaseConfigurations:
   
   Python27:
     Imports:
-    - ../../../../../../sdk/python/ccpproj/Python_2.7.yaml
+    - ../../../vendor/python/ccpproj/Python_2.7.yaml
     General:
       OutDir: ../../autobuild/ImageTools/python_27/$(Platform)/$(PlatformToolset)/
       IntDir: ../temp/ImageTools/python_27/$(Platform)/$(Configuration)/$(PlatformToolset)/
