@@ -1,10 +1,26 @@
-from PIL import Image as PILImage
 import struct
 
 import osutils
 
-# noinspection PyUnresolvedReferences
-from _imagetools import *
+import blue
+import sys
+
+# This is a hack to allow PyCharm to parse stub files for _imagetools. The _imagetools_stub stub is located
+# in packages/stubgen/stubs and will always generate an ImportError.
+try:
+    from _imagetools_stub import *
+except ImportError:
+    pass
+
+
+imagetools = blue.LoadExtension("_imagetools")
+for each in dir(imagetools):
+    globals()[each] = getattr(imagetools, each)
+
+del blue
+del sys
+del imagetools
+del each
 
 
 def from_pil(pil_image):
@@ -15,6 +31,7 @@ def from_pil(pil_image):
     :rtype : imageutils.ImageToolsBitmap
     :raise RuntimeError: when PIL image cannot be converted
     """
+    from PIL import Image as PILImage
     if pil_image.mode == 'L':
         img_format = PIXEL_FORMAT.R8_UNORM
     elif pil_image.mode == 'RGB':
@@ -50,6 +67,7 @@ def to_pil(image):
     :rtype : PIL.Image.Image
     :raise RuntimeError: if the input image cannot be converted to PIL
     """
+    from PIL import Image as PILImage
     if image.is_compressed():
         image = image.copy()
         if image.format == PIXEL_FORMAT.BC1_UNORM:
@@ -98,6 +116,7 @@ def load_image_from_path_or_pil(path_or_pil):
     instance.
     :return: imageutils image
     """
+    from PIL import Image as PILImage
     if isinstance(path_or_pil, PILImage.Image):
         return from_pil(path_or_pil)
     return load(path_or_pil)
@@ -146,6 +165,7 @@ def pilresize(pil, size, filterdict=None):
 
     http://effbot.org/imagingbook/image.htm#tag-Image.Image.resize
     """
+    from PIL import Image as PILImage
     if not filterdict:
         return pil.resize(size, PILImage.ANTIALIAS)
     else:

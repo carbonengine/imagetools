@@ -2,9 +2,6 @@ import itertools
 import os
 import unittest
 
-import binbootstrapper
-binbootstrapper.update_binaries(__file__, binbootstrapper.DLL_IMAGETOOLS)
-
 import imageutils
 
 import helputils
