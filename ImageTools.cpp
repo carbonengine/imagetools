@@ -6,6 +6,5 @@
 //
 
 #include "StdAfx.h"
-#include "BlueExposure/include/InterfaceDefinitions.cxx"
 
 BLUE_STANDARD_MODULE_INIT( _imagetools );

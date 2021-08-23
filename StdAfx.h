@@ -7,12 +7,6 @@
 
 #define NOMINMAX
 
-#ifdef _WIN32
-#define WITH_COMPRESSONATOR 1
-#else
-#define WITH_COMPRESSONATOR 0
-#endif
-
 #include "BlueExposure/include/BlueExposure.h"
 #include "nvtt/nvtt.h"
 
