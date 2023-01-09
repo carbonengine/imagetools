@@ -7,7 +7,7 @@
 
 #define NOMINMAX
 
-#include "BlueExposure/include/BlueExposure.h"
+#include <BlueExposure.h>
 #include "nvtt/nvtt.h"
 
 #if WITH_COMPRESSONATOR
