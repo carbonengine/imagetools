@@ -14,10 +14,10 @@
 #include "Compressonator.h"
 #endif
 
-#include "TrinityAL/include/Tr2PixelFormat.h"
-#include "TrinityAL/include/Tr2TextureType.h"
-#include "TrinityAL/include/Tr2BitmapDimensions.h"
-#include "TrinityAL/include/Tr2CubemapFace.h"
+#include <include/Tr2PixelFormat.h>
+#include <include/Tr2TextureType.h>
+#include <include/Tr2BitmapDimensions.h>
+#include <include/Tr2CubemapFace.h>
 
-#include "ImageIO/HostBitmap.h"
-#include "ImageIO/Tr2ImageHandler.h"
+#include <HostBitmap.h>
+#include <Tr2ImageHandler.h>
