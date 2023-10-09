@@ -15,7 +15,7 @@ BLUE_DEFINE( ImageToolsBitmap );
 PyObject* PyGetPixelData( PyObject* self, PyObject* args )
 {
 	ImageToolsBitmap* pThis = BluePythonCast<ImageToolsBitmap*>( self );
-	return PyString_FromStringAndSize( pThis->GetRawData(), pThis->GetRawDataSize() );
+	return PyUnicode_FromStringAndSize( pThis->GetRawData(), pThis->GetRawDataSize() );
 }
 #endif
 
