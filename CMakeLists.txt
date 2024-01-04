@@ -59,11 +59,13 @@ target_sources(ImageTools PRIVATE
     MemoryOutputHandler.h
     MemoryStream.cpp
     MemoryStream.h
+    NanoVDBToolSupport_Blue.cpp
+    NanoVDBToolSupport.h
     StdAfx.cpp
     StdAfx.h
 )
 
-target_include_directories(ImageTools PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+#target_include_directories(ImageTools PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 target_compile_definitions(ImageTools PRIVATE BLUEBUILD_STATIC)
 
 if(APPLE)
