@@ -23,14 +23,14 @@ public:
 	CompressionOptions( IRoot* lockobj = 0 );
 
 	BlueStdResult Create( 
-		Be::OptionalWithDefaultValue<Tr2RenderContextEnum::PixelFormat, Tr2RenderContextEnum::PIXEL_FORMAT_BC1_UNORM> format,
+		Be::OptionalWithDefaultValue<ImageIO::PixelFormat, ImageIO::PIXEL_FORMAT_BC1_UNORM> format,
 		Be::OptionalWithDefaultValue<nvtt::Quality, nvtt::Quality_Production> quality,
 		Be::OptionalWithDefaultValue<bool, false> generateMips,
 		Be::OptionalWithDefaultValue<bool, false> alphaForBc1 );
 
 
-	Tr2RenderContextEnum::PixelFormat GetFormat() const;
-	BlueStdResult SetFormat( Tr2RenderContextEnum::PixelFormat );
+	ImageIO::PixelFormat GetFormat() const;
+	BlueStdResult SetFormat( ImageIO::PixelFormat );
 
 	Compressor GetCompressor() const;
 
@@ -44,7 +44,7 @@ public:
 	bool GetGenerateMipsMaps() const;
 private:
 	Compressor m_compressor;
-	Tr2RenderContextEnum::PixelFormat m_format;
+	ImageIO::PixelFormat m_format;
 	nvtt::Quality m_quality;
 	bool m_alphaForBc1;
 	bool m_generateMips;

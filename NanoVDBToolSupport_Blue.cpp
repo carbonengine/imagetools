@@ -96,7 +96,7 @@ const Be::ClassInfo* VtaInfo::ExposeToBlue()
 }
 
 
-Be::Result<std::string> RasterizeNanoVDB( const char* vdbPath, uint32_t gridNumber, Tr2RenderContextEnum::PixelFormat format, int32_t bpp, ImageToolsBitmapPtr& bitmap )
+Be::Result<std::string> RasterizeNanoVDB( const char* vdbPath, uint32_t gridNumber, ImageIO::PixelFormat format, int32_t bpp, ImageToolsBitmapPtr& bitmap )
 {
 	bitmap.CreateInstance();
 
