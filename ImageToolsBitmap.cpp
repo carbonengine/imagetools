@@ -13,7 +13,7 @@
 #include "MemoryStream.h"
 #include "AllowThreads.h"
 
-using namespace Tr2RenderContextEnum;
+using namespace ImageIO;
 
 #define CBR_RETURN_BR( x ) { auto ret = x; if( !BeIsSuccess( ret ) ) { return ret; } }
 
@@ -125,7 +125,7 @@ Be::Result<std::string> ImageToolsBitmap::CheckedGenerateMipMaps( unsigned level
 	return std::string();
 }
 
-BlueStdResult ImageToolsBitmap::CheckedConvertFormat( Tr2RenderContextEnum::PixelFormat format )
+BlueStdResult ImageToolsBitmap::CheckedConvertFormat( PixelFormat format )
 {
 	AllowThreads allowThreads;
 
@@ -167,7 +167,7 @@ BlueStdResult ImageToolsBitmap::CreateFromArray( const std::vector<ImageToolsBit
 		}
 	}
 	Destroy();
-	*static_cast<Tr2BitmapDimensions*>( this ) = *elements[0];
+	*static_cast<BitmapDimensions*>( this ) = *elements[0];
 	m_arraySize = uint32_t( elements.size() );
 	auto elementSize = elements[0]->m_data.size();
 	m_data.resize( "HostBitmap::m_data", elementSize * elements.size() );
@@ -178,7 +178,7 @@ BlueStdResult ImageToolsBitmap::CreateFromArray( const std::vector<ImageToolsBit
 	return BLUE_STD_RESULT_OK;
 }
 
-BlueStdResult ImageToolsBitmap::Decompress( Tr2RenderContextEnum::PixelFormat format )
+BlueStdResult ImageToolsBitmap::Decompress( PixelFormat format )
 {
 	if( !IsCompressed() )//|| GetType() != TEX_TYPE_2D )
 	{
@@ -269,7 +269,7 @@ BlueStdResult ImageToolsBitmap::Copy( ImageToolsBitmapPtr& result ) const
 	{
 		return BLUE_STD_RESULT_MEMORY_ERROR;
 	}
-	static_cast<Tr2BitmapDimensions&>( *result ) = *this;
+	static_cast<BitmapDimensions&>( *result ) = *this;
 	result->m_name = m_name;
 	result->m_data.resize( "HostBitmap::m_data", m_data.size() );
 	if( !result->m_data.get() )
@@ -316,7 +316,7 @@ BlueStdResult ImageToolsBitmap::FlattenSlices( bool horizontally, ImageToolsBitm
 		auto destPitch = result->GetMipPitch( 0 );
 		auto height = GetMipHeight( 0 );
 
-		auto row = GetMipWidth( 0 ) * Tr2RenderContextEnum::GetBytesPerPixel( GetFormat() );
+		auto row = GetMipWidth( 0 ) * GetBytesPerPixel( GetFormat() );
 		char *d;
 		if( horizontally )
 		{
@@ -386,7 +386,7 @@ BlueStdResult ImageToolsBitmap::ToYuv( std::pair<ImageToolsBitmapPtr, ImageTools
 	{
 		return BlueStdResult( BLUE_STD_RESULT_VALUE_ERROR, "source bitmap is invalid" );
 	}
-	if( GetFormat() != Tr2RenderContextEnum::PIXEL_FORMAT_B8G8R8A8_UNORM && GetFormat() != Tr2RenderContextEnum::PIXEL_FORMAT_B8G8R8X8_UNORM )
+	if( GetFormat() != PIXEL_FORMAT_B8G8R8A8_UNORM && GetFormat() != PIXEL_FORMAT_B8G8R8X8_UNORM )
 	{
 		return BlueStdResult( BLUE_STD_RESULT_VALUE_ERROR, "invalid format" );
 	}
@@ -401,8 +401,8 @@ BlueStdResult ImageToolsBitmap::ToYuv( std::pair<ImageToolsBitmapPtr, ImageTools
 	switch( GetType() )
 	{
 	case TEX_TYPE_CUBE:
-		createResult = result.first->CreateCube( GetWidth(), GetMipCount(), Tr2RenderContextEnum::PIXEL_FORMAT_R8_UNORM );
-		createResult = result.second->CreateCube( GetWidth() / 2, GetMipCount() ? std::max( GetMipCount() - 1, 1u ) : 0, Tr2RenderContextEnum::PIXEL_FORMAT_B8G8R8A8_UNORM ) && createResult;
+		createResult = result.first->CreateCube( GetWidth(), GetMipCount(), PIXEL_FORMAT_R8_UNORM );
+		createResult = result.second->CreateCube( GetWidth() / 2, GetMipCount() ? std::max( GetMipCount() - 1, 1u ) : 0, PIXEL_FORMAT_B8G8R8A8_UNORM ) && createResult;
 		faceCount = 6;
 		break;
     default:

@@ -219,7 +219,7 @@ Be::Result<std::string> CreateBitmap2D(
 	uint32_t width, 
 	uint32_t height, 
 	uint32_t mipCount, 
-	Tr2RenderContextEnum::PixelFormat format, 
+	ImageIO::PixelFormat format, 
 	ImageToolsBitmapPtr& result )
 {
 	result.CreateInstance();
@@ -235,7 +235,7 @@ Be::Result<std::string> CreateBitmap2DFromString(
 	uint32_t width, 
 	uint32_t height, 
 	uint32_t mipCount, 
-	Tr2RenderContextEnum::PixelFormat format, 
+	ImageIO::PixelFormat format, 
 	const char* pixelData, 
 	ImageToolsBitmapPtr& result )
 {
@@ -252,7 +252,7 @@ Be::Result<std::string> CreateBitmap2DFromString(
 Be::Result<std::string> CreateBitmapCube( 
 	uint32_t width, 
 	uint32_t mipCount, 
-	Tr2RenderContextEnum::PixelFormat format, 
+	ImageIO::PixelFormat format, 
 	ImageToolsBitmapPtr& result )
 {
 	result.CreateInstance();
@@ -269,7 +269,7 @@ Be::Result<std::string> CreateBitmapVolume(
 	uint32_t height, 
 	uint32_t depth, 
 	uint32_t mipCount, 
-	Tr2RenderContextEnum::PixelFormat format, 
+	ImageIO::PixelFormat format, 
 	ImageToolsBitmapPtr& result )
 {
 	result.CreateInstance();

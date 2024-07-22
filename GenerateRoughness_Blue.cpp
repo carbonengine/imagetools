@@ -2,7 +2,7 @@
 #include "ImageToolsBitmap.h"
 #include "AllowThreads.h"
 
-using namespace Tr2RenderContextEnum;
+using namespace ImageIO;
 
 namespace
 {
@@ -63,7 +63,7 @@ float GaussianWeight( float x, float y, float sigma )
     return exp( -( x * x + y * y ) / v ) / ( pi * v );
 }
 
-bool Is8BitFormat( Tr2RenderContextEnum::PixelFormat format )
+bool Is8BitFormat( PixelFormat format )
 {
 	switch( format )
 	{
