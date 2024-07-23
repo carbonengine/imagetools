@@ -26,22 +26,22 @@ BLUE_REGISTER_ENUM_EX(
 
 const Be::VarChooser TextureType_Chooser[] = 
 {
-	{ "BITMAP_1D", BeCast( Tr2RenderContextEnum::TEX_TYPE_1D ), "1D image" },
-	{ "BITMAP_2D", BeCast( Tr2RenderContextEnum::TEX_TYPE_2D ), "2D image" },
-	{ "BITMAP_3D", BeCast( Tr2RenderContextEnum::TEX_TYPE_3D ), "3D image" },
-	{ "BITMAP_CUBE", BeCast( Tr2RenderContextEnum::TEX_TYPE_CUBE ), "Cube image" },
-	{ "BITMAP_INVALID", BeCast( Tr2RenderContextEnum::TEX_TYPE_INVALID ), "Invalid image type" },
+	{ "BITMAP_1D", BeCast( ImageIO::TEX_TYPE_1D ), "1D image" },
+	{ "BITMAP_2D", BeCast( ImageIO::TEX_TYPE_2D ), "2D image" },
+	{ "BITMAP_3D", BeCast( ImageIO::TEX_TYPE_3D ), "3D image" },
+	{ "BITMAP_CUBE", BeCast( ImageIO::TEX_TYPE_CUBE ), "Cube image" },
+	{ "BITMAP_INVALID", BeCast( ImageIO::TEX_TYPE_INVALID ), "Invalid image type" },
 	{ 0 }
 };
 
 BLUE_REGISTER_ENUM_EX( 
     "BITMAP_TYPE", 
-	Tr2RenderContextEnum::TextureType, 
+	ImageIO::TextureType, 
     TextureType_Chooser,
     ENUM_REG_ENUM_OBJECT_ON_MODULE
 );
 
-#define VAL(x)	{ #x, BeCast( Tr2RenderContextEnum::PIXEL_FORMAT_ ## x ), #x },
+#define VAL( x ) { #x, BeCast( ImageIO::PIXEL_FORMAT_##x ), #x },
 
 const Be::VarChooser Tr2RenderContextEnum_PixelFormat_Chooser[] =
 {
@@ -150,7 +150,7 @@ const Be::VarChooser Tr2RenderContextEnum_PixelFormat_Chooser[] =
 
 BLUE_REGISTER_ENUM_EX( 
     "PIXEL_FORMAT", 
-	Tr2RenderContextEnum::PixelFormat, 
+	ImageIO::PixelFormat, 
     Tr2RenderContextEnum_PixelFormat_Chooser,
     ENUM_REG_ENUM_OBJECT_ON_MODULE
 );

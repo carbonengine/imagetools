@@ -32,12 +32,12 @@ private:
 	Be::Result<std::string> CheckedDownsample2x2();
 	Be::Result<std::string> CheckedCrop( unsigned left, unsigned top, unsigned right, unsigned bottom );
 	Be::Result<std::string> CheckedGenerateMipMaps( unsigned levels = 0 );
-	BlueStdResult CheckedConvertFormat( Tr2RenderContextEnum::PixelFormat format );
+	BlueStdResult CheckedConvertFormat( ImageIO::PixelFormat format );
 
 	BlueStdResult CreateNvttInputOptions( CompressionOptions* compressionOptions, nvtt::InputOptions& inputOptions );
 	BlueStdResult CompressWithOptions( CompressionOptions* options, const nvtt::OutputOptions& outputOptions );
 
-	BlueStdResult Decompress( Tr2RenderContextEnum::PixelFormat format );
+	BlueStdResult Decompress( ImageIO::PixelFormat format );
 	BlueStdResult Copy( ImageToolsBitmapPtr& result ) const;
 	BlueStdResult ExtractMipLevel( uint32_t mipLevel, Be::OptionalWithDefaultValue<uint32_t, 1> count, ImageToolsBitmapPtr& result ) const;
 	BlueStdResult SetMipData( uint32_t mipLevel, ImageToolsBitmap* result, uint32_t sourceMip );

@@ -8,7 +8,7 @@
 #include "StdAfx.h"
 #include "CompressionOptions.h"
 
-using namespace Tr2RenderContextEnum;
+using namespace ImageIO;
 
 CompressionOptions::CompressionOptions( IRoot* lockobj )
 	:m_compressor( NVTT ),
@@ -25,7 +25,7 @@ CompressionOptions::CompressionOptions( IRoot* lockobj )
 }
 
 BlueStdResult CompressionOptions::Create( 
-	Be::OptionalWithDefaultValue<Tr2RenderContextEnum::PixelFormat, Tr2RenderContextEnum::PIXEL_FORMAT_BC1_UNORM> format,
+	Be::OptionalWithDefaultValue<PixelFormat, PIXEL_FORMAT_BC1_UNORM> format,
 	Be::OptionalWithDefaultValue<nvtt::Quality, nvtt::Quality_Production> quality,
 	Be::OptionalWithDefaultValue<bool, false> generateMips,
 	Be::OptionalWithDefaultValue<bool, false> alphaForBc1 )
@@ -41,12 +41,12 @@ BlueStdResult CompressionOptions::Create(
 	return BLUE_STD_RESULT_OK;
 }
 
-Tr2RenderContextEnum::PixelFormat CompressionOptions::GetFormat() const
+PixelFormat CompressionOptions::GetFormat() const
 {
 	return m_format;
 }
 
-BlueStdResult CompressionOptions::SetFormat( Tr2RenderContextEnum::PixelFormat format )
+BlueStdResult CompressionOptions::SetFormat( PixelFormat format )
 {
 	if( !IsCompressedFormat( format ) )
 	{

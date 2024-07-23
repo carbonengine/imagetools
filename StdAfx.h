@@ -14,10 +14,10 @@
 #include "Compressonator.h"
 #endif
 
-#include <include/Tr2PixelFormat.h>
-#include <include/Tr2TextureType.h>
-#include <include/Tr2BitmapDimensions.h>
-#include <include/Tr2CubemapFace.h>
+#include <PixelFormat.h>
+#include <TextureType.h>
+#include <BitmapDimensions.h>
+#include <CubemapFace.h>
 
 #include <HostBitmap.h>
 #include <Tr2ImageHandler.h>

@@ -23,15 +23,12 @@ find_package(CcpMath REQUIRED NO_CMAKE_PATH)
 find_package(ImageIO REQUIRED NO_CMAKE_PATH)
 find_package(nvtt REQUIRED)
 
-find_package(TrinityAL_stub)
 find_package(JPEG REQUIRED NO_CMAKE_PATH)
 find_package(PNG REQUIRED NO_CMAKE_PATH)
 find_package(ZLIB REQUIRED NO_CMAKE_PATH)
 find_package(NanoVDB REQUIRED NO_CMAKE_PATH)
 
 ccp_add_library(ImageTools SHARED)
-
-target_include_directories(ImageTools PRIVATE "$<TARGET_PROPERTY:TrinityAL_stub,INTERFACE_INCLUDE_DIRECTORIES>")
 
 target_link_libraries(ImageTools PRIVATE
     BlueExposure
@@ -59,11 +56,13 @@ target_sources(ImageTools PRIVATE
     MemoryOutputHandler.h
     MemoryStream.cpp
     MemoryStream.h
+    NanoVDBToolSupport_Blue.cpp
+    NanoVDBToolSupport.h
     StdAfx.cpp
     StdAfx.h
 )
 
-target_include_directories(ImageTools PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+#target_include_directories(ImageTools PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 target_compile_definitions(ImageTools PRIVATE BLUEBUILD_STATIC)
 
 if(APPLE)
