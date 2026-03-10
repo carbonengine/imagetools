@@ -15,7 +15,11 @@ BLUE_DEFINE( ImageToolsBitmap );
 PyObject* PyGetPixelData( PyObject* self, PyObject* args )
 {
 	ImageToolsBitmap* pThis = BluePythonCast<ImageToolsBitmap*>( self );
-	return PyUnicode_FromStringAndSize( pThis->GetRawData(), pThis->GetRawDataSize() );
+#if PY_MAJOR_VERSION == 2
+	return PyString_FromStringAndSize( pThis->GetRawData(), pThis->GetRawDataSize() );
+#else
+	return PyBytes_FromStringAndSize( pThis->GetRawData(), pThis->GetRawDataSize() );
+#endif
 }
 #endif
 
@@ -182,10 +186,17 @@ const Be::ClassInfo* ImageToolsBitmap::ExposeToBlue()
 			"Clears all metadata from the image." )
 
 #if BLUE_WITH_PYTHON
+#if PY_MAJOR_VERSION == 2
+		const char* pixelDataDocString = "Returns pixel data of the bitmap as a string.\n\n:rtype: str"
+#else
+		const char* pixelDataDocString = "Returns pixel data of the bitmap as a bytes object.\n\n:rtype: bytes";
+#endif
+
 		MAP_METHOD(
 			"get_pixel_data",
 			PyGetPixelData,
-			"Returns pixel data of the bitmap as a string." );
+			pixelDataDocString
+		);
 #endif
 	EXPOSURE_END()
 }
