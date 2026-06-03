@@ -108,9 +108,6 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
             FILE carbon-imagetoolsConfig.cmake
         )
 
-        install(IMPORTED_RUNTIME_ARTIFACTS libjpeg-turbo::jpeg DESTINATION bin)
-        install(IMPORTED_RUNTIME_ARTIFACTS PNG::png_shared DESTINATION bin)
-
     endif()
 
     # Install python package
