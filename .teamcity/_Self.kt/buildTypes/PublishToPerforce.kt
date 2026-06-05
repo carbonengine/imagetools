@@ -55,14 +55,6 @@ class Publish(perforce_publish_path: String) : BuildType({
             command = script {
                 content = """
                     tags = set([
-                        "${MacOS.arm64_Release.depParamRefs["env.GIT_TAG_HASH"]}",
-                        "${MacOS.arm64_Debug.depParamRefs["env.GIT_TAG_HASH"]}",
-                        "${MacOS.arm64_Internal.depParamRefs["env.GIT_TAG_HASH"]}",
-                        "${MacOS.arm64_TrinityDev.depParamRefs["env.GIT_TAG_HASH"]}",
-                        "${MacOS.x64_Release.depParamRefs["env.GIT_TAG_HASH"]}",
-                        "${MacOS.x64_Debug.depParamRefs["env.GIT_TAG_HASH"]}",
-                        "${MacOS.x64_Internal.depParamRefs["env.GIT_TAG_HASH"]}",
-                        "${MacOS.x64_TrinityDev.depParamRefs["env.GIT_TAG_HASH"]}",
                         "${Windows.Release.depParamRefs["env.GIT_TAG_HASH"]}",
                         "${Windows.Debug.depParamRefs["env.GIT_TAG_HASH"]}",
                         "${Windows.Internal.depParamRefs["env.GIT_TAG_HASH"]}",
@@ -199,15 +191,6 @@ class Publish(perforce_publish_path: String) : BuildType({
     }
 
     dependencies {
-        dependency(CreateUniversalBuilds) {
-            snapshot {
-                onDependencyFailure = FailureAction.FAIL_TO_START
-            }
-
-            artifacts {
-                artifactRules = "**/*=>%perforce_path_to_publish_into%/${MacOS.arm64_Release.depParamRefs["env.GIT_TAG_HASH"]}"
-            }
-        }
         dependency(Windows.Debug) {
             snapshot {
                 onDependencyFailure = FailureAction.FAIL_TO_START
