@@ -1,8 +1,3 @@
-////////////////////////////////////////////////////////////
-//
-//    Creator:   Filipp Pavlov
-//    Created:   March 2014
-//    Copyright: CCP 2014
-//
+// Copyright © 2014 CCP ehf.
 
 #include "StdAfx.h"

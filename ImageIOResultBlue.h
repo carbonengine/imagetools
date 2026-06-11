@@ -1,9 +1,4 @@
-////////////////////////////////////////////////////////////
-//
-//    Creator:   Filipp Pavlov
-//    Created:   June 2014
-//    Copyright: CCP 2014
-//
+// Copyright © 2014 CCP ehf.
 
 #pragma once
 #ifndef ImageIOResultBlue_H

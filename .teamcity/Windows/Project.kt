@@ -1,3 +1,5 @@
+// Copyright © 2026 CCP ehf.
+
 package Windows
 
 import jetbrains.buildServer.configs.kotlin.DslContext
@@ -234,7 +236,7 @@ class CarbonBuildWindows(buildName: String, configType: String, preset: String) 
             failBuild = true
         }
         sshAgent {
-            teamcitySshKey = "ccpgames-evetech GitHub"
+            teamcitySshKey = "ccpgames-carbon"
         }
         provideAwsCredentials {
             awsConnectionId = "Carbon_AwsVcpkgBinaryCacheServiceAccount"

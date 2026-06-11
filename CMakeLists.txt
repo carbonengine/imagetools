@@ -1,3 +1,5 @@
+# Copyright © 2021 CCP ehf.
+
 cmake_minimum_required(VERSION 3.21)
 project(ImageTools VERSION 1.0.0)
 

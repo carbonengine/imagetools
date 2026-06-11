@@ -1,3 +1,5 @@
+# Copyright © 2026 CCP ehf.
+
 include(FindPackageHandleStandardArgs)
 
 find_path(NVTT_INCLUDE_DIR
