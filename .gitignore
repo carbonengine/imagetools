@@ -3,3 +3,10 @@ out/**
 temp/**
 cmake-build*/
 .idea/
+
+### CMake ###
+# User generated local cmake configuration
+CMakeUserPresets.json
+
+.cmake-build*
+cmake-build*
