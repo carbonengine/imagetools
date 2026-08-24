@@ -38,7 +38,7 @@ object Project : Project({
 })
 
 
-class CarbonBuildWindows(buildName: String, configType: String, preset: String) : BuildType({
+class CarbonBuildWindows(buildName: String, configType: String, preset: String, vsDevBatSwitches: String = "-arch=x64 -vcvars_ver=14.51") : BuildType({
     id(buildName.toId())
     this.name = buildName
 
@@ -48,7 +48,7 @@ class CarbonBuildWindows(buildName: String, configType: String, preset: String) 
         param("env.GIT_TAG_HASH_OVERRIDE", "")
         param("github_checkout_folder", "github")
         param("env.CTEST_JUNIT_OUTPUT_FILE", "ctest_results.xml")
-        param("VS_DEV_BAT_SWITCHES", "-arch=x64 -vcvars_ver=14.1")
+        param("VS_DEV_BAT_SWITCHES", vsDevBatSwitches)
         param("env.CMAKE_BUILD_TARGETS", "all")
         param("env.CMAKE_INSTALL_PREFIX", ".build-artifact")
         param("env.CMAKE_CONFIG_TYPE", configType)
@@ -209,11 +209,13 @@ class CarbonBuildWindows(buildName: String, configType: String, preset: String) 
                 authType = token {
                     token = "%GITHUB_CARBON_PAT%"
                 }
-                filterAuthorRole = PullRequests.GitHubRoleFilter.MEMBER
+                // Constrain PR triggers to compatible refs so as to avoid erroneous triggers
                 filterTargetBranch = """
-                +:refs/heads/*
-                -:refs/heads/release/1.x
+                    +:refs/heads/main
+                    +:refs/heads/release/*.x
+                    -:refs/heads/release/1.x
                 """.trimIndent()
+                filterAuthorRole = PullRequests.GitHubRoleFilter.MEMBER
             }
         }
         commitStatusPublisher {
@@ -236,7 +238,7 @@ class CarbonBuildWindows(buildName: String, configType: String, preset: String) 
             failBuild = true
         }
         sshAgent {
-            teamcitySshKey = "ccpgames-carbon"
+            teamcitySshKey = "ccpgames-evetech GitHub"
         }
         provideAwsCredentials {
             awsConnectionId = "Carbon_AwsVcpkgBinaryCacheServiceAccount"
