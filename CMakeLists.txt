@@ -91,9 +91,6 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
         )
         install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ImageToolsConfig.cmake DESTINATION .)
 
-        install(IMPORTED_RUNTIME_ARTIFACTS libjpeg-turbo::jpeg DESTINATION bin/${CCP_PLATFORM}/${CCP_ARCHITECTURE}/${CCP_TOOLSET}/)
-        install(IMPORTED_RUNTIME_ARTIFACTS PNG::png_shared DESTINATION bin/${CCP_PLATFORM}/${CCP_ARCHITECTURE}/${CCP_TOOLSET}/)
-
     else()
         install(
             TARGETS ImageTools
