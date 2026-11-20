@@ -14,11 +14,12 @@ object Project : Project({
 
     params {
         param("carbon_ref", "refs/heads/main")
-        param("carbon-pipeline-tools-ref", "refs/tags/v0.1.0")
+        param("carbon-pipeline-tools-ref", "refs/tags/v0.3.0")
     }
     
     subProject(Windows.Project)
 
     buildType(PublishToPerforce)
     buildType(SyncToMirror)
+    buildType(BumpVcpkgRegistry)
 })
